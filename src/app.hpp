@@ -368,7 +368,7 @@ private:
     SDL_Window* window;
     bool running = true;
 public:
-    ImVec4 clear_color = ImVec4(0.13f, 0.35f, 0.35f, 1.00f);
+    ImVec4 clear_color = ImVec4(0.129411f, 0.345098f, 0.345098f, 1.00f);
     App() {
         // Setup SDL
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
