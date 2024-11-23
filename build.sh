@@ -1,3 +1,39 @@
 #!/bin/bash
 
-docker run --rm -v .:/app dengid-builder:v0.1 make
+BUILDER=DENGID-BUILDER
+
+# Check if docker is running
+if ! systemctl is-active --quiet docker.socket; then
+    echo -e "\e[32m${BUILDER}: Starting docker...\e[0m"
+    # Start docker if not running
+    sudo systemctl start docker.socket
+    if ! systemctl is-active --quiet docker.socket; then
+        echo -e "\e[31m${BUILDER}: Docker could not be started.\e[0m"
+        exit 1
+    fi
+    DOCKER_STARTED=true
+else
+    echo -e "\e[32m${BUILDER}: Docker is already running.\e[0m"
+    DOCKER_STARTED=false
+fi
+
+# Create build directory if not exist
+if [ ! -d "./build" ]; then
+    mkdir build
+fi
+# Create and delete a container to build the project
+echo -e "\e[32m${BUILDER}: Building the project in a container...\e[0m"
+docker run --rm -v .:/app dengid-builder:v0.1 make clean all
+if [ $? -eq 0 ]; then
+    echo -e "\e[32m${BUILDER}: The project has been built successfully.\e[0m"
+else
+    echo -e "\e[31m${BUILDER}: An error occured while building.\e[0m"
+fi
+echo -e "\e[32m${BUILDER}: Container is deleted.\e[0m"
+
+# Stop docker if it was not running before the script
+if [ "$DOCKER_STARTED" = true ]; then
+    echo -e "\e[32m${BUILDER}: Stopping docker...\e[0m"
+    sudo systemctl stop docker.socket
+fi
+
