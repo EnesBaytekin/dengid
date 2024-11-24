@@ -365,9 +365,9 @@ static void FramePresent(ImGui_ImplVulkanH_Window* wd)
 template<typename Derived>
 class App {
 private:
-    SDL_Window* window;
     bool running = true;
 public:
+    SDL_Window* window;
     ImVec4 clear_color = ImVec4(0.129411f, 0.345098f, 0.345098f, 1.00f);
     App() {
         // Setup SDL
@@ -384,7 +384,7 @@ public:
 
         // Create window with Vulkan graphics context
         SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_VULKAN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
-        window = SDL_CreateWindow("Dear ImGui SDL2+Vulkan example", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, window_flags);
+        window = SDL_CreateWindow("Dengid Engine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, window_flags);
         if (window == nullptr)
         {
             printf("Error: SDL_CreateWindow(): %s\n", SDL_GetError());

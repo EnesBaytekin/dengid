@@ -1,9 +1,23 @@
 TARGET = build/main
 SRC_DIR = src
-SOURCES = $(wildcard $(SRC_DIR)/*.cpp) /imgui/imgui.cpp /imgui/imgui_draw.cpp /imgui/imgui_widgets.cpp /imgui/imgui_demo.cpp /imgui/imgui_tables.cpp /imgui/backends/imgui_impl_sdl2.cpp /imgui/backends/imgui_impl_vulkan.cpp
+INCLUDE_DIR = include
+IMGUI_DIR = imgui
+IMGUI_BACKENDS_DIR = $(IMGUI_DIR)/backends
+
+CPP_SOURCES = $(wildcard $(SRC_DIR)/**/*.cpp) $(wildcard $(SRC_DIR)/*.cpp)
+
+IMGUI_SOURCES = $(IMGUI_DIR)/imgui.cpp $(IMGUI_DIR)/imgui_draw.cpp \
+                $(IMGUI_DIR)/imgui_widgets.cpp $(IMGUI_DIR)/imgui_demo.cpp \
+                $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_BACKENDS_DIR)/imgui_impl_sdl2.cpp \
+                $(IMGUI_BACKENDS_DIR)/imgui_impl_vulkan.cpp
+
+SOURCES = $(CPP_SOURCES) $(IMGUI_SOURCES)
+
 CXX = g++
-CXXFLAGS = -I/usr/local/include/SDL2 -D_REENTRANT -I/imgui -I/imgui/backends
-LDFLAGS = -L/usr/local/lib -Wl,-rpath,/usr/local/lib -Wl,--enable-new-dtags -lSDL2 -lvulkan
+CXXFLAGS = -I$(INCLUDE_DIR) -I/usr/local/include/SDL2 -D_REENTRANT \
+           -I$(IMGUI_DIR) -I$(IMGUI_BACKENDS_DIR)
+LDFLAGS = -L/usr/local/lib -Wl,-rpath,/usr/local/lib -Wl,--enable-new-dtags \
+          -lSDL2 -lvulkan
 
 all: $(TARGET)
 
