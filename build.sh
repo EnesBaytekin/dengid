@@ -31,9 +31,13 @@ else
 fi
 echo -e "\e[32m${BUILDER}: Container is deleted.\e[0m"
 
-# Stop docker if it was not running before the script
 if [ "$DOCKER_STARTED" = true ]; then
-    echo -e "\e[32m${BUILDER}: Stopping docker...\e[0m"
-    sudo systemctl stop docker.socket
+    if [[ $1 == "--no-stop" || $1 == "-n" ]]; then
+        # Do not stop docker if --no-stop flag is given
+        echo -e "\e[33m${BUILDER}: Docker is left running.\e[0m"
+    else
+        # Stop docker if it was not running before the script
+        echo -e "\e[32m${BUILDER}: Stopping docker...\e[0m"
+        sudo systemctl stop docker.socket
+    fi
 fi
-
