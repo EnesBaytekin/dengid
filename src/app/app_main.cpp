@@ -7,7 +7,7 @@
 
 void AppMain::setup() {}
 
-void AppMain::check_events() {
+void AppMain::update() {
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
@@ -17,7 +17,7 @@ void AppMain::check_events() {
     }
 }
 
-void AppMain::update() {
+void AppMain::draw() {
     draw_rect(64, 128, 256, 256);
 
     static int nums[2];

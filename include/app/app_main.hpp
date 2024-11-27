@@ -10,7 +10,7 @@ public:
     ~AppMain() = default;
     void setup() override;
     void update() override;
-    void check_events() override;
+    void draw() override;
 };
 
 #endif

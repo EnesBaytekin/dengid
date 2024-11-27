@@ -17,6 +17,7 @@ public:
     virtual void setup() = 0;
     virtual void update() = 0;
     virtual void create_frame() = 0;
+    virtual void clear_renderer() = 0;
     virtual void render() = 0;
 
     virtual void draw_rect(int x, int y, int width, int height) = 0;

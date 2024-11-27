@@ -92,27 +92,22 @@ void AppImplementationSDLRenderer::create_frame() {
     ImGui::NewFrame();
 }
 
-void AppImplementationSDLRenderer::render() {
-    // Rendering
-    ImGui::Render();
+void AppImplementationSDLRenderer::clear_renderer() {
     ImGuiIO& io = ImGui::GetIO();
     SDL_RenderSetScale(renderer, io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.y);
     static ImVec4 clear_color = ImVec4(0.129412f, 0.345098f, 0.345098f, 1.00f);
     SDL_SetRenderDrawColor(renderer, (Uint8)(clear_color.x * 255), (Uint8)(clear_color.y * 255), (Uint8)(clear_color.z * 255), (Uint8)(clear_color.w * 255));
     SDL_RenderClear(renderer);
+}
+
+void AppImplementationSDLRenderer::render() {
+    ImGui::Render();
     ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), renderer);
     SDL_RenderPresent(renderer);
 }
 
 void AppImplementationSDLRenderer::draw_rect(int x, int y, int width, int height) {
     SDL_Rect rect = { x, y, width, height };
-
-    // Kırmızı renk ayarla
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    
-    // Dikdörtgeni çiz
     SDL_RenderFillRect(renderer, &rect);
-
-    // Render işlemini bitir, ekranı güncelle
-    SDL_RenderPresent(renderer);
 }

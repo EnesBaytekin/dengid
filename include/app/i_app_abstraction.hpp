@@ -13,17 +13,18 @@ public:
         running(false) {};
     ~IAppAbstraction() = default;
     virtual void setup() = 0;
-    virtual void check_events() = 0;
     virtual void update() = 0;
+    virtual void draw() = 0;
     void run() {
         running = true;
         implementation->setup();
         setup();
         while (running) {
-            check_events();
             implementation->update();
             implementation->create_frame();
             update();
+            implementation->clear_renderer();
+            draw();
             implementation->render();
         }
     }
