@@ -8,8 +8,10 @@ protected:
     IAppImplementation* implementation;
     bool running;
 public:
+    SDL_Window* window;
     IAppAbstraction(IAppImplementation* _implementation):
         implementation(_implementation),
+        window(_implementation->get_window()),
         running(false) {};
     ~IAppAbstraction() = default;
     virtual void setup() = 0;

@@ -4,8 +4,6 @@
 #include "imgui.h"
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_sdlrenderer2.h"
-#include <stdio.h>
-#include <SDL2/SDL.h>
 
 #include "app/i_app_implementation.hpp"
 
@@ -15,7 +13,6 @@
 
 class AppImplementationSDLRenderer: public IAppImplementation {
 private:
-    SDL_Window* window;
     SDL_Renderer* renderer;
 public:
     AppImplementationSDLRenderer(std::string window_name, int window_width, int window_height);

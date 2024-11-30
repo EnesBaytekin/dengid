@@ -18,7 +18,8 @@ IMGUI_SOURCES = $(IMGUI_DIR)/imgui.cpp \
 SOURCES = $(CPP_SOURCES) $(IMGUI_SOURCES)
 
 CXX = g++
-CXXFLAGS = -I$(INCLUDE_DIR) \
+CXXFLAGS = -std=c++17 \
+           -I$(INCLUDE_DIR) \
            -I/usr/local/include/SDL2 \
            -D_REENTRANT \
            -I$(IMGUI_DIR) \
@@ -26,8 +27,8 @@ CXXFLAGS = -I$(INCLUDE_DIR) \
 LDFLAGS = -L/usr/local/lib \
           -Wl,-rpath,/usr/local/lib \
           -Wl,--enable-new-dtags \
-          -lSDL2 \
-          -lvulkan
+          -lSDL2
+        #   -lvulkan
 
 all: $(TARGET)
 
