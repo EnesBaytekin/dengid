@@ -31,6 +31,7 @@ void show_tab_item_create_project(AppMain& app) {
         static ImGui::FileBrowser fileDialog(
             ImGuiFileBrowserFlags_SelectDirectory |
             ImGuiFileBrowserFlags_CreateNewDir |
+            ImGuiFileBrowserFlags_HideRegularFiles |
             ImGuiFileBrowserFlags_SkipItemsCausingError
         );
 
