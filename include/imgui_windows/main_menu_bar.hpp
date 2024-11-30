@@ -14,7 +14,7 @@ void show_main_menu_bar(AppMain& app) {
             if (ImGui::MenuItem("Open", "Ctrl+O")) {
                 std::cout << "Opening..." << std::endl;
             }
-            ImGui::SeparatorText("");
+            ImGui::Separator();
             if (ImGui::MenuItem("Exit", "Alt+F4")) {
                 app.quit();
             }

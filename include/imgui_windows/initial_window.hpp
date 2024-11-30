@@ -59,8 +59,8 @@ void show_initial_window(AppMain& app) {
     ImGui::Separator();
     ImGui::Dummy(ImVec2(0.0f, 20.0f));
 
-    ImVec2 content_region = ImGui::GetContentRegionAvail();
-    ImGui::SetCursorPosY(content_region.y-50);
+    ImVec2 window_size = ImGui::GetWindowSize();
+    ImGui::SetCursorPosY(window_size.y-50);
     if (ImGui::Button("Create", ImVec2(-1, 40))) {
         if (strlen(project_name) > 0 && strlen(project_path) > 0) {
             std::filesystem::path full_path = project_path;
