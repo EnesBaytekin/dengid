@@ -1,7 +1,24 @@
 #include "app/app_main.hpp"
 #include "imgui.h"
-#include "imfilebrowser.h"
+#include "imfilebrowser.hpp"
 #include <iostream>
+#include "globals.hpp"
+
+void create_projects_folder_if_not_exist() {
+    if (!std::filesystem::exists(PROJECTS_DIRECTORY)) {
+        std::filesystem::create_directories(PROJECTS_DIRECTORY);
+    }
+}
+
+std::vector<std::filesystem::path> get_projects() {
+    std::vector<std::filesystem::path> projects;
+    for (auto& project : std::filesystem::directory_iterator(PROJECTS_DIRECTORY)) {
+        if (std::filesystem::is_directory(project)) {
+            projects.push_back(project);
+        }
+    }
+    return projects;
+}
 
 void show_tab_item_create_project(AppMain& app) {
     if (ImGui::BeginTabItem("Create Project")) {
@@ -19,7 +36,7 @@ void show_tab_item_create_project(AppMain& app) {
         static char project_path[256];
         static bool initialize_project_path = false;
         if (!initialize_project_path) {
-            strcpy(project_path, std::filesystem::current_path().string().c_str());
+            strcpy(project_path, PROJECTS_DIRECTORY.string().c_str());
             initialize_project_path = true;
         }
         
@@ -32,8 +49,8 @@ void show_tab_item_create_project(AppMain& app) {
             ImGuiFileBrowserFlags_SelectDirectory |
             ImGuiFileBrowserFlags_CreateNewDir |
             ImGuiFileBrowserFlags_HideRegularFiles |
-            ImGuiFileBrowserFlags_SkipItemsCausingError
-        );
+            ImGuiFileBrowserFlags_SkipItemsCausingError,
+            PROJECTS_DIRECTORY);
 
         ImGui::Text("Project Location:");
         ImGui::InputText("##ProjectPath", project_path, IM_ARRAYSIZE(project_path),
@@ -95,10 +112,13 @@ void show_tab_item_load_project(AppMain& app) {
 
         ImGui::TextWrapped("Load an existing project.");
 
-
         ImGui::Dummy(ImVec2(0.0f, 20.0f));
         ImGui::Separator();
         ImGui::Dummy(ImVec2(0.0f, 20.0f));
+
+        for (auto& project : get_projects()) {
+            ImGui::Text(project.string().c_str());
+        }
 
         ImVec2 window_size = ImGui::GetWindowSize();
         ImGui::SetCursorPosY(window_size.y-50);
@@ -109,7 +129,6 @@ void show_tab_item_load_project(AppMain& app) {
         ImGui::EndTabItem();
     }
 }
-
 
 void show_initial_window(AppMain& app) {
     int width, height;
@@ -123,6 +142,8 @@ void show_initial_window(AppMain& app) {
         ImGuiWindowFlags_NoTitleBar
     );    
     ImGui::BeginTabBar("##initial_window_tab_bar");
+
+    create_projects_folder_if_not_exist();
 
     show_tab_item_load_project(app);
     show_tab_item_create_project(app);
