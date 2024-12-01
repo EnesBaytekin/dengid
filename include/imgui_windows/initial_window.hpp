@@ -116,9 +116,18 @@ void show_tab_item_load_project(AppMain& app) {
         ImGui::Separator();
         ImGui::Dummy(ImVec2(0.0f, 20.0f));
 
-        for (auto& project : get_projects()) {
-            ImGui::Text(project.string().c_str());
+        std::vector<std::filesystem::path> projects = get_projects();
+        std::vector<std::string> project_strings;
+        for (const auto& project : projects) {
+            project_strings.push_back(project.string());
         }
+        std::vector<const char*> project_names;
+        for (const auto& string : project_strings) {
+            project_names.push_back(string.c_str());
+        }
+        static int item_index = 0;
+        ImGui::SetNextItemWidth(-1);
+        ImGui::ListBox("##project_list", &item_index, project_names.data(), project_names.size(), 10);
 
         ImVec2 window_size = ImGui::GetWindowSize();
         ImGui::SetCursorPosY(window_size.y-50);
