@@ -1,3 +1,6 @@
+#ifndef INITIAL_VIEW_HPP
+#define INITIAL_VIEW_HPP
+
 #include "app/app_main.hpp"
 #include "imgui.h"
 #include "imfilebrowser.hpp"
@@ -95,6 +98,8 @@ void show_tab_item_create_project(AppMain& app) {
         if (ImGui::Button("Create", ImVec2(-1, 40))) {
             std::filesystem::create_directory(full_path);
             std::filesystem::copy_file(EXECUTABLE_DIRECTORY/"icon.png", full_path/"icon.png");
+            app.set_view_state(AppViewState::PROJECT_VIEW);
+            app.set_project_path(full_path);
         }
 
         if (name_is_empty || file_exists) {
@@ -103,6 +108,12 @@ void show_tab_item_create_project(AppMain& app) {
 
         ImGui::EndTabItem();
     }
+}
+
+void load_project(AppMain& app, const std::filesystem::path& project_path) {
+    std::cout << "Loading Project: " << project_path << std::endl;
+    app.set_view_state(AppViewState::PROJECT_VIEW);
+    app.set_project_path(project_path);
 }
 
 void show_tab_item_load_project(AppMain& app) {
@@ -136,7 +147,6 @@ void show_tab_item_load_project(AppMain& app) {
             refreshed = false;
         }
 
-
         if (ImGui::BeginListBox("##ListBox", ImVec2(-1, 300))) {
             ImVec2 selectables_origin = ImGui::GetCursorScreenPos();
             ImVec2 selectable_size(0.0f, 40.0f);
@@ -152,8 +162,15 @@ void show_tab_item_load_project(AppMain& app) {
                     selectable_pos.y
                 ));
 
-                if (ImGui::Selectable(("##selectable_"+project.string()).c_str(), &item_is_selected, 0, selectable_size)) {
+                if (ImGui::Selectable(("##selectable_"+project.string()).c_str(), &item_is_selected,
+                    ImGuiSelectableFlags_AllowDoubleClick,
+                    selectable_size))
+                {
                     selection_index = i;
+                }
+
+                if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0)) {
+                    load_project(app, projects[selection_index]);
                 }
                 
                 auto icon = icons[i];
@@ -192,7 +209,7 @@ void show_tab_item_load_project(AppMain& app) {
         }
 
         if (ImGui::Button("Load", ImVec2(-1, 40))) {
-            std::cout << "Loading Project: " << projects[selection_index] << std::endl;
+            load_project(app, projects[selection_index]);
         }
 
         if (!selected_project_exists) {
@@ -203,7 +220,7 @@ void show_tab_item_load_project(AppMain& app) {
     }
 }
 
-void show_initial_window(AppMain& app) {
+void show_initial_view(AppMain& app) {
     int width, height;
     SDL_GetWindowSize(app.window, &width, &height);
     ImGui::SetNextWindowPos({(float)width/4, (float)height/4});
@@ -224,3 +241,5 @@ void show_initial_window(AppMain& app) {
     ImGui::EndTabBar();
     ImGui::End();
 }
+
+#endif

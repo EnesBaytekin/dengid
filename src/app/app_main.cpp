@@ -2,7 +2,8 @@
 #include "imgui.h"
 #include "imgui_impl_sdl2.h"
 #include "imgui_windows/main_menu_bar.hpp"
-#include "imgui_windows/initial_window.hpp"
+#include "imgui_windows/initial_view.hpp"
+#include "imgui_windows/project_view.hpp"
 
 void AppMain::setup() {}
 
@@ -17,7 +18,19 @@ void AppMain::update() {
 }
 
 void AppMain::draw() {
-    show_main_menu_bar(*this);
-    show_initial_window(*this);
+    AppMain& app = *this;
+    
+    show_main_menu_bar(app);
+
+    switch (app.get_view_state()) {
+        case AppViewState::INITIAL_VIEW: {
+            show_initial_view(app);
+            break;
+        }
+        case AppViewState::PROJECT_VIEW: {
+            show_project_view(app);
+            break;
+        }
+    }
 }
 

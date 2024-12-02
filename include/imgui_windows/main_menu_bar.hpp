@@ -1,3 +1,6 @@
+#ifndef MAIN_MENU_BAR_HPP
+#define MAIN_MENU_BAR_HPP
+
 #include "app/app_main.hpp"
 #include "imgui.h"
 #include <iostream>
@@ -23,3 +26,5 @@ void show_main_menu_bar(AppMain& app) {
         ImGui::EndMainMenuBar();
     }
 }
+
+#endif
