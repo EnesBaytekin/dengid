@@ -2,6 +2,7 @@
 #define I_APP_ABSTRACTION_HPP
 
 #include "app/i_app_implementation.hpp"
+#include "image/image.hpp"
 
 class IAppAbstraction {
 protected:
@@ -34,9 +35,10 @@ public:
         running = false;
     }
 
-    void draw_rect(int x, int y, int width, int height) {
-        implementation->draw_rect(x, y, width, height);
-    }
+    void draw_rect(int x, int y, int width, int height)     { implementation->draw_rect(x, y, width, height); }
+    std::shared_ptr<Image> load_image(const std::string& file_path)         { return implementation->load_image(file_path); }
+    void draw_image(const std::shared_ptr<Image> image, int x, int y)       { implementation->draw_image(image, x, y); }
+    void draw_imgui_image(const std::shared_ptr<Image> image, int width=0, int height=0) { implementation->draw_imgui_image(image, width, height); }
 };
 
 #endif

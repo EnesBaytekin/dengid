@@ -4,8 +4,8 @@
 #include "imgui.h"
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_sdlrenderer2.h"
-
 #include "app/i_app_implementation.hpp"
+#include <memory>
 
 #if !SDL_VERSION_ATLEAST(2,0,17)
 #error This backend requires SDL 2.0.17+ because of SDL_RenderGeometry() function
@@ -24,6 +24,9 @@ public:
     void render() override;
     
     void draw_rect(int x, int y, int width, int height) override;
+    std::shared_ptr<Image> load_image(const std::string& file_path) override;
+    void draw_image(const std::shared_ptr<Image> image, int x, int y) override;
+    void draw_imgui_image(const std::shared_ptr<Image> image, int width, int height) override;
 };
 
 #endif

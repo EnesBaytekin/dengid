@@ -5,8 +5,10 @@
 
 const std::filesystem::path HOME_DIRECTORY = get_home_directory();
 const std::filesystem::path PROJECTS_DIRECTORY = get_projects_directory();
+const std::filesystem::path EXECUTABLE_DIRECTORY = get_executable_directory();
 
 int main(int, char**) {
+    std::filesystem::current_path(EXECUTABLE_DIRECTORY);
     AppImplementationSDLRenderer app_implementation("Dengid Engine", 1920, 1080);
     AppMain app(&app_implementation);
     app.run();

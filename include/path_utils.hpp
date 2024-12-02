@@ -42,8 +42,7 @@ std::filesystem::path get_home_directory() {
 }
 
 std::filesystem::path get_projects_directory() {
-    std::filesystem::path projects_dir = get_home_directory();
-    projects_dir.append("dengid-projects");
+    std::filesystem::path projects_dir = get_home_directory()/"dengid-projects";
     return projects_dir;
 }
 

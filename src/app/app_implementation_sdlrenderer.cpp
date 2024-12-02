@@ -1,4 +1,10 @@
 #include "app/app_implementation_sdlrenderer.hpp"
+#include "image/image.hpp"
+#include "image/image_sdlrenderer.hpp"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <iostream>
+#include <memory>
 
 AppImplementationSDLRenderer::AppImplementationSDLRenderer(std::string name, int width, int height):
     IAppImplementation(name, width, height)
@@ -7,6 +13,11 @@ AppImplementationSDLRenderer::AppImplementationSDLRenderer(std::string name, int
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
     {
         printf("Error: %s\n", SDL_GetError());
+        exit(-1);
+    }
+
+    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+        printf("Error: %s\n", IMG_GetError());
         exit(-1);
     }
 
@@ -79,8 +90,7 @@ AppImplementationSDLRenderer::~AppImplementationSDLRenderer() {
 void AppImplementationSDLRenderer::setup() {}
 
 void AppImplementationSDLRenderer::update() {
-    if (SDL_GetWindowFlags(window) & SDL_WINDOW_MINIMIZED)
-    {
+    if (SDL_GetWindowFlags(window) & SDL_WINDOW_MINIMIZED) {
         SDL_Delay(10);
         return;
     }
@@ -110,4 +120,40 @@ void AppImplementationSDLRenderer::draw_rect(int x, int y, int width, int height
     SDL_Rect rect = { x, y, width, height };
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderFillRect(renderer, &rect);
+}
+
+std::shared_ptr<Image> AppImplementationSDLRenderer::load_image(const std::string& file_path) {
+    SDL_Surface* temp_surface = IMG_Load(file_path.c_str());
+    if (!temp_surface) {
+        std::cerr << "Unable to load image: " << file_path << std::endl;
+        return nullptr;
+    }
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, temp_surface);
+    if (!texture) {
+        std::cerr << "Unable to create texture from surface! SDL_Error: " << SDL_GetError() << std::endl;
+    }
+    SDL_FreeSurface(temp_surface);
+    std::shared_ptr<Image> image = std::make_shared<ImageSDLRenderer>(texture);
+    return image;
+}
+
+void AppImplementationSDLRenderer::draw_image(const std::shared_ptr<Image> image, int x, int y) {
+    auto texture = static_cast<SDL_Texture*>(image->get_native_image());
+    int width, height;
+    SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+    SDL_Rect dest_rect = {x, y, width, height};
+    if (SDL_RenderCopy(renderer, texture, nullptr, &dest_rect) != 0) {
+        std::cerr << "Failed to render texture: " << SDL_GetError() << std::endl;
+    }
+}
+
+void AppImplementationSDLRenderer::draw_imgui_image(const std::shared_ptr<Image> image, int width, int height) {
+    auto texture = static_cast<SDL_Texture*>(image->get_native_image());
+    int image_width, image_height;
+    SDL_QueryTexture(texture, nullptr, nullptr, &image_width, &image_height);
+    ImTextureID textureID = reinterpret_cast<ImTextureID>(texture);
+    ImVec2 size(width, height);
+    if (size.x == 0) size.x = image_width;
+    if (size.y == 0) size.y = image_height;
+    ImGui::Image(textureID, size);
 }

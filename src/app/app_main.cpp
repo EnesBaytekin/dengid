@@ -19,6 +19,5 @@ void AppMain::update() {
 void AppMain::draw() {
     show_main_menu_bar(*this);
     show_initial_window(*this);
-    // ImGui::ShowDemoWindow();
 }
 

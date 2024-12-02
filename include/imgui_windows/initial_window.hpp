@@ -66,8 +66,7 @@ void show_tab_item_create_project(AppMain& app) {
             fileDialog.ClearSelected();
         }
 
-        std::filesystem::path full_path = project_path;
-        full_path.append(project_name);
+        std::filesystem::path full_path = (std::filesystem::path)project_path/project_name;
         
         bool file_exists = std::filesystem::exists(full_path);
         bool name_is_empty = strlen(project_name) == 0;
@@ -95,6 +94,7 @@ void show_tab_item_create_project(AppMain& app) {
         ImGui::SetCursorPosY(window_size.y-50);
         if (ImGui::Button("Create", ImVec2(-1, 40))) {
             std::filesystem::create_directory(full_path);
+            std::filesystem::copy_file(EXECUTABLE_DIRECTORY/"icon.png", full_path/"icon.png");
         }
 
         if (name_is_empty || file_exists) {
@@ -116,23 +116,87 @@ void show_tab_item_load_project(AppMain& app) {
         ImGui::Separator();
         ImGui::Dummy(ImVec2(0.0f, 20.0f));
 
-        std::vector<std::filesystem::path> projects = get_projects();
-        std::vector<std::string> project_strings;
-        for (const auto& project : projects) {
-            project_strings.push_back(project.string());
+        static int selection_index = -1;
+
+        static bool refreshed = true;
+
+        static std::vector<std::filesystem::path> projects;
+        static std::vector<std::shared_ptr<Image>> icons;
+        if (ImGui::Button("Refresh")) {
+            refreshed = true;
         }
-        std::vector<const char*> project_names;
-        for (const auto& string : project_strings) {
-            project_names.push_back(string.c_str());
+
+        if (refreshed) {
+            projects = get_projects();
+            icons.clear();
+            for (const auto& project : projects) {
+                icons.push_back(app.load_image(project/"icon.png"));
+            }
+            selection_index = -1;
+            refreshed = false;
         }
-        static int item_index = 0;
-        ImGui::SetNextItemWidth(-1);
-        ImGui::ListBox("##project_list", &item_index, project_names.data(), project_names.size(), 10);
+
+
+        if (ImGui::BeginListBox("##ListBox", ImVec2(-1, 300))) {
+            ImVec2 selectables_origin = ImGui::GetCursorScreenPos();
+            ImVec2 selectable_size(0.0f, 40.0f);
+
+            for (int i=0; i<projects.size(); ++i) {
+                auto project = projects[i];
+                bool item_is_selected = selection_index == i;
+
+                ImVec2 selectable_pos(selectables_origin.x, selectables_origin.y+i*selectable_size.y);
+
+                ImGui::SetCursorScreenPos(ImVec2(
+                    selectable_pos.x,
+                    selectable_pos.y
+                ));
+
+                if (ImGui::Selectable(("##selectable_"+project.string()).c_str(), &item_is_selected, 0, selectable_size)) {
+                    selection_index = i;
+                }
+                
+                auto icon = icons[i];
+                if (icon) {
+                    ImGui::SetCursorScreenPos(ImVec2(
+                        selectable_pos.x+4,
+                        selectable_pos.y+4
+                    ));
+                    app.draw_imgui_image(icon, 32, 32);
+                }
+                
+                ImGui::SetCursorScreenPos(ImVec2(
+                    selectable_pos.x+44,
+                    selectable_pos.y+selectable_size.y*0.5f-ImGui::GetTextLineHeight()
+                ));
+                ImGui::Text(project.filename().string().c_str());
+                
+                ImGui::SetCursorScreenPos(ImVec2(
+                    selectable_pos.x+44,
+                    selectable_pos.y+selectable_size.y*0.5f
+                ));
+                ImGui::TextColored(ImVec4(0.6f, 0.6f, 0.6f, 1.0f), project.string().c_str());
+                
+                ImGui::Dummy(ImVec2(0, 10));
+            }
+            ImGui::EndListBox();
+        }
 
         ImVec2 window_size = ImGui::GetWindowSize();
         ImGui::SetCursorPosY(window_size.y-50);
+
+        bool selected_project_exists = selection_index != -1 && std::filesystem::exists(projects[selection_index]);
+
+        if (!selected_project_exists) {
+            ImGui::BeginDisabled();
+        }
+
         if (ImGui::Button("Load", ImVec2(-1, 40))) {
-            std::cout << "Loading Project" << std::endl;
+            std::cout << "Loading Project: " << projects[selection_index] << std::endl;
+        }
+
+        if (!selected_project_exists) {
+            ImGui::EndDisabled();
         }
 
         ImGui::EndTabItem();
