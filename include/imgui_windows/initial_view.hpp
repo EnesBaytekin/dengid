@@ -28,7 +28,7 @@ void show_tab_item_create_project(AppMain& app) {
 
         ImGui::Dummy(ImVec2(0.0f, 20.0f));
 
-        ImGui::TextWrapped("Create a new project.");
+        ImGui::TextWrapped("%s", "Create a new project.");
 
         ImGui::Dummy(ImVec2(0.0f, 20.0f));
         ImGui::Separator();
@@ -43,7 +43,7 @@ void show_tab_item_create_project(AppMain& app) {
             initialize_project_path = true;
         }
         
-        ImGui::Text("Project Name:");
+        ImGui::Text("%s", "Project Name:");
         ImGui::InputText("##ProjectName", project_name, IM_ARRAYSIZE(project_name));
         
         ImGui::Dummy(ImVec2(0.0f, 20.0f));
@@ -186,13 +186,13 @@ void show_tab_item_load_project(AppMain& app) {
                     selectable_pos.x+44,
                     selectable_pos.y+selectable_size.y*0.5f-ImGui::GetTextLineHeight()
                 ));
-                ImGui::Text(project.filename().string().c_str());
+                ImGui::Text("%s", project.filename().string().c_str());
                 
                 ImGui::SetCursorScreenPos(ImVec2(
                     selectable_pos.x+44,
                     selectable_pos.y+selectable_size.y*0.5f
                 ));
-                ImGui::TextColored(ImVec4(0.6f, 0.6f, 0.6f, 1.0f), project.string().c_str());
+                ImGui::TextColored(ImVec4(0.6f, 0.6f, 0.6f, 1.0f), "%s", project.string().c_str());
                 
                 ImGui::Dummy(ImVec2(0, 10));
             }

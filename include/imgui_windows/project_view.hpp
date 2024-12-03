@@ -17,7 +17,7 @@ void show_settings_window(AppMain& app, bool& settings_window_is_shown) {
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoResize
     );
-    ImGui::TextWrapped(app.get_project_path().string().c_str());
+    ImGui::TextWrapped("%s", app.get_project_path().string().c_str());
     ImGui::End();
 }
 
