@@ -2,10 +2,13 @@
 #include "imgui.h"
 #include "imgui_impl_sdl2.h"
 #include "imgui_windows/main_menu_bar.hpp"
-#include "imgui_windows/initial_view.hpp"
-#include "imgui_windows/project_view.hpp"
+#include "app_views/app_view_initial.hpp"
+#include "app_views/app_view_project.hpp"
 
-void AppMain::setup() {}
+void AppMain::setup() {
+    this->add_view(EnumAppViewType::INITIAL_VIEW, get_app_view_initial());
+    this->add_view(EnumAppViewType::PROJECT_VIEW, get_app_view_project());
+}
 
 void AppMain::update() {
     SDL_Event event;
@@ -22,15 +25,6 @@ void AppMain::draw() {
     
     show_main_menu_bar(app);
 
-    switch (app.get_view_state()) {
-        case AppViewState::INITIAL_VIEW: {
-            show_initial_view(app);
-            break;
-        }
-        case AppViewState::PROJECT_VIEW: {
-            show_project_view(app);
-            break;
-        }
-    }
+    app.get_view()->show(app);
 }
 

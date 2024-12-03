@@ -1,6 +1,4 @@
-#ifndef INITIAL_VIEW_HPP
-#define INITIAL_VIEW_HPP
-
+#include "imgui_windows/imgui_window_initial.hpp"
 #include "app/app_main.hpp"
 #include "imgui.h"
 #include "imfilebrowser.hpp"
@@ -98,7 +96,7 @@ void show_tab_item_create_project(AppMain& app) {
         if (ImGui::Button("Create", ImVec2(-1, 40))) {
             std::filesystem::create_directory(full_path);
             std::filesystem::copy_file(EXECUTABLE_DIRECTORY/"icon.png", full_path/"icon.png");
-            app.set_view_state(AppViewState::PROJECT_VIEW);
+            app.set_view(EnumAppViewType::PROJECT_VIEW);
             app.set_project_path(full_path);
         }
 
@@ -112,7 +110,7 @@ void show_tab_item_create_project(AppMain& app) {
 
 void load_project(AppMain& app, const std::filesystem::path& project_path) {
     std::cout << "Loading Project: " << project_path << std::endl;
-    app.set_view_state(AppViewState::PROJECT_VIEW);
+    app.set_view(EnumAppViewType::PROJECT_VIEW);
     app.set_project_path(project_path);
 }
 
@@ -220,7 +218,7 @@ void show_tab_item_load_project(AppMain& app) {
     }
 }
 
-void show_initial_view(AppMain& app) {
+void ImguiWindowInitial::show(AppMain& app) {
     int width, height;
     SDL_GetWindowSize(app.window, &width, &height);
     ImGui::SetNextWindowPos({(float)width/4, (float)height/4});
@@ -241,5 +239,3 @@ void show_initial_view(AppMain& app) {
     ImGui::EndTabBar();
     ImGui::End();
 }
-
-#endif
