@@ -5,6 +5,7 @@
 #include "app_views/enum_app_view_type.hpp"
 #include <filesystem>
 #include <map>
+#include "project/project_settings.hpp"
 
 class AppView;
 
@@ -13,6 +14,7 @@ private:
     EnumAppViewType current_view_type;
     std::map<EnumAppViewType, std::shared_ptr<AppView>> views;
     std::filesystem::path project_path;
+    ProjectSettings project_settings;
 public:
     
     AppMain(IAppImplementation* _implementation):
@@ -25,6 +27,7 @@ public:
     std::shared_ptr<AppView> get_view() { return views[current_view_type]; }
     void                  set_project_path(const std::filesystem::path& new_path) { project_path = new_path; }
     std::filesystem::path get_project_path() { return project_path; }
+    ProjectSettings get_project_settings() { return project_settings; }
 
     void setup() override;
     void update() override;

@@ -16,7 +16,32 @@ void show_settings_window(AppMain& app, bool& settings_window_is_shown) {
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoResize
     );
-    ImGui::TextWrapped("%s", app.get_project_path().string().c_str());
+    
+    ImGui::Dummy(ImVec2(0, 20));
+
+    ImGui::TextWrapped("Project Path: %s", app.get_project_path().string().c_str());
+
+    ImGui::Dummy(ImVec2(0, 20));
+    ImGui::Separator();
+    ImGui::Dummy(ImVec2(0, 20));
+
+    ImGui::Text("%s", "Game Window Size:");
+    static bool size_initialized = false;
+    static int game_window_size[2];
+    if (!size_initialized) {
+        auto settings = app.get_project_settings();
+        game_window_size[0] = settings.get_window_width();
+        game_window_size[1] = settings.get_window_height();
+        size_initialized = true;
+    }
+    ImGui::SameLine();
+    ImGui::SetNextItemWidth(100);
+    if (ImGui::InputInt2("##game_window_size", game_window_size)) {
+        auto settings = app.get_project_settings();
+        settings.set_window_width(game_window_size[0]);
+        settings.set_window_width(game_window_size[1]);
+    }
+
     ImGui::End();
 }
 
