@@ -1,11 +1,9 @@
-#ifndef MAIN_MENU_BAR_HPP
-#define MAIN_MENU_BAR_HPP
-
+#include "imgui_windows/imgui_window_main_menu_bar.hpp"
 #include "app/app_main.hpp"
 #include "imgui.h"
 #include <iostream>
 
-void show_main_menu_bar(AppMain& app) {
+void ImguiWindowMainMenuBar::show(AppMain& app) {
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Save", "Ctrl+S")) {
@@ -26,5 +24,3 @@ void show_main_menu_bar(AppMain& app) {
         ImGui::EndMainMenuBar();
     }
 }
-
-#endif

@@ -1,7 +1,6 @@
 #include "app/app_main.hpp"
 #include "imgui.h"
 #include "imgui_impl_sdl2.h"
-#include "imgui_windows/main_menu_bar.hpp"
 #include "app_views/app_view_initial.hpp"
 #include "app_views/app_view_project.hpp"
 
@@ -22,8 +21,6 @@ void AppMain::update() {
 
 void AppMain::draw() {
     AppMain& app = *this;
-    
-    show_main_menu_bar(app);
 
     app.get_view()->show(app);
 }
