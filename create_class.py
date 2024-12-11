@@ -30,8 +30,8 @@ def get_hpp_file(header_title, class_name):
 class {class_name} {{
 private:
 public:
-    {class_name}();
-    ~{class_name}();
+    {class_name}() = default;
+    ~{class_name}() = default;
 }};
 
 #endif
