@@ -3,6 +3,21 @@
 #include "app/app_main.hpp"
 #include "app_views/app_view.hpp"
 #include "imgui_windows/imgui_window_hierarchy.hpp"
+#include "engine/scene.hpp"
+#include "engine/object.hpp"
+#include <fstream>
+
+#include <cstdlib>
+#include <ctime>
+
+int randrange(int start, int stop) {
+    static bool initialized = false;
+    if (!initialized) {
+        srand(static_cast<unsigned int>(time(0)));
+        initialized = true;
+    }
+    return start+rand()%(stop-start+1);
+}
 
 void show_hierarchy_window(AppMain& app) {
     static bool window_is_initialized = false;
@@ -32,6 +47,28 @@ void show_hierarchy_window(AppMain& app) {
     ImGui::Dummy(ImVec2(0, 20));
     ImGui::Separator();
     ImGui::Dummy(ImVec2(0, 20));
+
+    auto scene = app.get_main_scene();
+
+    if (ImGui::Button("Create Object")) {
+        int x = randrange(0, 1024);
+        int y = randrange(0, 1024);
+        auto object = std::make_shared<Object>(x, y);
+        scene->spawn_object(object);
+    }
+
+    for (auto object : scene->get_objects()) {
+        ImGui::Text("Object x: %f, y: %f", object->position.x, object->position.y);
+    }
+
+    if (ImGui::Button("Save Scene")) {
+        std::ofstream scene_file(app.get_project_path()/"main_scene.data");
+        for (auto object : scene->get_objects()) {
+            scene_file << object->position.x << ",";
+            scene_file << object->position.y << "\n";
+        }
+        scene_file.close();
+    }
 
     ImGui::End();
 }

@@ -4,6 +4,9 @@
 #include "imfilebrowser.hpp"
 #include <iostream>
 #include "globals.hpp"
+#include "engine/scene.hpp"
+#include "engine/object.hpp"
+#include <fstream>
 
 void create_projects_folder_if_not_exist() {
     if (!std::filesystem::exists(PROJECTS_DIRECTORY)) {
@@ -19,6 +22,55 @@ std::vector<std::filesystem::path> get_projects() {
         }
     }
     return projects;
+}
+
+std::vector<std::string> split(const std::string& str, char delimiter) {
+    std::vector<std::string> tokens;
+    std::stringstream ss(str);
+    std::string token;
+
+    while (std::getline(ss, token, delimiter)) {
+        tokens.push_back(token);
+    }
+
+    return tokens;
+}
+
+void load_project(AppMain& app, const std::filesystem::path& project_path) {
+    app.set_view(EnumAppViewType::PROJECT_VIEW);
+    app.set_project_path(project_path);
+    
+    auto main_scene = std::make_shared<Scene>();
+
+    std::ifstream scene_file((project_path/"main_scene.data"));
+    if (!scene_file.is_open()) {
+        std::cerr << "Scene file 'main_scene.data' could not found in the project folder!" << std::endl;
+        exit(1);
+    }
+
+    std::string object_raw_data;
+    while (std::getline(scene_file, object_raw_data)) {
+        auto object_data = split(object_raw_data, ',');
+        int x = std::stoi(object_data[0]);
+        int y = std::stoi(object_data[1]);
+        
+        auto object = std::make_shared<Object>(x, y);
+        main_scene->spawn_object(object);
+    }
+
+    scene_file.close();
+
+    app.set_main_scene(main_scene);
+}
+
+void create_project(AppMain& app, const std::filesystem::path& project_path) {
+    std::filesystem::create_directory(project_path);
+    std::filesystem::copy_file(EXECUTABLE_DIRECTORY/"icon.png", project_path/"icon.png");
+
+    std::ofstream scene_file(project_path/"main_scene.data");
+    scene_file.close();
+
+    load_project(app, project_path);
 }
 
 void show_tab_item_create_project(AppMain& app) {
@@ -94,10 +146,7 @@ void show_tab_item_create_project(AppMain& app) {
         ImVec2 window_size = ImGui::GetWindowSize();
         ImGui::SetCursorPosY(window_size.y-50);
         if (ImGui::Button("Create", ImVec2(-1, 40))) {
-            std::filesystem::create_directory(full_path);
-            std::filesystem::copy_file(EXECUTABLE_DIRECTORY/"icon.png", full_path/"icon.png");
-            app.set_view(EnumAppViewType::PROJECT_VIEW);
-            app.set_project_path(full_path);
+            create_project(app, full_path);
         }
 
         if (name_is_empty || file_exists) {
@@ -106,12 +155,6 @@ void show_tab_item_create_project(AppMain& app) {
 
         ImGui::EndTabItem();
     }
-}
-
-void load_project(AppMain& app, const std::filesystem::path& project_path) {
-    std::cout << "Loading Project: " << project_path << std::endl;
-    app.set_view(EnumAppViewType::PROJECT_VIEW);
-    app.set_project_path(project_path);
 }
 
 void show_tab_item_load_project(AppMain& app) {
