@@ -1,9 +1,10 @@
 #include "imgui.h"
 #include <SDL2/SDL.h>
 #include "app/app_main.hpp"
+#include "app_views/app_view.hpp"
 #include "imgui_windows/imgui_window_settings.hpp"
 
-void show_settings_window(AppMain& app, bool& settings_window_is_shown) {
+void show_settings_window(AppMain& app) {
     static bool window_is_initialized = false;
     if (!window_is_initialized) {
         int width, height;
@@ -12,10 +13,16 @@ void show_settings_window(AppMain& app, bool& settings_window_is_shown) {
         ImGui::SetNextWindowSize(ImVec2(width*0.5f, height*0.5f));
         window_is_initialized = true;
     }
-    ImGui::Begin("Settings", &settings_window_is_shown,
+    bool visible = true;
+    ImGui::Begin("Settings", &visible,
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoResize
     );
+
+    if (!visible) {
+        auto window = app.get_view()->get_window("settings");
+        window->set_visible(false);
+    }
     
     ImGui::Dummy(ImVec2(0, 20));
 
@@ -46,8 +53,8 @@ void show_settings_window(AppMain& app, bool& settings_window_is_shown) {
 }
 
 void ImguiWindowSettings::show(AppMain& app) {
-    static bool settings_window_is_shown = true;
-    if (settings_window_is_shown) {
-        show_settings_window(app, settings_window_is_shown);
+    auto window = app.get_view()->get_window("settings");
+    if (window->is_visible()) {
+        show_settings_window(app);
     }
 }

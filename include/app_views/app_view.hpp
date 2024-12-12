@@ -18,7 +18,9 @@ public:
     std::shared_ptr<ImguiWindow> get_window(std::string name) { return windows[name]; }
     void show(AppMain& app) {
         for (auto [name, window] : windows) {
-            window->show(app);
+            if (window->is_visible()) {
+                window->show(app);
+            }
         }
     }
 };

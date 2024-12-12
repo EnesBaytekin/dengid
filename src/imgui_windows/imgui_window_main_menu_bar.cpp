@@ -1,5 +1,6 @@
 #include "imgui_windows/imgui_window_main_menu_bar.hpp"
 #include "app/app_main.hpp"
+#include "app_views/app_view.hpp"
 #include "imgui.h"
 #include <iostream>
 
@@ -21,6 +22,23 @@ void ImguiWindowMainMenuBar::show(AppMain& app) {
             }
             ImGui::EndMenu();
         }
+
+        auto view_type = app.get_current_view_type();
+        if (view_type == EnumAppViewType::PROJECT_VIEW) {
+            auto view = app.get_view();
+            if (ImGui::BeginMenu("View")) {
+                if (ImGui::MenuItem("Settings Window")) {
+                    auto window = view->get_window("settings");
+                    window->set_visible(!window->is_visible());
+                }
+                if (ImGui::MenuItem("Hierarchy Window")) {
+                    auto window = view->get_window("hierarchy");
+                    window->set_visible(!window->is_visible());
+                }
+                ImGui::EndMenu();
+            }
+        }
+
         ImGui::EndMainMenuBar();
     }
 }
