@@ -4,7 +4,8 @@ INCLUDE_DIR = include
 IMGUI_DIR = imgui
 IMGUI_BACKENDS_DIR = $(IMGUI_DIR)/backends
 
-CPP_SOURCES = $(wildcard $(SRC_DIR)/**/*.cpp) $(wildcard $(SRC_DIR)/*.cpp)
+rwildcard = $(foreach d, $(wildcard $1*), $(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
+CPP_SOURCES := $(call rwildcard, $(SRC_DIR)/, *.cpp)
 
 IMGUI_SOURCES = $(IMGUI_DIR)/imgui.cpp \
                 $(IMGUI_DIR)/imgui_draw.cpp \

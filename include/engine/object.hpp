@@ -2,8 +2,13 @@
 #define OBJECT_HPP
 
 #include "math/vector2.hpp"
+#include "app/app_main.hpp"
+#include "engine/components/i_component.hpp"
+#include <vector>
 
 class Object {
+private:
+    std::vector<std::unique_ptr<IComponent>> components;
 public:
     Vector2 position;
 
@@ -12,8 +17,11 @@ public:
     Object(): position(Vector2::ZERO) {};
     ~Object() = default;
 
-    void draw() {}
-    void update() {}
+    void add_component(std::unique_ptr<IComponent> component) {
+        components.push_back(std::move(component));
+    }
+    void draw();
+    void update();
 };
 
 #endif

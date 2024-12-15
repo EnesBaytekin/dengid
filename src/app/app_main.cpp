@@ -3,6 +3,7 @@
 #include "imgui_impl_sdl2.h"
 #include "app_views/app_view_initial.hpp"
 #include "app_views/app_view_project.hpp"
+#include "engine/scene.hpp"
 
 void AppMain::setup() {
     this->add_view(EnumAppViewType::INITIAL_VIEW, get_app_view_initial());
@@ -21,5 +22,8 @@ void AppMain::update() {
 
 void AppMain::draw() {
     this->get_view()->show();
+    if (main_scene) {
+        main_scene->draw();
+    }
 }
 
