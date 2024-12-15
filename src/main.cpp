@@ -10,7 +10,8 @@ const std::filesystem::path EXECUTABLE_DIRECTORY = get_executable_directory();
 int main(int, char**) {
     std::filesystem::current_path(EXECUTABLE_DIRECTORY);
     AppImplementationSDLRenderer app_implementation("Dengid Engine", 1920, 1080);
-    AppMain app(&app_implementation);
+    AppMain& app = AppMain::get_instance();
+    app.initialize(&app_implementation);
     app.run();
     return 0;
 }

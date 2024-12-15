@@ -6,6 +6,7 @@
 #include "engine/scene.hpp"
 #include "engine/object.hpp"
 #include <fstream>
+#include <project/project_manager.hpp>
 
 #include <cstdlib>
 #include <ctime>
@@ -19,7 +20,10 @@ int randrange(int start, int stop) {
     return start+rand()%(stop-start+1);
 }
 
-void show_hierarchy_window(AppMain& app) {
+void show_hierarchy_window() {
+    AppMain& app = AppMain::get_instance();
+    ProjectManager& project_manager = ProjectManager::get_instance();
+
     static bool window_is_initialized = false;
     if (!window_is_initialized) {
         int width, height;
@@ -62,20 +66,16 @@ void show_hierarchy_window(AppMain& app) {
     }
 
     if (ImGui::Button("Save Scene")) {
-        std::ofstream scene_file(app.get_project_path()/"main_scene.data");
-        for (auto object : scene->get_objects()) {
-            scene_file << object->position.x << ",";
-            scene_file << object->position.y << "\n";
-        }
-        scene_file.close();
+        project_manager.save_project();
     }
 
     ImGui::End();
 }
 
-void ImguiWindowHierarchy::show(AppMain& app) {
+void ImguiWindowHierarchy::show() {
+    AppMain& app = AppMain::get_instance();
     auto window = app.get_view()->get_window("hierarchy");
     if (window->is_visible()) {
-        show_hierarchy_window(app);
+        show_hierarchy_window();
     }
 }

@@ -10,7 +10,7 @@ public:
     ImguiWindowMainMenuBar() : ImguiWindow() {};
     ~ImguiWindowMainMenuBar() override = default;
 
-    void show(AppMain& app) override;
+    void show() override;
 };
 
 #endif

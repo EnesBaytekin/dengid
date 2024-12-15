@@ -8,13 +8,17 @@ class IAppAbstraction {
 protected:
     IAppImplementation* implementation;
     bool running;
+
+    IAppAbstraction(): running(false) {};
 public:
     SDL_Window* window;
-    IAppAbstraction(IAppImplementation* _implementation):
-        implementation(_implementation),
-        window(_implementation->get_window()),
-        running(false) {};
+
     ~IAppAbstraction() = default;
+    virtual void initialize(IAppImplementation* _implementation) {
+        implementation = _implementation;
+        window = implementation->get_window();
+    }
+
     virtual void setup() = 0;
     virtual void update() = 0;
     virtual void draw() = 0;

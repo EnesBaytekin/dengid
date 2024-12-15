@@ -14,23 +14,26 @@ class AppMain: public IAppAbstraction {
 private:
     EnumAppViewType current_view_type;
     std::map<EnumAppViewType, std::shared_ptr<AppView>> views;
-    std::filesystem::path project_path;
-    ProjectSettings project_settings;
     std::shared_ptr<Scene> main_scene;
-public:
-    
-    AppMain(IAppImplementation* _implementation):
-        IAppAbstraction(_implementation),
-        current_view_type(EnumAppViewType::INITIAL_VIEW) {}
+
+    AppMain(): current_view_type(EnumAppViewType::INITIAL_VIEW) {}
     ~AppMain() = default;
+public:
+    AppMain(const AppMain&) = delete;
+    AppMain& operator=(const AppMain&) = delete;
+
+    static AppMain& get_instance() {
+        static AppMain instance;
+        return instance;
+    }
+    void initialize(IAppImplementation* _implementation) {
+        IAppAbstraction::initialize(_implementation);
+    }
 
     void                        add_view(const EnumAppViewType& type, std::shared_ptr<AppView> view) { views.insert({type, view}); }
     void                        set_view(const EnumAppViewType& type) { current_view_type = type; }
     std::shared_ptr<AppView>    get_view() { return views[current_view_type]; }
     EnumAppViewType             get_current_view_type() { return current_view_type; }
-    void                        set_project_path(const std::filesystem::path& new_path) { project_path = new_path; }
-    std::filesystem::path       get_project_path() { return project_path; }
-    ProjectSettings             get_project_settings() { return project_settings; }
     void                        set_main_scene(std::shared_ptr<Scene> scene) { main_scene = scene; }
     std::shared_ptr<Scene>      get_main_scene() { return main_scene; }
 

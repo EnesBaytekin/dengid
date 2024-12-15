@@ -10,7 +10,7 @@ public:
     ImguiWindowInitial() : ImguiWindow() {};
     ~ImguiWindowInitial() override = default;
 
-    void show(AppMain& app) override;
+    void show() override;
 };
 
 #endif

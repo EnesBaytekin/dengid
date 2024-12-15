@@ -3,8 +3,12 @@
 #include "app/app_main.hpp"
 #include "app_views/app_view.hpp"
 #include "imgui_windows/imgui_window_settings.hpp"
+#include "project/project_manager.hpp"
 
-void show_settings_window(AppMain& app) {
+void show_settings_window() {
+    AppMain& app = AppMain::get_instance();
+    ProjectManager& project_manager = ProjectManager::get_instance();
+    
     static bool window_is_initialized = false;
     if (!window_is_initialized) {
         int width, height;
@@ -26,7 +30,7 @@ void show_settings_window(AppMain& app) {
     
     ImGui::Dummy(ImVec2(0, 20));
 
-    ImGui::TextWrapped("Project Path: %s", app.get_project_path().string().c_str());
+    ImGui::TextWrapped("Project Path: %s", project_manager.get_project_path().string().c_str());
 
     ImGui::Dummy(ImVec2(0, 20));
     ImGui::Separator();
@@ -36,7 +40,7 @@ void show_settings_window(AppMain& app) {
     static bool size_initialized = false;
     static int game_window_size[2];
     if (!size_initialized) {
-        auto settings = app.get_project_settings();
+        auto settings = project_manager.get_project_settings();
         game_window_size[0] = settings.window_width;
         game_window_size[1] = settings.window_height;
         size_initialized = true;
@@ -44,7 +48,7 @@ void show_settings_window(AppMain& app) {
     ImGui::SameLine();
     ImGui::SetNextItemWidth(100);
     if (ImGui::InputInt2("##game_window_size", game_window_size)) {
-        auto settings = app.get_project_settings();
+        auto settings = project_manager.get_project_settings();
         settings.window_width = game_window_size[0];
         settings.window_height = game_window_size[1];
     }
@@ -52,9 +56,10 @@ void show_settings_window(AppMain& app) {
     ImGui::End();
 }
 
-void ImguiWindowSettings::show(AppMain& app) {
+void ImguiWindowSettings::show() {
+    AppMain& app = AppMain::get_instance();
     auto window = app.get_view()->get_window("settings");
     if (window->is_visible()) {
-        show_settings_window(app);
+        show_settings_window();
     }
 }

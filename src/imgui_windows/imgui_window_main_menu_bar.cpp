@@ -4,7 +4,9 @@
 #include "imgui.h"
 #include <iostream>
 
-void ImguiWindowMainMenuBar::show(AppMain& app) {
+void ImguiWindowMainMenuBar::show() {
+    AppMain& app = AppMain::get_instance();
+    
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Save", "Ctrl+S")) {

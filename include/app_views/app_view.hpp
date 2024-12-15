@@ -16,10 +16,10 @@ public:
 
     void                         add_window(std::string name, std::shared_ptr<ImguiWindow> window) { windows.insert({name, window}); }
     std::shared_ptr<ImguiWindow> get_window(std::string name) { return windows[name]; }
-    void show(AppMain& app) {
+    void show() {
         for (auto [name, window] : windows) {
             if (window->is_visible()) {
-                window->show(app);
+                window->show();
             }
         }
     }

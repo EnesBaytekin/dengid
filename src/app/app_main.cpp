@@ -20,8 +20,6 @@ void AppMain::update() {
 }
 
 void AppMain::draw() {
-    AppMain& app = *this;
-
-    app.get_view()->show(app);
+    this->get_view()->show();
 }
 

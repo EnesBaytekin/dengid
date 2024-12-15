@@ -12,7 +12,7 @@ public:
     
     void set_visible(bool new_visiblity) { visible = new_visiblity; }
     bool is_visible() { return visible; }
-    virtual void show(AppMain& app) = 0;
+    virtual void show() = 0;
 };
 
 #endif

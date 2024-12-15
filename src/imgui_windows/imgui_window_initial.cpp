@@ -7,6 +7,7 @@
 #include "engine/scene.hpp"
 #include "engine/object.hpp"
 #include <fstream>
+#include "project/project_manager.hpp"
 
 void create_projects_folder_if_not_exist() {
     if (!std::filesystem::exists(PROJECTS_DIRECTORY)) {
@@ -24,56 +25,29 @@ std::vector<std::filesystem::path> get_projects() {
     return projects;
 }
 
-std::vector<std::string> split(const std::string& str, char delimiter) {
-    std::vector<std::string> tokens;
-    std::stringstream ss(str);
-    std::string token;
-
-    while (std::getline(ss, token, delimiter)) {
-        tokens.push_back(token);
-    }
-
-    return tokens;
-}
-
-void load_project(AppMain& app, const std::filesystem::path& project_path) {
+void load_project(const std::filesystem::path& project_path) {
+    AppMain& app = AppMain::get_instance();
     app.set_view(EnumAppViewType::PROJECT_VIEW);
-    app.set_project_path(project_path);
+
+    ProjectManager& project_manager = ProjectManager::get_instance();
+    project_manager.set_project_path(project_path);
     
-    auto main_scene = std::make_shared<Scene>();
-
-    std::ifstream scene_file((project_path/"main_scene.data"));
-    if (!scene_file.is_open()) {
-        std::cerr << "Scene file 'main_scene.data' could not found in the project folder!" << std::endl;
-        exit(1);
-    }
-
-    std::string object_raw_data;
-    while (std::getline(scene_file, object_raw_data)) {
-        auto object_data = split(object_raw_data, ',');
-        int x = std::stoi(object_data[0]);
-        int y = std::stoi(object_data[1]);
-        
-        auto object = std::make_shared<Object>(x, y);
-        main_scene->spawn_object(object);
-    }
-
-    scene_file.close();
-
-    app.set_main_scene(main_scene);
+    project_manager.load_project();
 }
 
-void create_project(AppMain& app, const std::filesystem::path& project_path) {
+void create_project(const std::filesystem::path& project_path) {
     std::filesystem::create_directory(project_path);
     std::filesystem::copy_file(EXECUTABLE_DIRECTORY/"icon.png", project_path/"icon.png");
 
     std::ofstream scene_file(project_path/"main_scene.data");
     scene_file.close();
 
-    load_project(app, project_path);
+    load_project(project_path);
 }
 
-void show_tab_item_create_project(AppMain& app) {
+void show_tab_item_create_project() {
+    AppMain& app = AppMain::get_instance();
+    
     if (ImGui::BeginTabItem("Create Project")) {
 
         ImGui::Dummy(ImVec2(0.0f, 20.0f));
@@ -146,7 +120,7 @@ void show_tab_item_create_project(AppMain& app) {
         ImVec2 window_size = ImGui::GetWindowSize();
         ImGui::SetCursorPosY(window_size.y-50);
         if (ImGui::Button("Create", ImVec2(-1, 40))) {
-            create_project(app, full_path);
+            create_project(full_path);
         }
 
         if (name_is_empty || file_exists) {
@@ -157,7 +131,9 @@ void show_tab_item_create_project(AppMain& app) {
     }
 }
 
-void show_tab_item_load_project(AppMain& app) {
+void show_tab_item_load_project() {
+    AppMain& app = AppMain::get_instance();
+
     if (ImGui::BeginTabItem("Load Project")) {
 
         ImGui::Dummy(ImVec2(0.0f, 20.0f));
@@ -211,7 +187,7 @@ void show_tab_item_load_project(AppMain& app) {
                 }
 
                 if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0)) {
-                    load_project(app, projects[selection_index]);
+                    load_project(projects[selection_index]);
                 }
                 
                 auto icon = icons[i];
@@ -250,7 +226,7 @@ void show_tab_item_load_project(AppMain& app) {
         }
 
         if (ImGui::Button("Load", ImVec2(-1, 40))) {
-            load_project(app, projects[selection_index]);
+            load_project(projects[selection_index]);
         }
 
         if (!selected_project_exists) {
@@ -261,7 +237,9 @@ void show_tab_item_load_project(AppMain& app) {
     }
 }
 
-void ImguiWindowInitial::show(AppMain& app) {
+void ImguiWindowInitial::show() {
+    AppMain& app = AppMain::get_instance();
+
     int width, height;
     SDL_GetWindowSize(app.window, &width, &height);
     ImGui::SetNextWindowPos({(float)width/4, (float)height/4});
@@ -276,8 +254,8 @@ void ImguiWindowInitial::show(AppMain& app) {
 
     create_projects_folder_if_not_exist();
 
-    show_tab_item_load_project(app);
-    show_tab_item_create_project(app);
+    show_tab_item_load_project();
+    show_tab_item_create_project();
 
     ImGui::EndTabBar();
     ImGui::End();
