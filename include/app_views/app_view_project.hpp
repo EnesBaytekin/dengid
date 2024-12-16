@@ -6,6 +6,7 @@
 #include "imgui_windows/imgui_window_settings.hpp"
 #include "imgui_windows/imgui_window_main_menu_bar.hpp"
 #include "imgui_windows/imgui_window_hierarchy.hpp"
+#include "imgui_windows/imgui_window_inspector.hpp"
 
 std::shared_ptr<AppView> get_app_view_project() {
     auto project_view = std::make_shared<AppView>();
@@ -18,6 +19,9 @@ std::shared_ptr<AppView> get_app_view_project() {
 
     auto hierarchy_window = std::make_shared<ImguiWindowHierarchy>();
     project_view->add_window("hierarchy", hierarchy_window);
+
+    auto inspector_window = std::make_shared<ImguiWindowInspector>();
+    project_view->add_window("inspector", inspector_window);
 
     return project_view;
 }

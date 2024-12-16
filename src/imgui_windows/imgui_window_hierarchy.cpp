@@ -3,6 +3,7 @@
 #include "app/app_main.hpp"
 #include "app_views/app_view.hpp"
 #include "imgui_windows/imgui_window_hierarchy.hpp"
+#include "imgui_windows/imgui_window_inspector.hpp"
 #include "engine/scene.hpp"
 #include "engine/object.hpp"
 #include <fstream>
@@ -30,7 +31,7 @@ void show_hierarchy_window() {
         int width, height;
         SDL_GetWindowSize(app.window, &width, &height);
         ImGui::SetNextWindowPos(ImVec2(0, 18));
-        ImGui::SetNextWindowSize(ImVec2(256.0f, (float)(height-18)));
+        ImGui::SetNextWindowSize(ImVec2(320.0f, (float)(height-18)));
         window_is_initialized = true;
     }
     bool visible = true;
@@ -69,12 +70,13 @@ void show_hierarchy_window() {
             char buffer[20];
             std::snprintf(buffer, sizeof(buffer), "%p", obj_address);
             std::string obj_id(buffer);
-
-            if (ImGui::TreeNode(("Object "+obj_id).c_str())) {
-                ImGui::Text("%s", "position: ");
-                ImGui::SameLine();
-                ImGui::DragFloat2(("##obj_inputs"+obj_id).c_str(), object->position);
-                ImGui::TreePop();
+            
+            auto inspector = std::dynamic_pointer_cast<ImguiWindowInspector>(app.get_view()->get_window("inspector"));
+            std::shared_ptr<Object> selected_object = inspector->selected_object;
+            bool selected = object == selected_object;
+            ImGui::Selectable(("Object "+obj_id).c_str(), &selected);
+            if (selected) {
+                inspector->selected_object = object;
             }
         }
     }

@@ -37,6 +37,10 @@ void ImguiWindowMainMenuBar::show() {
                     auto window = view->get_window("hierarchy");
                     window->set_visible(!window->is_visible());
                 }
+                if (ImGui::MenuItem("Inspector Window")) {
+                    auto window = view->get_window("inspector");
+                    window->set_visible(!window->is_visible());
+                }
                 ImGui::EndMenu();
             }
         }
