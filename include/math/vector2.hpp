@@ -15,6 +15,8 @@ struct Vector2 {
     float length() const {
         return std::sqrt(x*x+y*y);
     }
+
+    operator float*() { return &x; }
     
     static const Vector2 ZERO;
     static const Vector2 UP;

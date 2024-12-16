@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <app/app_main.hpp>
+#include <engine/components/image_component.hpp>
 
 std::vector<std::string> split(const std::string& str, char delimiter) {
     std::vector<std::string> tokens;
@@ -27,6 +28,8 @@ void ProjectManager::load_project() {
         exit(1);
     }
 
+    AppMain& app = AppMain::get_instance();
+
     std::string object_raw_data;
     while (std::getline(scene_file, object_raw_data)) {
         auto object_data = split(object_raw_data, ',');
@@ -34,12 +37,12 @@ void ProjectManager::load_project() {
         int y = std::stoi(object_data[1]);
         
         auto object = std::make_shared<Object>(x, y);
+        object->add_component(std::make_unique<ImageComponent>(app.load_image("icon.png")));
         main_scene->spawn_object(object);
     }
 
     scene_file.close();
 
-    AppMain& app = AppMain::get_instance();
     app.set_main_scene(main_scene);
 }
 

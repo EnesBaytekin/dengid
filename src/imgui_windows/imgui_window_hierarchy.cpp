@@ -63,8 +63,20 @@ void show_hierarchy_window() {
         scene->spawn_object(object);
     }
 
-    for (auto object : scene->get_objects()) {
-        ImGui::Text("Object x: %f, y: %f", object->position.x, object->position.y);
+    if (ImGui::CollapsingHeader("Objects##collapsing_header")) {
+        for (auto& object : scene->get_objects()) {
+            const void* obj_address = object.get();
+            char buffer[20];
+            std::snprintf(buffer, sizeof(buffer), "%p", obj_address);
+            std::string obj_id(buffer);
+
+            if (ImGui::TreeNode(("Object "+obj_id).c_str())) {
+                ImGui::Text("%s", "position: ");
+                ImGui::SameLine();
+                ImGui::DragFloat2(("##obj_inputs"+obj_id).c_str(), object->position);
+                ImGui::TreePop();
+            }
+        }
     }
 
     if (ImGui::Button("Save Scene")) {
