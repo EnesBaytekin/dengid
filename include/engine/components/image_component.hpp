@@ -19,6 +19,7 @@ public:
 
     void draw(Object& object) override;
     void update(Object& object) override;
+    void        set_image_id(std::string id) { image_id = id; }
     std::string get_image_id() { return image_id; }
 };
 

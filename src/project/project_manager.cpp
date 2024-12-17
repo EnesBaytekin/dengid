@@ -53,7 +53,7 @@ void ProjectManager::load_project() {
             object_data.pop_front();
 
             if (data == "image") {
-                std::string& image_id = object_data.front();
+                std::string image_id = object_data.front();
                 object_data.pop_front();
 
                 object->add_component(std::make_unique<ImageComponent>(image_id));
