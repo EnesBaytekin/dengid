@@ -2,6 +2,7 @@
 #define IMAGE_COMPONENT_HPP
 
 #include "engine/components/i_component.hpp"
+#include "engine/components/i_component_visitor.hpp"
 #include "image/image.hpp"
 #include <string>
 
@@ -14,9 +15,8 @@ public:
         , image_id(_image_id) {}
     ~ImageComponent() override = default;
 
-    void accept_visitor(ComponentVisitor& visitor) override;
+    void accept_visitor(IComponentVisitor& visitor) override;
 
-    ComponentType get_type() override { return ComponentType::IMAGE; }
     void draw(Object& object) override;
     void update(Object& object) override;
     std::string get_image_id() { return image_id; }

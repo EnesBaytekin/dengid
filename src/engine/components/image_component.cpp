@@ -1,5 +1,5 @@
 #include "engine/components/image_component.hpp"
-#include "engine/components/component_visitor.hpp"
+#include "engine/components/i_component_visitor.hpp"
 #include "app/app_main.hpp"
 #include "engine/object.hpp"
 
@@ -12,6 +12,6 @@ void ImageComponent::update(Object& object) {
 
 }
 
-void ImageComponent::accept_visitor(ComponentVisitor& visitor) {
+void ImageComponent::accept_visitor(IComponentVisitor& visitor) {
     visitor.visit_image_component(*this);
 }

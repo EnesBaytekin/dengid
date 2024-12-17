@@ -5,7 +5,7 @@
 #include "app/app_main.hpp"
 #include "app_views/app_view.hpp"
 #include "engine/components/image_component.hpp"
-#include "engine/components/component_visitor.hpp"
+#include "engine/components/component_draw_inspector_visitor.hpp"
 
 void ImguiWindowInspector::show() {
     if (!is_visible()) return;
@@ -66,7 +66,7 @@ void ImguiWindowInspector::show() {
         ImGui::SameLine();
         ImGui::DragFloat2(("##obj_inputs"+obj_id).c_str(), selected_object->position);
 
-        ComponentVisitor visitor;
+        ComponentDrawInspectorVisitor visitor;
         for (auto& component : selected_object->get_components()) {
             ImGui::Dummy(ImVec2(0, 8));
             ImGui::Separator();

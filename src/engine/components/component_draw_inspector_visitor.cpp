@@ -1,9 +1,9 @@
-#include "engine/components/component_visitor.hpp"
+#include "engine/components/component_draw_inspector_visitor.hpp"
 #include "engine/components/image_component.hpp"
 #include "app/app_main.hpp"
 #include "imgui.h"
 
-void ComponentVisitor::visit_image_component(ImageComponent& component) {
+void ComponentDrawInspectorVisitor::visit_image_component(ImageComponent& component) {
     const void* obj_address = &component;
     char buffer[20];
     std::snprintf(buffer, sizeof(buffer), "%p", obj_address);

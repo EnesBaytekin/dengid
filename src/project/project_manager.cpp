@@ -4,11 +4,13 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <app/app_main.hpp>
-#include <engine/components/image_component.hpp>
+#include "app/app_main.hpp"
+#include "engine/components/image_component.hpp"
+#include "engine/components/component_save_visitor.hpp"
+#include <deque>
 
-std::vector<std::string> split(const std::string& str, char delimiter) {
-    std::vector<std::string> tokens;
+std::deque<std::string> split(const std::string& str, char delimiter) {
+    std::deque<std::string> tokens;
     std::stringstream ss(str);
     std::string token;
 
@@ -32,14 +34,32 @@ void ProjectManager::load_project() {
     
     std::string object_raw_data;
     while (std::getline(scene_file, object_raw_data)) {
-        auto object_data = split(object_raw_data, ',');
-        std::string name = object_data[0];
-        int x = std::stoi(object_data[1]);
-        int y = std::stoi(object_data[2]);
-        
+        std::deque<std::string> object_data = split(object_raw_data, ',');
+
+        std::string name = object_data.front();
+        object_data.pop_front();
+
+        int x = std::stoi(object_data.front());
+        object_data.pop_front();
+
+        int y = std::stoi(object_data.front());
+        object_data.pop_front();
+
         auto object = std::make_shared<Object>(x, y);
         object->name = name;
-        object->add_component(std::make_unique<ImageComponent>("icon.png"));
+        
+        while (!object_data.empty()) {
+            std::string& data = object_data.front();
+            object_data.pop_front();
+
+            if (data == "image") {
+                std::string& image_id = object_data.front();
+                object_data.pop_front();
+
+                object->add_component(std::make_unique<ImageComponent>(image_id));
+            }
+        }
+
         main_scene->spawn_object(object);
     }
 
@@ -56,7 +76,13 @@ void ProjectManager::save_project() {
     for (auto object : main_scene->get_objects()) {
         scene_file << object->name << ",";
         scene_file << object->position.x << ",";
-        scene_file << object->position.y << "\n";
+        scene_file << object->position.y << ",";
+        ComponentSaveVisitor visitor;
+        for (auto& component : object->get_components()) {
+            component->accept_visitor(visitor);
+        }
+        std::string component_data = visitor.get_components_data();
+        scene_file << component_data << "\n";
     }
     scene_file.close();
 }
