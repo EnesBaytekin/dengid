@@ -11,6 +11,7 @@ private:
     std::vector<std::unique_ptr<IComponent>> components;
 public:
     Vector2 position;
+    std::string name = "New Object";
 
     Object(Vector2 _position): position(_position) {};
     Object(float x, float y): position(Vector2(x, y)) {};

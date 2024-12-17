@@ -4,7 +4,12 @@
 #include "imgui.h"
 
 void ComponentVisitor::visit_image_component(ImageComponent& component) {
-    if (ImGui::TreeNode("Image Component")) {
+    const void* obj_address = &component;
+    char buffer[20];
+    std::snprintf(buffer, sizeof(buffer), "%p", obj_address);
+    std::string obj_id(buffer);
+
+    if (ImGui::TreeNode(("Image Component##"+obj_id).c_str())) {
         AppMain& app = AppMain::get_instance();
         
         ImGui::Text("%s", "Image:");

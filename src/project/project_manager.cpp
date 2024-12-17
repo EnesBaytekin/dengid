@@ -35,10 +35,12 @@ void ProjectManager::load_project() {
     std::string object_raw_data;
     while (std::getline(scene_file, object_raw_data)) {
         auto object_data = split(object_raw_data, ',');
-        int x = std::stoi(object_data[0]);
-        int y = std::stoi(object_data[1]);
+        std::string name = object_data[0];
+        int x = std::stoi(object_data[1]);
+        int y = std::stoi(object_data[2]);
         
         auto object = std::make_shared<Object>(x, y);
+        object->name = name;
         object->add_component(std::make_unique<ImageComponent>("icon.png"));
         main_scene->spawn_object(object);
     }
@@ -54,6 +56,7 @@ void ProjectManager::save_project() {
     
     std::ofstream scene_file(project_path/"main_scene.data");
     for (auto object : main_scene->get_objects()) {
+        scene_file << object->name << ",";
         scene_file << object->position.x << ",";
         scene_file << object->position.y << "\n";
     }

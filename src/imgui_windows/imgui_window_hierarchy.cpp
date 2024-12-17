@@ -64,6 +64,15 @@ void show_hierarchy_window() {
         object->add_component(std::make_unique<ImageComponent>("icon.png"));
         scene->spawn_object(object);
     }
+    
+    ImGui::SameLine();
+    
+    if (ImGui::Button("Save Scene")) {
+        project_manager.save_project();
+    }
+
+    ImGui::Separator();
+    ImGui::Dummy(ImVec2(0, 8));
 
     if (ImGui::CollapsingHeader("Objects##collapsing_header")) {
         for (auto& object : scene->get_objects()) {
@@ -75,15 +84,11 @@ void show_hierarchy_window() {
             auto inspector = std::dynamic_pointer_cast<ImguiWindowInspector>(app.get_view()->get_window("inspector"));
             std::shared_ptr<Object> selected_object = inspector->selected_object;
             bool selected = object == selected_object;
-            ImGui::Selectable(("Object "+obj_id).c_str(), &selected);
+            ImGui::Selectable((object->name+"##"+obj_id).c_str(), &selected);
             if (selected) {
                 inspector->selected_object = object;
             }
         }
-    }
-
-    if (ImGui::Button("Save Scene")) {
-        project_manager.save_project();
     }
 
     ImGui::End();

@@ -32,19 +32,35 @@ void ImguiWindowInspector::show() {
         set_visible(false);
     }
     
-    ImGui::Dummy(ImVec2(0, 20));
+    ImGui::Dummy(ImVec2(0, 8));
 
     if (!selected_object) {
-        ImGui::TextWrapped("%s", "Objects properties are shown here.");
+        ImGui::TextWrapped("%s", "No object selected.");
     } else {
         const void* obj_address = selected_object.get();
         char buffer[20];
         std::snprintf(buffer, sizeof(buffer), "%p", obj_address);
         std::string obj_id(buffer);
 
-        ImGui::Text("Object %s", obj_id.c_str());
+        ImGui::Text("Object id: %s", obj_id.c_str());
 
-        ImGui::Dummy(ImVec2(0, 20));
+        ImGui::Dummy(ImVec2(0, 8));
+        ImGui::Separator();
+        ImGui::Dummy(ImVec2(0, 8));
+
+        static char name[32];
+        if (selected_object->name != name) {
+            strcpy(name, selected_object->name.c_str());
+        }
+        ImGui::Text("%s", "Name:");
+        ImGui::SameLine();
+        if (ImGui::InputText("##object_name", name, IM_ARRAYSIZE(name))) {
+            selected_object->name = name;
+        }
+
+        ImGui::Dummy(ImVec2(0, 8));
+        ImGui::Separator();
+        ImGui::Dummy(ImVec2(0, 8));
 
         ImGui::Text("%s", "position: ");
         ImGui::SameLine();
@@ -52,6 +68,10 @@ void ImguiWindowInspector::show() {
 
         ComponentVisitor visitor;
         for (auto& component : selected_object->get_components()) {
+            ImGui::Dummy(ImVec2(0, 8));
+            ImGui::Separator();
+            ImGui::Dummy(ImVec2(0, 8));
+
             component->accept_visitor(visitor);
         }
     }
