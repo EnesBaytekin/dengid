@@ -156,9 +156,6 @@ void show_tab_item_load_project() {
 
         if (refreshed) {
             projects = get_projects();
-            for (const auto& project : projects) {
-                app.load_image(project/"icon.png");
-            }
             selection_index = -1;
             refreshed = false;
         }
@@ -189,15 +186,12 @@ void show_tab_item_load_project() {
                     load_project(projects[selection_index]);
                 }
                 
-                auto& image_resource = ImageResource::get_instance();
                 std::string icon_id = project/"icon.png";
-                if (image_resource.has_image(icon_id)) {
-                    ImGui::SetCursorScreenPos(ImVec2(
-                        selectable_pos.x+4,
-                        selectable_pos.y+4
-                    ));
-                    app.draw_imgui_image(icon_id, 32, 32);
-                }
+                ImGui::SetCursorScreenPos(ImVec2(
+                    selectable_pos.x+4,
+                    selectable_pos.y+4
+                ));
+                app.draw_imgui_image(icon_id, 32, 32);
                 
                 ImGui::SetCursorScreenPos(ImVec2(
                     selectable_pos.x+44,

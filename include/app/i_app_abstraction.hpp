@@ -40,7 +40,7 @@ public:
     }
 
     void draw_rect(int x, int y, int width, int height)     { implementation->draw_rect(x, y, width, height); }
-    void load_image(const std::string& file_path)         { implementation->load_image(file_path); }
+    std::shared_ptr<Image> load_image(const std::string& file_path)         { return implementation->load_image(file_path); }
     void draw_image(const std::string& image_id , int x, int y)       { implementation->draw_image(image_id, x, y); }
     void draw_imgui_image(const std::string& image_id, int width=0, int height=0) { implementation->draw_imgui_image(image_id, width, height); }
 };

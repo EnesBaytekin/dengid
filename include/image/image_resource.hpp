@@ -4,6 +4,8 @@
 #include <map>
 #include <string>
 #include <memory>
+#include "app/app_main.hpp"
+#include "project/project_manager.hpp"
 
 class Image;
 
@@ -22,9 +24,18 @@ public:
         return instance;
     }
 
-    void                    add_image(const std::string& id, std::shared_ptr<Image> image) { images[id] = image; }
-    bool                    has_image(const std::string& id) { return images.find(id) != images.end(); }
-    std::shared_ptr<Image>  get_image(const std::string& id) { return images[id]; }
+    std::shared_ptr<Image>  get_image(const std::string& id) {
+        auto it = images.find(id);
+        if (it == images.end()) {
+            AppMain& app = AppMain::get_instance();
+            ProjectManager& project_manager = ProjectManager::get_instance();
+            auto image = app.load_image(project_manager.get_project_path()/id);
+            images[id] = image;
+            return image;
+        } else {
+            return it->second;
+        }
+    }
 };
 
 #endif

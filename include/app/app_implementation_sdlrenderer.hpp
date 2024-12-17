@@ -24,7 +24,7 @@ public:
     void render() override;
     
     void draw_rect(int x, int y, int width, int height) override;
-    void load_image(const std::string& file_path) override;
+    std::shared_ptr<Image> load_image(const std::string& file_path) override;
     void draw_image(const std::string& image_id, int x, int y) override;
     void draw_imgui_image(const std::string& image_id, int width, int height) override;
 };

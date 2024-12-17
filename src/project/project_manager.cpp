@@ -29,8 +29,6 @@ void ProjectManager::load_project() {
     }
 
     AppMain& app = AppMain::get_instance();
-
-    app.load_image("icon.png");
     
     std::string object_raw_data;
     while (std::getline(scene_file, object_raw_data)) {

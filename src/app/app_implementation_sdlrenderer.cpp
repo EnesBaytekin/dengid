@@ -123,27 +123,30 @@ void AppImplementationSDLRenderer::draw_rect(int x, int y, int width, int height
     SDL_RenderFillRect(renderer, &rect);
 }
 
-void AppImplementationSDLRenderer::load_image(const std::string& file_path) {
+std::shared_ptr<Image> AppImplementationSDLRenderer::load_image(const std::string& file_path) {
     SDL_Surface* temp_surface = IMG_Load(file_path.c_str());
     if (!temp_surface) {
         std::cerr << "Unable to load image: " << file_path << std::endl;
-        return;
+        return nullptr;
     }
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, temp_surface);
     if (!texture) {
         std::cerr << "Unable to create texture from surface! SDL_Error: " << SDL_GetError() << std::endl;
-        return;
+        return nullptr;
     }
     SDL_FreeSurface(temp_surface);
     std::shared_ptr<Image> image = std::make_shared<ImageSDLRenderer>(texture);
 
-    auto& image_resource = ImageResource::get_instance();
-    image_resource.add_image(file_path, image);
+    return image;
 }
 
 void AppImplementationSDLRenderer::draw_image(const std::string& image_id, int x, int y) {
     auto& image_resource = ImageResource::get_instance();
     auto image = image_resource.get_image(image_id);
+    if (!image) {
+        std::cerr << "Image could not be loaded: " << image_id << std::endl;
+        return;
+    }
     auto texture = static_cast<SDL_Texture*>(image->get_native_image());
     int width, height;
     SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
@@ -156,6 +159,10 @@ void AppImplementationSDLRenderer::draw_image(const std::string& image_id, int x
 void AppImplementationSDLRenderer::draw_imgui_image(const std::string& image_id, int width, int height) {
     auto& image_resource = ImageResource::get_instance();
     auto image = image_resource.get_image(image_id);
+    if (!image) {
+        std::cerr << "Image could not be loaded: " << image_id << std::endl;
+        return;
+    }
     auto texture = static_cast<SDL_Texture*>(image->get_native_image());
     int image_width, image_height;
     SDL_QueryTexture(texture, nullptr, nullptr, &image_width, &image_height);
