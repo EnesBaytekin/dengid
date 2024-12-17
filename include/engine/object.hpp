@@ -20,6 +20,9 @@ public:
     void add_component(std::unique_ptr<IComponent> component) {
         components.push_back(std::move(component));
     }
+    std::vector<std::unique_ptr<IComponent>>& get_components() {
+        return components;
+    }
     void draw();
     void update();
 };
