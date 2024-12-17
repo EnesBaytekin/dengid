@@ -8,6 +8,7 @@
 #include "engine/object.hpp"
 #include <fstream>
 #include "project/project_manager.hpp"
+#include "image/image_resource.hpp"
 
 void create_projects_folder_if_not_exist() {
     if (!std::filesystem::exists(PROJECTS_DIRECTORY)) {
@@ -149,16 +150,14 @@ void show_tab_item_load_project() {
         static bool refreshed = true;
 
         static std::vector<std::filesystem::path> projects;
-        static std::vector<std::shared_ptr<Image>> icons;
         if (ImGui::Button("Refresh")) {
             refreshed = true;
         }
 
         if (refreshed) {
             projects = get_projects();
-            icons.clear();
             for (const auto& project : projects) {
-                icons.push_back(app.load_image(project/"icon.png"));
+                app.load_image(project/"icon.png");
             }
             selection_index = -1;
             refreshed = false;
@@ -190,13 +189,14 @@ void show_tab_item_load_project() {
                     load_project(projects[selection_index]);
                 }
                 
-                auto icon = icons[i];
-                if (icon) {
+                auto& image_resource = ImageResource::get_instance();
+                std::string icon_id = project/"icon.png";
+                if (image_resource.has_image(icon_id)) {
                     ImGui::SetCursorScreenPos(ImVec2(
                         selectable_pos.x+4,
                         selectable_pos.y+4
                     ));
-                    app.draw_imgui_image(icon, 32, 32);
+                    app.draw_imgui_image(icon_id, 32, 32);
                 }
                 
                 ImGui::SetCursorScreenPos(ImVec2(

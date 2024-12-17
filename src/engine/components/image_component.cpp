@@ -5,7 +5,7 @@
 
 void ImageComponent::draw(Object& object) {
     AppMain& app = AppMain::get_instance();
-    app.draw_image(image, object.position.x, object.position.y);
+    app.draw_image(image_id, object.position.x, object.position.y);
 }
 
 void ImageComponent::update(Object& object) {

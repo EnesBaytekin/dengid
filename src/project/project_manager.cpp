@@ -30,6 +30,8 @@ void ProjectManager::load_project() {
 
     AppMain& app = AppMain::get_instance();
 
+    app.load_image("icon.png");
+    
     std::string object_raw_data;
     while (std::getline(scene_file, object_raw_data)) {
         auto object_data = split(object_raw_data, ',');
@@ -37,7 +39,7 @@ void ProjectManager::load_project() {
         int y = std::stoi(object_data[1]);
         
         auto object = std::make_shared<Object>(x, y);
-        object->add_component(std::make_unique<ImageComponent>(app.load_image("icon.png")));
+        object->add_component(std::make_unique<ImageComponent>("icon.png"));
         main_scene->spawn_object(object);
     }
 

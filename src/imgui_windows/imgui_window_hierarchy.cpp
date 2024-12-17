@@ -9,6 +9,7 @@
 #include <fstream>
 #include <project/project_manager.hpp>
 #include <engine/components/image_component.hpp>
+#include <image/image_resource.hpp>
 
 #include <cstdlib>
 #include <ctime>
@@ -60,7 +61,7 @@ void show_hierarchy_window() {
         int x = randrange(0, 1024);
         int y = randrange(0, 1024);
         auto object = std::make_shared<Object>(x, y);
-        object->add_component(std::make_unique<ImageComponent>(app.load_image("icon.png")));
+        object->add_component(std::make_unique<ImageComponent>("icon.png"));
         scene->spawn_object(object);
     }
 

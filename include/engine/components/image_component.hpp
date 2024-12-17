@@ -3,15 +3,15 @@
 
 #include "engine/components/i_component.hpp"
 #include "image/image.hpp"
-#include <memory>
+#include <string>
 
 class ImageComponent: public IComponent {
 private:
-    std::shared_ptr<Image> image;
+    std::string image_id;
 public:
-    ImageComponent(std::shared_ptr<Image> _image)
+    ImageComponent(std::string _image_id)
         : IComponent()
-        , image(_image) {}
+        , image_id(_image_id) {}
     ~ImageComponent() override = default;
 
     void accept_visitor(ComponentVisitor& visitor) override;
@@ -19,7 +19,7 @@ public:
     ComponentType get_type() override { return ComponentType::IMAGE; }
     void draw(Object& object) override;
     void update(Object& object) override;
-    std::shared_ptr<Image> get_image() { return image; }
+    std::string get_image_id() { return image_id; }
 };
 
 #endif

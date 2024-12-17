@@ -5,9 +5,11 @@
 
 void ComponentVisitor::visit_image_component(ImageComponent& component) {
     if (ImGui::TreeNode("Image Component")) {
-        
         AppMain& app = AppMain::get_instance();
-        app.draw_imgui_image(component.get_image(), 32, 32);
+        
+        ImGui::Text("%s", "Image:");
+        ImGui::SameLine();
+        app.draw_imgui_image(component.get_image_id(), 32, 32);
 
         ImGui::TreePop();
     }
