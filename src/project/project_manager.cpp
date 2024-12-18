@@ -56,7 +56,11 @@ void ProjectManager::load_project() {
                 std::string image_id = object_data.front();
                 object_data.pop_front();
 
-                float scale = std::stof(object_data.front());
+                Vector2 scale;
+                scale.x = std::stof(object_data.front());
+                object_data.pop_front();
+
+                scale.y = std::stof(object_data.front());
                 object_data.pop_front();
 
                 auto image_component = std::make_unique<ImageComponent>(image_id);

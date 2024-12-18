@@ -6,7 +6,9 @@
 
 class ImageSDLRenderer: public Image {
 public:
-    ImageSDLRenderer(SDL_Texture* sdl_image): image(sdl_image) {}
+    ImageSDLRenderer(SDL_Texture* sdl_image): image(sdl_image) {
+        SDL_QueryTexture(image, nullptr, nullptr, &width, &height);
+    }
     void* get_native_image() override { return image; }
 private:
     SDL_Texture* image;

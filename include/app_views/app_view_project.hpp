@@ -15,6 +15,7 @@ std::shared_ptr<AppView> get_app_view_project() {
     project_view->add_window("main_menu_bar", main_menu_bar_window);
 
     auto settings_window = std::make_shared<ImguiWindowSettings>();
+    settings_window->set_visible(false);
     project_view->add_window("settings", settings_window);
 
     auto hierarchy_window = std::make_shared<ImguiWindowHierarchy>();
