@@ -27,7 +27,7 @@ public:
 
     virtual void draw_rect(int x, int y, int width, int height) = 0;
     virtual std::shared_ptr<Image> load_image(const std::string& file_path) = 0;
-    virtual void draw_image(const std::string& image_id, int x, int y) = 0;
+    virtual void draw_image(const std::string& image_id, int x, int y, float scale_x, float scale_y, bool flip_x, bool flip_y) = 0;
     virtual void draw_imgui_image(const std::string& image_id, int width, int height) = 0;
 };
 

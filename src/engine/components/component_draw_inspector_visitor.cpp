@@ -37,6 +37,14 @@ void ComponentDrawInspectorVisitor::visit_image_component(ImageComponent& compon
         }
 
         app.draw_imgui_image(component.get_image_id(), 32, 32);
+        
+        ImGui::Text("%s", "Scale:");
+        ImGui::SameLine();
+
+        float scale = component.get_scale();
+        if (ImGui::DragFloat("##image_scale", &scale, 0.1f, 0.0f, (float)UINT8_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
+            component.set_scale(scale);
+        }
 
         ImGui::TreePop();
     }

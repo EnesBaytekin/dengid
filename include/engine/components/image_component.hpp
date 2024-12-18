@@ -9,6 +9,7 @@
 class ImageComponent: public IComponent {
 private:
     std::string image_id;
+    float scale = 1;
 public:
     ImageComponent(std::string _image_id)
         : IComponent()
@@ -21,6 +22,8 @@ public:
     void update(Object& object) override;
     void        set_image_id(std::string id) { image_id = id; }
     std::string get_image_id() { return image_id; }
+    void        set_scale(float _scale) { scale = _scale; }
+    float       get_scale() { return scale; }
 };
 
 #endif

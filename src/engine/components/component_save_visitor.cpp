@@ -6,4 +6,5 @@
 void ComponentSaveVisitor::visit_image_component(ImageComponent& component) {
     components_data += "image,";
     components_data += component.get_image_id()+",";
+    components_data += std::to_string(component.get_scale())+",";
 }

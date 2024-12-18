@@ -41,7 +41,7 @@ public:
 
     void draw_rect(int x, int y, int width, int height)     { implementation->draw_rect(x, y, width, height); }
     std::shared_ptr<Image> load_image(const std::string& file_path)         { return implementation->load_image(file_path); }
-    void draw_image(const std::string& image_id , int x, int y)       { implementation->draw_image(image_id, x, y); }
+    void draw_image(const std::string& image_id , int x, int y, float scale_x=1, float scale_y=1, bool flip_x=false, bool flip_y=false)       { implementation->draw_image(image_id, x, y, scale_x, scale_y, flip_x, flip_y); }
     void draw_imgui_image(const std::string& image_id, int width=0, int height=0) { implementation->draw_imgui_image(image_id, width, height); }
 };
 
