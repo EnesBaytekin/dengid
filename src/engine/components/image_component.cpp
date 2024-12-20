@@ -16,7 +16,10 @@ void ImageComponent::draw(Object& object) {
 }
 
 void ImageComponent::update(Object& object) {
-
+    AppMain& app = AppMain::get_instance();
+    double delta_time = app.get_now()-start_at;
+    int delta_frame = animation_speed*delta_time;
+    frame = delta_frame%frame_count;
 }
 
 void ImageComponent::accept_visitor(IComponentVisitor& visitor) {

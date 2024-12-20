@@ -5,7 +5,8 @@
 #include "engine/components/i_component_visitor.hpp"
 #include "image/image.hpp"
 #include <string>
-#include <math/vector2.hpp>
+#include "math/vector2.hpp"
+#include "app/app_main.hpp"
 
 class ImageComponent: public IComponent {
 private:
@@ -17,6 +18,8 @@ private:
     int frame_count = 1;
     int frame = 0;
     float animation_speed = 1.0f;
+
+    double start_at = 0.0;
 public:
     ImageComponent(std::string _image_id)
         : IComponent()
@@ -42,6 +45,8 @@ public:
     int         get_frame() { return frame; }
     void        set_animation_speed(float speed) { animation_speed = speed; }
     float       get_animation_speed() { return animation_speed; }
+
+    void start_animation() { start_at = AppMain::get_instance().get_now(); };
 };
 
 #endif

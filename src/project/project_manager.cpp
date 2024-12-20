@@ -63,8 +63,28 @@ void ProjectManager::load_project() {
                 scale.y = std::stof(object_data.front());
                 object_data.pop_front();
 
+                bool flip_x = object_data.front() == "1";
+                object_data.pop_front();
+
+                bool flip_y = object_data.front() == "1";
+                object_data.pop_front();
+
+                int frame_count = std::stoi(object_data.front());
+                object_data.pop_front();
+
+                int frame = std::stoi(object_data.front());
+                object_data.pop_front();
+
+                float animation_speed = std::stof(object_data.front());
+                object_data.pop_front();
+
                 auto image_component = std::make_unique<ImageComponent>(image_id);
                 image_component->set_scale(scale);
+                image_component->set_flip_x(flip_x);
+                image_component->set_flip_y(flip_y);
+                image_component->set_frame_count(frame_count);
+                image_component->set_frame(frame);
+                image_component->set_animation_speed(animation_speed);
                 object->add_component(std::move(image_component));
             }
         }

@@ -9,6 +9,9 @@ protected:
     IAppImplementation* implementation;
     bool running;
 
+    double now = 0.0;
+    double delta_time = 0.0;
+
     IAppAbstraction(): running(false) {};
 public:
     SDL_Window* window;
@@ -27,6 +30,16 @@ public:
         implementation->setup();
         setup();
         while (running) {
+            double last_now = now;
+            now = SDL_GetTicks()/1000.0;
+            double frame_duration = now-last_now;
+            if (frame_duration < 0.016) {
+                SDL_Delay((0.016-frame_duration)*1000);
+                now = SDL_GetTicks()/1000.0;
+                frame_duration = now-last_now;
+            }
+            delta_time = frame_duration;
+
             implementation->update();
             implementation->create_frame();
             update();
@@ -38,6 +51,9 @@ public:
     void quit() {
         running = false;
     }
+
+    double get_now() { return now; }
+    double get_delta_time() { return delta_time; }
 
     void draw_rect(int x, int y, int width, int height)     { implementation->draw_rect(x, y, width, height); }
     std::shared_ptr<Image> load_image(const std::string& file_path)         { return implementation->load_image(file_path); }

@@ -18,6 +18,10 @@ void AppMain::update() {
             quit();
         }
     }
+
+    if (main_scene) {
+        main_scene->update();
+    }
 }
 
 void AppMain::draw() {

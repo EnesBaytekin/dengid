@@ -98,6 +98,14 @@ void ComponentDrawInspectorVisitor::visit_image_component(ImageComponent& compon
                 component.set_frame(frame);
             }
 
+            ImGui::Text("Animation Speed:");
+            ImGui::SameLine();
+
+            float animation_speed = component.get_animation_speed();
+            if (ImGui::DragFloat("##animation_speed", &animation_speed, 0.05f, 0.0f, (float)UINT8_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
+                component.set_animation_speed(animation_speed);
+            }
+
             ImGui::TreePop();
         }
 
