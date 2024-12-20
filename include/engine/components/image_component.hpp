@@ -18,6 +18,7 @@ private:
     int frame_count = 1;
     int frame = 0;
     float animation_speed = 1.0f;
+    bool is_animated = false;
 
     double start_at = 0.0;
 public:
@@ -45,6 +46,8 @@ public:
     int         get_frame() { return frame; }
     void        set_animation_speed(float speed) { animation_speed = speed; }
     float       get_animation_speed() { return animation_speed; }
+    void        set_is_animated(float _is_animated) { is_animated = _is_animated; }
+    bool        get_is_animated() { return is_animated; }
 
     void start_animation() { start_at = AppMain::get_instance().get_now(); };
 };

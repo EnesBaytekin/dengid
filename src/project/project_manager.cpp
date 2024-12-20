@@ -69,6 +69,9 @@ void ProjectManager::load_project() {
                 bool flip_y = object_data.front() == "1";
                 object_data.pop_front();
 
+                bool is_animated = object_data.front() == "1";
+                object_data.pop_front();
+
                 int frame_count = std::stoi(object_data.front());
                 object_data.pop_front();
 
@@ -82,6 +85,7 @@ void ProjectManager::load_project() {
                 image_component->set_scale(scale);
                 image_component->set_flip_x(flip_x);
                 image_component->set_flip_y(flip_y);
+                image_component->set_is_animated(is_animated);
                 image_component->set_frame_count(frame_count);
                 image_component->set_frame(frame);
                 image_component->set_animation_speed(animation_speed);

@@ -13,7 +13,7 @@ void ComponentDrawInspectorVisitor::visit_image_component(ImageComponent& compon
     std::snprintf(buffer, sizeof(buffer), "%p", obj_address);
     std::string obj_id(buffer);
 
-    if (ImGui::TreeNodeEx(("Image Component##"+obj_id).c_str(), ImGuiTreeNodeFlags_DefaultOpen)) {
+    if (ImGui::CollapsingHeader(("Image Component##"+obj_id).c_str(), ImGuiTreeNodeFlags_DefaultOpen)) {
         AppMain& app = AppMain::get_instance();
 
         ImGui::Text("%s", "Image:");
@@ -81,34 +81,46 @@ void ComponentDrawInspectorVisitor::visit_image_component(ImageComponent& compon
             component.set_flip_y(flip_y);
         }
 
-        if (ImGui::TreeNode("Animate")) {
-            ImGui::Text("Frame Count:");
-            ImGui::SameLine();
+        if (ImGui::TreeNodeEx("Animate##treenode", ImGuiTreeNodeFlags_DefaultOpen)) {
+            bool is_animated = component.get_is_animated();
+            if (ImGui::Checkbox("Animate", &is_animated)) {
+                component.set_is_animated(is_animated);
+            }
 
+            ImGui::BeginTable("TextInputTable", 2);
+
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Text("Frame Count:");
+            ImGui::TableNextColumn();
+            ImGui::SetNextItemWidth(-FLT_MIN);
             int frame_count = component.get_frame_count();
             if (ImGui::DragInt("##frame_count", &frame_count, 0.1f, 1)) {
                 component.set_frame_count(frame_count);
             }
 
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
             ImGui::Text("Frame:");
-            ImGui::SameLine();
-
+            ImGui::TableNextColumn();
+            ImGui::SetNextItemWidth(-FLT_MIN);
             int frame = component.get_frame();
             if (ImGui::SliderInt("##frame", &frame, 0, frame_count-1)) {
                 component.set_frame(frame);
             }
 
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
             ImGui::Text("Animation Speed:");
-            ImGui::SameLine();
-
+            ImGui::TableNextColumn();
+            ImGui::SetNextItemWidth(-FLT_MIN);
             float animation_speed = component.get_animation_speed();
             if (ImGui::DragFloat("##animation_speed", &animation_speed, 0.05f, 0.0f, (float)UINT8_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
                 component.set_animation_speed(animation_speed);
             }
 
+            ImGui::EndTable();
             ImGui::TreePop();
         }
-
-        ImGui::TreePop();
     }
 }

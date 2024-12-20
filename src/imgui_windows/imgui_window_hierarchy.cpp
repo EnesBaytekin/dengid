@@ -74,7 +74,7 @@ void show_hierarchy_window() {
     ImGui::Separator();
     ImGui::Dummy(ImVec2(0, 8));
 
-    if (ImGui::CollapsingHeader("Objects##collapsing_header")) {
+    if (ImGui::CollapsingHeader("Objects##collapsing_header", ImGuiTreeNodeFlags_DefaultOpen)) {
         for (auto& object : scene->get_objects()) {
             const void* obj_address = object.get();
             char buffer[20];
