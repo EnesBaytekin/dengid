@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <map>
 #include "project/project_settings.hpp"
+#include "app/initialize_imgui_style.hpp"
 
 class AppView;
 class Scene;
@@ -28,6 +29,7 @@ public:
     }
     void initialize(IAppImplementation* _implementation) {
         IAppAbstraction::initialize(_implementation);
+        initialize_imgui_style();
     }
 
     void                        add_view(const EnumAppViewType& type, std::shared_ptr<AppView> view) { views.insert({type, view}); }
