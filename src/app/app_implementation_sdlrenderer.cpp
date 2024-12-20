@@ -144,7 +144,6 @@ void AppImplementationSDLRenderer::draw_image(const std::string& image_id, int x
     auto& image_resource = ImageResource::get_instance();
     auto image = image_resource.get_image(image_id);
     if (!image) {
-        std::cerr << "Image could not be loaded: " << image_id << std::endl;
         return;
     }
     auto texture = static_cast<SDL_Texture*>(image->get_native_image());
@@ -164,7 +163,6 @@ void AppImplementationSDLRenderer::draw_imgui_image(const std::string& image_id,
     auto& image_resource = ImageResource::get_instance();
     auto image = image_resource.get_image(image_id);
     if (!image) {
-        std::cerr << "Image could not be loaded: " << image_id << std::endl;
         return;
     }
     auto texture = static_cast<SDL_Texture*>(image->get_native_image());
