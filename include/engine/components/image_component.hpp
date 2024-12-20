@@ -13,6 +13,10 @@ private:
     Vector2 scale = {1.0f, 1.0f};
     bool flip_x = false;
     bool flip_y = false;
+
+    int frame_count = 1;
+    int frame = 0;
+    float animation_speed = 1.0f;
 public:
     ImageComponent(std::string _image_id)
         : IComponent()
@@ -31,6 +35,13 @@ public:
     bool        get_flip_x() { return flip_x; }
     void        set_flip_y(bool _flip_y) { flip_y = _flip_y; }
     bool        get_flip_y() { return flip_y; }
+    void        set_frame_count(int count) { frame_count = (count > 0) ? (count) : (1);
+                                             if (frame >= frame_count) frame = frame_count-1; }
+    int         get_frame_count() { return frame_count; }
+    void        set_frame(int index) { frame = (index >= frame_count) ? (frame_count-1) : ((index < 0) ? (0) : (index)); }
+    int         get_frame() { return frame; }
+    void        set_animation_speed(float speed) { animation_speed = speed; }
+    float       get_animation_speed() { return animation_speed; }
 };
 
 #endif

@@ -67,7 +67,7 @@ void ComponentDrawInspectorVisitor::visit_image_component(ImageComponent& compon
         ImGui::SameLine();
 
         auto scale = component.get_scale();
-        if (ImGui::DragFloat2("##image_scale", scale, 0.1f, 0.0f, (float)UINT8_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
+        if (ImGui::DragFloat2("##image_scale", scale, 0.05f, 0.0f, (float)UINT8_MAX, "%.3f", ImGuiSliderFlags_Logarithmic)) {
             component.set_scale(scale);
         }
 
@@ -79,6 +79,26 @@ void ComponentDrawInspectorVisitor::visit_image_component(ImageComponent& compon
         bool flip_y = component.get_flip_y();
         if (ImGui::Checkbox("Flip y", &flip_y)) {
             component.set_flip_y(flip_y);
+        }
+
+        if (ImGui::TreeNode("Animate")) {
+            ImGui::Text("Frame Count:");
+            ImGui::SameLine();
+
+            int frame_count = component.get_frame_count();
+            if (ImGui::DragInt("##frame_count", &frame_count, 0.1f, 1)) {
+                component.set_frame_count(frame_count);
+            }
+
+            ImGui::Text("Frame:");
+            ImGui::SameLine();
+
+            int frame = component.get_frame();
+            if (ImGui::SliderInt("##frame", &frame, 0, frame_count-1)) {
+                component.set_frame(frame);
+            }
+
+            ImGui::TreePop();
         }
 
         ImGui::TreePop();

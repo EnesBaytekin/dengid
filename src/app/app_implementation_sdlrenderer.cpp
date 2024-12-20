@@ -140,7 +140,7 @@ std::shared_ptr<Image> AppImplementationSDLRenderer::load_image(const std::strin
     return image;
 }
 
-void AppImplementationSDLRenderer::draw_image(const std::string& image_id, int x, int y, float scale_x, float scale_y, bool flip_x, bool flip_y) {
+void AppImplementationSDLRenderer::draw_image(const std::string& image_id, int x, int y, float scale_x, float scale_y, bool flip_x, bool flip_y, int src_x, int src_y, int src_w, int src_h) {
     auto& image_resource = ImageResource::get_instance();
     auto image = image_resource.get_image(image_id);
     if (!image) {
@@ -148,13 +148,21 @@ void AppImplementationSDLRenderer::draw_image(const std::string& image_id, int x
     }
     auto texture = static_cast<SDL_Texture*>(image->get_native_image());
 
-    int width, height;
-    SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
-    SDL_Rect dest_rect = {x, y, (int)(width*scale_x), (int)(height*scale_y)};
+    SDL_Rect src_rect = {src_x, src_y, src_w, src_h};
+
+    int img_w, img_h;
+    SDL_QueryTexture(texture, nullptr, nullptr, &img_w, &img_h);
+
+    if (src_w == 0) { src_w = img_w; }
+    if (src_h == 0) { src_h = img_h; }
+
+    int dst_w = src_w*scale_x;
+    int dst_h = src_h*scale_y;
+    SDL_Rect dest_rect = {x, y, dst_w, dst_h};
 
     SDL_RendererFlip flip_flags = static_cast<SDL_RendererFlip>((SDL_FLIP_HORIZONTAL*flip_x) | (SDL_FLIP_VERTICAL*flip_y));
 
-    if (SDL_RenderCopyEx(renderer, texture, nullptr, &dest_rect, 0.0, nullptr, flip_flags) != 0) {
+    if (SDL_RenderCopyEx(renderer, texture, &src_rect, &dest_rect, 0.0, nullptr, flip_flags) != 0) {
         std::cerr << "Failed to render texture: " << SDL_GetError() << std::endl;
     }
 }
