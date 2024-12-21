@@ -3,14 +3,13 @@
 
 #include "engine/components/i_component_visitor.hpp"
 
-class ImageComponent;
-
 class ComponentDrawInspectorVisitor: public IComponentVisitor {
 public:
     ComponentDrawInspectorVisitor() = default;
     ~ComponentDrawInspectorVisitor() = default;
 
     void visit_image_component(ImageComponent& component) override;
+    void visit_script_component(ScriptComponent& component) override;
 };
 
 #endif

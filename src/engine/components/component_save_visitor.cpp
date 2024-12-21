@@ -1,5 +1,6 @@
 #include "engine/components/component_save_visitor.hpp"
 #include "engine/components/image_component.hpp"
+#include "engine/components/script_component.hpp"
 #include "app/app_main.hpp"
 #include "imgui.h"
 
@@ -15,4 +16,9 @@ void ComponentSaveVisitor::visit_image_component(ImageComponent& component) {
     components_data += std::to_string(component.get_frame_count())+",";
     components_data += std::to_string(component.get_frame())+",";
     components_data += std::to_string(component.get_animation_speed())+",";
+}
+
+void ComponentSaveVisitor::visit_script_component(ScriptComponent& component) {
+    components_data += "script,";
+    components_data += component.get_script_file_name()+",";
 }

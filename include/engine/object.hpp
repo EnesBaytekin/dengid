@@ -24,6 +24,14 @@ public:
     std::vector<std::unique_ptr<IComponent>>& get_components() {
         return components;
     }
+    bool has_component(ComponentType type) {
+        for (auto& component : components) {
+            if (component->get_type() == type) {
+                return true;
+            }
+        }
+        return false;
+    }
     void draw();
     void update();
 };

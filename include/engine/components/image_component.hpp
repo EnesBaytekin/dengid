@@ -23,7 +23,7 @@ private:
     double start_at = 0.0;
 public:
     ImageComponent(std::string _image_id)
-        : IComponent()
+        : IComponent(ComponentType::IMAGE_COMPONENT)
         , image_id(_image_id) {}
     ~ImageComponent() override = default;
 

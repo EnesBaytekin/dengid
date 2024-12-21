@@ -14,6 +14,7 @@ public:
     ~ComponentSaveVisitor() = default;
 
     void visit_image_component(ImageComponent& component) override;
+    void visit_script_component(ScriptComponent& component) override;
 
     std::string get_components_data() { return components_data; }
 };

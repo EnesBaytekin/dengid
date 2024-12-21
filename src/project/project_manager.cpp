@@ -3,23 +3,9 @@
 #include "engine/object.hpp"
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include "app/app_main.hpp"
-#include "engine/components/image_component.hpp"
 #include "engine/components/component_save_visitor.hpp"
-#include <deque>
-
-std::deque<std::string> split(const std::string& str, char delimiter) {
-    std::deque<std::string> tokens;
-    std::stringstream ss(str);
-    std::string token;
-
-    while (std::getline(ss, token, delimiter)) {
-        tokens.push_back(token);
-    }
-
-    return tokens;
-}
+#include "engine/object_loader.hpp"
 
 void ProjectManager::load_project() {
     auto main_scene = std::make_shared<Scene>();
@@ -34,65 +20,8 @@ void ProjectManager::load_project() {
     
     std::string object_raw_data;
     while (std::getline(scene_file, object_raw_data)) {
-        std::deque<std::string> object_data = split(object_raw_data, ',');
-
-        std::string name = object_data.front();
-        object_data.pop_front();
-
-        int x = std::stoi(object_data.front());
-        object_data.pop_front();
-
-        int y = std::stoi(object_data.front());
-        object_data.pop_front();
-
-        auto object = std::make_shared<Object>(x, y);
-        object->name = name;
-        
-        while (!object_data.empty()) {
-            std::string& data = object_data.front();
-            object_data.pop_front();
-
-            if (data == "image") {
-                std::string image_id = object_data.front();
-                object_data.pop_front();
-
-                Vector2 scale;
-                scale.x = std::stof(object_data.front());
-                object_data.pop_front();
-
-                scale.y = std::stof(object_data.front());
-                object_data.pop_front();
-
-                bool flip_x = object_data.front() == "1";
-                object_data.pop_front();
-
-                bool flip_y = object_data.front() == "1";
-                object_data.pop_front();
-
-                bool is_animated = object_data.front() == "1";
-                object_data.pop_front();
-
-                int frame_count = std::stoi(object_data.front());
-                object_data.pop_front();
-
-                int frame = std::stoi(object_data.front());
-                object_data.pop_front();
-
-                float animation_speed = std::stof(object_data.front());
-                object_data.pop_front();
-
-                auto image_component = std::make_unique<ImageComponent>(image_id);
-                image_component->set_scale(scale);
-                image_component->set_flip_x(flip_x);
-                image_component->set_flip_y(flip_y);
-                image_component->set_is_animated(is_animated);
-                image_component->set_frame_count(frame_count);
-                image_component->set_frame(frame);
-                image_component->set_animation_speed(animation_speed);
-                object->add_component(std::move(image_component));
-            }
-        }
-
+        ObjectLoader object_loader(object_raw_data);
+        std::shared_ptr<Object> object = object_loader.load_object();
         main_scene->spawn_object(object);
     }
 

@@ -61,7 +61,6 @@ void show_hierarchy_window() {
         int x = randrange(0, 1024);
         int y = randrange(0, 1024);
         auto object = std::make_shared<Object>(x, y);
-        object->add_component(std::make_unique<ImageComponent>("icon.png"));
         scene->spawn_object(object);
     }
     

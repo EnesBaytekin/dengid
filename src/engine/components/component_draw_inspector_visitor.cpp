@@ -1,5 +1,6 @@
 #include "engine/components/component_draw_inspector_visitor.hpp"
 #include "engine/components/image_component.hpp"
+#include "engine/components/script_component.hpp"
 #include "app/app_main.hpp"
 #include "imgui.h"
 #include "imfilebrowser.hpp"
@@ -8,12 +9,7 @@
 #include "image/image_resource.hpp"
 
 void ComponentDrawInspectorVisitor::visit_image_component(ImageComponent& component) {
-    const void* obj_address = &component;
-    char buffer[20];
-    std::snprintf(buffer, sizeof(buffer), "%p", obj_address);
-    std::string obj_id(buffer);
-
-    if (ImGui::CollapsingHeader(("Image Component##"+obj_id).c_str(), ImGuiTreeNodeFlags_DefaultOpen)) {
+    if (ImGui::CollapsingHeader("Image Component", ImGuiTreeNodeFlags_DefaultOpen)) {
         AppMain& app = AppMain::get_instance();
 
         ImGui::Text("%s", "Image:");
@@ -122,5 +118,30 @@ void ComponentDrawInspectorVisitor::visit_image_component(ImageComponent& compon
             ImGui::EndTable();
             ImGui::TreePop();
         }
+    }
+}
+
+void ComponentDrawInspectorVisitor::visit_script_component(ScriptComponent& component) {
+    if (ImGui::CollapsingHeader("Script Component", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ProjectManager& project_manager = ProjectManager::get_instance();
+        std::filesystem::path project_path = project_manager.get_project_path();
+
+        static ImGui::FileBrowser file_dialog(
+            ImGuiFileBrowserFlags_SkipItemsCausingError |
+            ImGuiFileBrowserFlags_CloseOnEsc |
+            ImGuiFileBrowserFlags_ConfirmOnEnter |
+            ImGuiFileBrowserFlags_EditPathString,
+            project_path
+        );
+        if (ImGui::Button("Select Script")) {
+            file_dialog.Open();
+        }
+        file_dialog.Display();
+        if (file_dialog.HasSelected()) {
+            std::string script_path = std::filesystem::relative(file_dialog.GetSelected(), project_path).string();
+            component.set_script_file_name(script_path);
+            file_dialog.ClearSelected();
+        }
+        ImGui::Text("Script: %s", component.get_script_file_name().c_str());
     }
 }
