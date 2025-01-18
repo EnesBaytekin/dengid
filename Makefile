@@ -1,7 +1,7 @@
 TARGET = build/main
 SRC_DIR = src
 INCLUDE_DIR = include
-IMGUI_DIR = imgui
+IMGUI_DIR = /imgui
 IMGUI_BACKENDS_DIR = $(IMGUI_DIR)/backends
 
 rwildcard = $(foreach d, $(wildcard $1*), $(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
