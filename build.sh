@@ -2,6 +2,8 @@
 
 BUILDER=DENGID-BUILDER
 
+RETURNCODE=0
+
 # Check if docker is running
 if ! systemctl is-active --quiet docker.socket; then
     echo -e "\e[32m${BUILDER}: Starting docker...\e[0m"
@@ -23,11 +25,12 @@ if [ ! -d "./build" ]; then
 fi
 # Create and delete a container to build the project
 echo -e "\e[32m${BUILDER}: Building the project in a container...\e[0m"
-docker run --rm -v .:/app dengid-builder:v0.2 make clean all
+docker run --rm -v .:/app dengid-builder:v0.2 make clean all && cp -r icon.png build/
 if [ $? -eq 0 ]; then
     echo -e "\e[32m${BUILDER}: The project has been built successfully.\e[0m"
 else
     echo -e "\e[31m${BUILDER}: An error occured while building.\e[0m"
+    RETURNCODE=1
 fi
 echo -e "\e[32m${BUILDER}: Container is deleted.\e[0m"
 
@@ -41,3 +44,5 @@ if [ "$DOCKER_STARTED" = true ]; then
         sudo systemctl stop docker.socket
     fi
 fi
+
+exit $RETURNCODE
