@@ -3,20 +3,27 @@
 #include "app/app_implementation_sdlrenderer.hpp"
 #include "path_utils.hpp"
 #include "globals.hpp"
+#include "project/project_manager.hpp"
+#include <iostream>
+#include "project_path_macro.hpp"
 
 const std::filesystem::path HOME_DIRECTORY = get_home_directory();
 const std::filesystem::path PROJECTS_DIRECTORY = get_projects_directory();
 const std::filesystem::path EXECUTABLE_DIRECTORY = get_executable_directory();
 
 int main(int, char**) {
-    AppImplementationSDLRenderer app_implementation("Dengid Game", 640, 360);
+    std::filesystem::path project_path = PROJECT_PATH;
+    std::string project_name = project_path.filename().string();
+
+    AppImplementationSDLRenderer app_implementation(project_name, 640, 360);
     AppMain& app = AppMain::get_instance();
     app.initialize(&app_implementation);
     
-    auto main_scene = std::make_shared<Scene>();
-    auto object = std::make_shared<Object>();
-    main_scene->spawn_object(object);
-    app.set_main_scene(main_scene);
+    ProjectManager& project_manager = ProjectManager::get_instance();
+    project_manager.set_project_path(project_path);
+    project_manager.load_project();
+    
+    app.set_main_scene(app.get_main_scene());
     
     app.run();
     return 0;

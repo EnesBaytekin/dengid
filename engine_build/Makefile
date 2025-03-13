@@ -7,14 +7,6 @@ IMGUI_BACKENDS_DIR = $(IMGUI_DIR)/backends
 
 CPP_SOURCES := $(shell find $(SRC_DIR) -type f -name "*.cpp")
 
-IMGUI_SOURCES = $(IMGUI_DIR)/imgui.cpp \
-				$(IMGUI_DIR)/imgui_draw.cpp \
-				$(IMGUI_DIR)/imgui_widgets.cpp \
-				$(IMGUI_DIR)/imgui_demo.cpp \
-				$(IMGUI_DIR)/imgui_tables.cpp \
-				$(IMGUI_BACKENDS_DIR)/imgui_impl_sdl2.cpp \
-				$(IMGUI_BACKENDS_DIR)/imgui_impl_sdlrenderer2.cpp
-
 SOURCES = $(CPP_SOURCES)
 
 CXX = g++
