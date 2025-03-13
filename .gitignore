@@ -1,5 +1,5 @@
 /imgui
 imgui.ini
-/build/*
+/engine_build/game_build/*
 .vscode
 TODO.md
