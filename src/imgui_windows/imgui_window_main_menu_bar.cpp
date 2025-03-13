@@ -1,8 +1,32 @@
 #include "imgui_windows/imgui_window_main_menu_bar.hpp"
 #include "app/app_main.hpp"
 #include "app_views/app_view.hpp"
+#include "project/project_manager.hpp"
 #include "imgui.h"
 #include <iostream>
+#include <fstream>
+#include <thread>
+
+void build_game() {
+    std::ofstream file("./include/project_path_macro.hpp");
+    if (!file.is_open()) {
+        std::cerr << "Failed to create project path macro file." << std::endl;
+        return;
+    }
+
+    std::filesystem::path project_path = ProjectManager::get_instance().get_project_path();
+    std::string project_name = project_path.filename().string();
+
+    file << "#pragma once\n";
+    file << "#define PROJECT_PATH \"";
+    file << project_path.string();
+    file << "\"\n";
+    file.close();
+
+    std::string build_command = "make clean all && mv ./game_build/game "+(project_path/project_name).string();
+    std::system(build_command.c_str());
+    std::cout << "Game built successfully." << std::endl;
+}
 
 void ImguiWindowMainMenuBar::show() {
     AppMain& app = AppMain::get_instance();
@@ -40,6 +64,14 @@ void ImguiWindowMainMenuBar::show() {
                 if (ImGui::MenuItem("Inspector Window")) {
                     auto window = view->get_window("inspector");
                     window->set_visible(!window->is_visible());
+                }
+                ImGui::EndMenu();
+            }
+
+            if (ImGui::BeginMenu("Build")) {
+                if (ImGui::MenuItem("Build Game")) {
+                    std::thread build_thread(build_game);
+                    build_thread.detach();
                 }
                 ImGui::EndMenu();
             }

@@ -24,12 +24,14 @@ CXXFLAGS = -std=c++17 \
 		   -I/usr/local/include/SDL2 \
 		   -D_REENTRANT \
 		   -I$(IMGUI_DIR) \
-		   -I$(IMGUI_BACKENDS_DIR)
+		   -I$(IMGUI_BACKENDS_DIR) \
+		   -pthread
 LDFLAGS = -L/usr/local/lib \
 		  -Wl,-rpath,/usr/local/lib \
 		  -Wl,--enable-new-dtags \
 		  -lSDL2 \
-		  -lSDL2_image
+		  -lSDL2_image \
+		  -pthread
 
 CPP_OBJS = $(CPP_SOURCES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 MAIN_OBJ = $(OBJ_DIR)/main.o
