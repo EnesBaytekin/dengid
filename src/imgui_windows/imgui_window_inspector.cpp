@@ -36,7 +36,7 @@ void ImguiWindowInspector::show() {
     ImGui::Dummy(ImVec2(0, 8));
 
     if (!selected_object) {
-        ImGui::TextWrapped("%s", "No object selected.");
+        ImGui::TextWrapped("%s", "No object is selected.");
     } else {
         const void* obj_address = selected_object.get();
         char buffer[20];
@@ -75,53 +75,53 @@ void ImguiWindowInspector::show() {
 
             component->accept_visitor(visitor);
         }
-    }
 
-    ImGui::Dummy(ImVec2(0, 8));
-    ImGui::Separator();
-    ImGui::Dummy(ImVec2(0, 8));
-
-    std::map<ComponentType, std::string> component_list;
-    component_list[ComponentType::IMAGE_COMPONENT] = "Image Component";
-    component_list[ComponentType::SCRIPT_COMPONENT] = "Script Component";
-
-    static ComponentType selected_component_type;
-    static bool component_selection_popup_is_open = false;
-    if (ImGui::Button("Add Component")) {
-        component_selection_popup_is_open = true;
-    }
-
-    if (component_selection_popup_is_open) {
-        ImGui::OpenPopup("Component Selection");
-        component_selection_popup_is_open = false;
-    }
-    if (ImGui::BeginPopup("Component Selection")) {
-        ImGui::Text("Select an component:");
+        ImGui::Dummy(ImVec2(0, 8));
         ImGui::Separator();
+        ImGui::Dummy(ImVec2(0, 8));
 
-        for (auto [type, name] : component_list) {
-            if (ImGui::Selectable(name.c_str(), selected_component_type == type)) {
-                selected_component_type = type;
-                ImGui::CloseCurrentPopup();
-            }
+        std::map<ComponentType, std::string> component_list;
+        component_list[ComponentType::IMAGE_COMPONENT] = "Image Component";
+        component_list[ComponentType::SCRIPT_COMPONENT] = "Script Component";
+
+        static ComponentType selected_component_type;
+        static bool component_selection_popup_is_open = false;
+        if (ImGui::Button("Add Component")) {
+            component_selection_popup_is_open = true;
         }
 
-        ImGui::EndPopup();
-    }
-
-    if (selected_component_type != ComponentType::NONE
-    && !selected_object->has_component(selected_component_type)) {
-        switch (selected_component_type) {
-            case ComponentType::IMAGE_COMPONENT: {
-                selected_object->add_component(std::make_unique<ImageComponent>("icon.png"));
-                break;
-            }
-            case ComponentType::SCRIPT_COMPONENT: {
-                selected_object->add_component(std::make_unique<ScriptComponent>(""));
-                break;
-            }
+        if (component_selection_popup_is_open) {
+            ImGui::OpenPopup("Component Selection");
+            component_selection_popup_is_open = false;
         }
-        selected_component_type = ComponentType::NONE;
+        if (ImGui::BeginPopup("Component Selection")) {
+            ImGui::Text("Select an component:");
+            ImGui::Separator();
+
+            for (auto [type, name] : component_list) {
+                if (ImGui::Selectable(name.c_str(), selected_component_type == type)) {
+                    selected_component_type = type;
+                    ImGui::CloseCurrentPopup();
+                }
+            }
+
+            ImGui::EndPopup();
+        }
+
+        if (selected_component_type != ComponentType::NONE
+        && !selected_object->has_component(selected_component_type)) {
+            switch (selected_component_type) {
+                case ComponentType::IMAGE_COMPONENT: {
+                    selected_object->add_component(std::make_unique<ImageComponent>("icon.png"));
+                    break;
+                }
+                case ComponentType::SCRIPT_COMPONENT: {
+                    selected_object->add_component(std::make_unique<ScriptComponent>(""));
+                    break;
+                }
+            }
+            selected_component_type = ComponentType::NONE;
+        }
     }
 
     ImGui::End();
