@@ -14,7 +14,9 @@ void build_game() {
         return;
     }
 
-    std::filesystem::path project_path = ProjectManager::get_instance().get_project_path();
+    ProjectManager& project_manager = ProjectManager::get_instance();
+    project_manager.save_project();
+    std::filesystem::path project_path = project_manager.get_project_path();
     std::string project_name = project_path.filename().string();
 
     file << "#pragma once\n";
@@ -23,7 +25,8 @@ void build_game() {
     file << "\"\n";
     file.close();
 
-    std::string build_command = "make clean all && mv ./game_build/game "+(project_path/project_name).string();
+    std::cout << (project_path/project_name).string() << std::endl;
+    std::string build_command = "make clean all && mv ./game_build/game \""+(project_path/project_name).string()+"\"";
     std::system(build_command.c_str());
     std::cout << "Game built successfully." << std::endl;
 }

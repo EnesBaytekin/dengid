@@ -1,5 +1,8 @@
 /imgui
 imgui.ini
 /engine_build/game_build/*
+/engine_build/dengid
+/engine_build/include/project_path_macro.hpp
+/engine_build/lib/*
 .vscode
 TODO.md
