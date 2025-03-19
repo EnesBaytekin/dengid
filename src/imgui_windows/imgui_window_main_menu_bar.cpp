@@ -2,6 +2,10 @@
 #include "app/app_main.hpp"
 #include "app_views/app_view.hpp"
 #include "project/project_manager.hpp"
+#include "engine/scene.hpp"
+#include "engine/object.hpp"
+#include "engine/components/component_type.hpp"
+#include "engine/components/script_component.hpp"
 #include "imgui.h"
 #include <iostream>
 #include <fstream>
@@ -18,6 +22,8 @@ void build_game() {
     project_manager.save_project();
     std::filesystem::path project_path = project_manager.get_project_path();
     std::string project_name = project_path.filename().string();
+    std::cout << project_path << std::endl;
+    std::cout << project_name << std::endl;
 
     file << "#pragma once\n";
     file << "#define PROJECT_PATH \"";
@@ -25,9 +31,20 @@ void build_game() {
     file << "\"\n";
     file.close();
 
-    std::cout << (project_path/project_name).string() << std::endl;
-    std::string build_command = "make clean all && mv ./game_build/game \""+(project_path/project_name).string()+"\"";
-    std::system(build_command.c_str());
+    std::system("rm ./game_build/scripts/*.cpp");
+    std::system("mkdir -p ./game_build/scripts");
+    AppMain& app = AppMain::get_instance();
+    auto scene = app.get_main_scene();
+    for (auto& object : scene->get_objects()) {
+        for (auto& component : object->get_components()) {
+            if (component->get_type() == ComponentType::SCRIPT_COMPONENT) {
+                std::string script_name = (dynamic_cast<ScriptComponent*>(component.get()))->get_script_file_name();
+                std::system(("cp "+(project_path/script_name).string()+" ./game_build/scripts/"+script_name).c_str());
+            }
+        }
+    }
+
+    std::system(("make all && mv ./game_build/game \""+(project_path/project_name).string()+"\"").c_str());
     std::cout << "Game built successfully." << std::endl;
 }
 

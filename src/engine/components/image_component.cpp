@@ -4,6 +4,10 @@
 #include "engine/object.hpp"
 #include "image/image_resource.hpp"
 
+void ImageComponent::init(Object& object) {
+
+}
+
 void ImageComponent::draw(Object& object) {
     AppMain& app = AppMain::get_instance();
     ImageResource& image_resource = ImageResource::get_instance();

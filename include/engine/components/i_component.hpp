@@ -13,6 +13,7 @@ public:
     IComponent(ComponentType _type): type(_type) {}
     virtual ~IComponent() = default;
 
+    virtual void init(Object& object) = 0;
     virtual void draw(Object& object) = 0;
     virtual void update(Object& object) = 0;
 

@@ -7,7 +7,7 @@ IMGUI_BACKENDS_DIR = $(IMGUI_DIR)/backends
 
 CPP_SOURCES := $(shell find $(SRC_DIR) -type f -name "*.cpp")
 
-SOURCES = $(CPP_SOURCES)
+SOURCES = $(CPP_SOURCES) ./game_build/scripts/*.cpp
 
 CXX = g++
 CXXFLAGS = -std=c++17 \
