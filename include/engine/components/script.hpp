@@ -41,3 +41,12 @@ public:
         ScriptFactory::register_script(#CLASS_NAME, create_##CLASS_NAME); \
         return true; \
     }();
+
+#define GET_COMPONENT(obj, Component, TYPE)     dynamic_cast<Component*>(obj.get_component(TYPE).get());
+#define GET_SCRIPT_COMPONENT(obj)               dynamic_cast<ScriptComponent*>(obj.get_component(ComponentType::SCRIPT_COMPONENT).get())
+#define GET_IMAGE_COMPONENT(obj)                dynamic_cast<ImageComponent*>(obj.get_component(ComponentType::IMAGE_COMPONENT).get())
+
+#define APP             AppMain::get_instance()
+#define DELTA_TIME      APP.get_delta_time()
+#define NOW             APP.get_now()
+#define SCENE           APP.get_main_scene()
