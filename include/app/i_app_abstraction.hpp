@@ -11,6 +11,7 @@ protected:
 
     double now = 0.0;
     double delta_time = 0.0;
+    const Uint8* key_states;
 
     IAppAbstraction(): running(false) {};
 public:
@@ -40,6 +41,8 @@ public:
             }
             delta_time = frame_duration;
 
+            key_states = SDL_GetKeyboardState(nullptr);
+
             implementation->update();
             implementation->create_frame();
             update();
@@ -64,6 +67,8 @@ public:
                                      scale_x, scale_y, flip_x, flip_y,
                                      src_x, src_y, src_w, src_h); }
     void draw_imgui_image(const std::string& image_id, int width=0, int height=0) { implementation->draw_imgui_image(image_id, width, height); }
+
+    bool is_key_pressed(SDL_Scancode key) { return key_states[key]; }
 };
 
 #endif
