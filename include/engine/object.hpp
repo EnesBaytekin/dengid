@@ -9,6 +9,7 @@
 class Object {
 private:
     std::vector<std::unique_ptr<IComponent>> components;
+    bool dead = false;
 public:
     Vector2 position;
     std::string name = "New Object";
@@ -42,6 +43,13 @@ public:
     }
     void draw();
     void update();
+
+    void kill() {
+        dead = true;
+    }
+    bool is_dead() {
+        return dead;
+    }
 };
 
 #endif
