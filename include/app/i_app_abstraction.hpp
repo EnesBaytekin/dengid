@@ -3,6 +3,8 @@
 
 #include "app/i_app_implementation.hpp"
 #include "image/image.hpp"
+#include <iostream>
+#include <cstring>
 
 class IAppAbstraction {
 protected:
@@ -11,7 +13,8 @@ protected:
 
     double now = 0.0;
     double delta_time = 0.0;
-    const Uint8* key_states;
+    Uint8 key_states[SDL_NUM_SCANCODES] = {0};
+    Uint8 last_key_states[SDL_NUM_SCANCODES] = {0};
 
     IAppAbstraction(): running(false) {};
 public:
@@ -41,7 +44,11 @@ public:
             }
             delta_time = frame_duration;
 
-            key_states = SDL_GetKeyboardState(nullptr);
+            const Uint8* new_key_states = SDL_GetKeyboardState(nullptr);
+            if (new_key_states != nullptr) {
+                memcpy(last_key_states, key_states, SDL_NUM_SCANCODES);
+                memcpy(key_states, new_key_states, SDL_NUM_SCANCODES);
+            }
 
             implementation->update();
             implementation->create_frame();
@@ -69,6 +76,8 @@ public:
     void draw_imgui_image(const std::string& image_id, int width=0, int height=0) { implementation->draw_imgui_image(image_id, width, height); }
 
     bool is_key_pressed(SDL_Scancode key) { return key_states[key]; }
+    bool is_key_just_pressed(SDL_Scancode key) { return key_states[key] && !last_key_states[key]; }
+    bool is_key_just_released(SDL_Scancode key) { return !key_states[key] && last_key_states[key]; }
 };
 
 #endif
