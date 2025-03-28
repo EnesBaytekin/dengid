@@ -58,19 +58,41 @@ void build_and_run_game() {
     run_game();
 }
 
+void ImguiWindowMainMenuBar::update() {
+    AppMain& app = AppMain::get_instance();
+
+    auto view_type = app.get_current_view_type();
+    if (view_type == EnumAppViewType::PROJECT_VIEW) {
+        if (app.is_key_just_pressed(SDL_SCANCODE_F5)) {
+            if (app.is_key_pressed(SDL_SCANCODE_LCTRL)) {
+                std::thread build_thread(build_and_run_game);
+                build_thread.detach();
+            } else {
+                std::thread build_thread(run_game);
+                build_thread.detach();
+            }
+        }
+        if (app.is_key_just_pressed(SDL_SCANCODE_S)) {
+            if (app.is_key_pressed(SDL_SCANCODE_LCTRL)) {
+                std::cout << "Scene is saving..." << std::endl;
+                ProjectManager& project_manager = ProjectManager::get_instance();
+                project_manager.save_project();
+                std::cout << "Scene has saved" << std::endl;
+            }
+        }
+    }
+}
+
 void ImguiWindowMainMenuBar::show() {
     AppMain& app = AppMain::get_instance();
     
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Save", "Ctrl+S")) {
-                std::cout << "Saving..." << std::endl;
-            }
-            if (ImGui::MenuItem("Save as...", "Ctrl+Shift+S")) {
-                std::cout << "Saving as..." << std::endl;
-            }
-            if (ImGui::MenuItem("Open", "Ctrl+O")) {
-                std::cout << "Opening..." << std::endl;
+                std::cout << "Scene is saving..." << std::endl;
+                ProjectManager& project_manager = ProjectManager::get_instance();
+                project_manager.save_project();
+                std::cout << "Scene has saved" << std::endl;
             }
             ImGui::Separator();
             if (ImGui::MenuItem("Exit", "Alt+F4")) {
@@ -99,11 +121,11 @@ void ImguiWindowMainMenuBar::show() {
             }
 
             if (ImGui::BeginMenu("Build")) {
-                if (ImGui::MenuItem("Build Game")) {
+                if (ImGui::MenuItem("Build Game", "Ctrl+F5")) {
                     std::thread build_thread(build_and_run_game);
                     build_thread.detach();
                 }
-                if (ImGui::MenuItem("Run Game")) {
+                if (ImGui::MenuItem("Run Game", "F5")) {
                     std::thread build_thread(run_game);
                     build_thread.detach();
                 }

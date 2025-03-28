@@ -11,6 +11,7 @@ public:
     ~ImguiWindowMainMenuBar() override = default;
 
     void show() override;
+    void update() override;
 };
 
 #endif

@@ -19,6 +19,8 @@ void AppMain::update() {
         }
     }
 
+    this->get_view()->update();
+
     if (main_scene) {
         main_scene->update();
     }

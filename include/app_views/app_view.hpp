@@ -23,6 +23,11 @@ public:
             }
         }
     }
+    void update() {
+        for (auto [name, window] : windows) {
+            window->update();
+        }
+    }
 };
 
 #endif

@@ -13,6 +13,7 @@ public:
     void set_visible(bool new_visiblity) { visible = new_visiblity; }
     bool is_visible() { return visible; }
     virtual void show() = 0;
+    virtual void update() { };
 };
 
 #endif
