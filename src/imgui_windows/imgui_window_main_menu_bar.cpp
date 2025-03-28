@@ -22,8 +22,6 @@ void build_game() {
     project_manager.save_project();
     std::filesystem::path project_path = project_manager.get_project_path();
     std::string project_name = project_path.filename().string();
-    std::cout << project_path << std::endl;
-    std::cout << project_name << std::endl;
 
     file << "#pragma once\n";
     file << "#define PROJECT_PATH \"";
@@ -45,7 +43,19 @@ void build_game() {
     }
 
     std::system(("make all && mv ./game_build/game \""+(project_path/project_name).string()+"\"").c_str());
-    std::cout << "Game built successfully." << std::endl;
+}
+
+void run_game() {
+    ProjectManager& project_manager = ProjectManager::get_instance();
+    std::filesystem::path project_path = project_manager.get_project_path();
+    std::string project_name = project_path.filename().string();
+
+    std::system((project_path/project_name).string().c_str());
+}
+
+void build_and_run_game() {
+    build_game();
+    run_game();
 }
 
 void ImguiWindowMainMenuBar::show() {
@@ -90,7 +100,11 @@ void ImguiWindowMainMenuBar::show() {
 
             if (ImGui::BeginMenu("Build")) {
                 if (ImGui::MenuItem("Build Game")) {
-                    std::thread build_thread(build_game);
+                    std::thread build_thread(build_and_run_game);
+                    build_thread.detach();
+                }
+                if (ImGui::MenuItem("Run Game")) {
+                    std::thread build_thread(run_game);
                     build_thread.detach();
                 }
                 ImGui::EndMenu();
