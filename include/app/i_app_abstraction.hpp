@@ -3,6 +3,7 @@
 
 #include "app/i_app_implementation.hpp"
 #include "image/image.hpp"
+#include "math/vector2.hpp"
 #include <iostream>
 #include <cstring>
 
@@ -15,6 +16,11 @@ protected:
     double delta_time = 0.0;
     Uint8 key_states[SDL_NUM_SCANCODES] = {0};
     Uint8 last_key_states[SDL_NUM_SCANCODES] = {0};
+
+    Uint32 mouse_buttons = 0;
+    Uint32 last_mouse_buttons = 0;
+    Vector2 mouse_position = {0, 0};
+    Vector2 last_mouse_position = {0, 0};
 
     IAppAbstraction(): running(false) {};
 public:
@@ -50,6 +56,14 @@ public:
                 memcpy(key_states, new_key_states, SDL_NUM_SCANCODES);
             }
 
+            last_mouse_buttons = mouse_buttons;
+            last_mouse_position = mouse_position;
+
+            int mouse_x, mouse_y;
+            mouse_buttons = SDL_GetMouseState(&mouse_x, &mouse_y);
+            mouse_position.x = mouse_x;
+            mouse_position.y = mouse_y;
+
             implementation->update();
             implementation->create_frame();
             update();
@@ -78,6 +92,12 @@ public:
     bool is_key_pressed(SDL_Scancode key) { return key_states[key]; }
     bool is_key_just_pressed(SDL_Scancode key) { return key_states[key] && !last_key_states[key]; }
     bool is_key_just_released(SDL_Scancode key) { return !key_states[key] && last_key_states[key]; }
+
+    Vector2 get_mouse_position() { return mouse_position; }
+    Vector2 get_mouse_motion() { return mouse_position-last_mouse_position; }
+    bool is_mouse_button_pressed(Uint32 button) { return mouse_buttons & SDL_BUTTON(button); }
+    bool is_mouse_button_just_pressed(Uint32 button) { return (mouse_buttons & SDL_BUTTON(button)) && !(last_mouse_buttons & SDL_BUTTON(button)); }
+    bool is_mouse_button_just_released(Uint32 button) { return !(mouse_buttons & SDL_BUTTON(button)) && (last_mouse_buttons & SDL_BUTTON(button)); }
 };
 
 #endif
