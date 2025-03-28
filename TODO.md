@@ -47,6 +47,7 @@
 - [ ] objelere depth ekle
 - [ ] ysort componenti ekle
 
-- [ ] editore terminal windowu ekle
-- [ ] terminal windosuna yazdırmaya yarayan print fonksiyonu ekle
+- [x] editore terminal windowu ekle
+- [x] terminal windowuna yazdırmaya yarayan print fonksiyonu ekle
+- [ ] build edilen game çalışırken print edilen şeyler normal terminale (stdout) yazdırılıyor. game, engine içinde çalıştırıldığında buraya yazılan şeyleri engine terminalinde yazdır
 - [ ] debug mesajlarını falan bu windowa ekle

@@ -7,8 +7,9 @@
 #include <map>
 #include "project/project_settings.hpp"
 #include "app/initialize_imgui_style.hpp"
+#include "imgui_windows/imgui_window_terminal.hpp"
+#include "app_views/app_view.hpp"
 
-class AppView;
 class Scene;
 
 class AppMain: public IAppAbstraction {
@@ -42,6 +43,12 @@ public:
     void setup() override;
     void update() override;
     void draw() override;
+
+    void print(std::string message) {
+        if (get_current_view_type() == EnumAppViewType::PROJECT_VIEW) {
+            ((ImguiWindowTerminal*)(get_view()->get_window("terminal").get()))->print(message);
+        }
+    };
 };
 
 #endif

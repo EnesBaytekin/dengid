@@ -50,3 +50,4 @@ public:
 #define DELTA_TIME      APP.get_delta_time()
 #define NOW             APP.get_now()
 #define SCENE           APP.get_main_scene()
+#define PRINT(msg)      APP.print(msg)
