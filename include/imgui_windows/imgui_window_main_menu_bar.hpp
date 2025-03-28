@@ -1,5 +1,5 @@
-#ifndef IMGUI_VIEW_MAIN_MENU_BAR_HPP
-#define IMGUI_VIEW_MAIN_MENU_BAR_HPP
+#ifndef IMGUI_WINDOW_MAIN_MENU_BAR_HPP
+#define IMGUI_WINDOW_MAIN_MENU_BAR_HPP
 
 #include "imgui_windows/imgui_window.hpp"
 

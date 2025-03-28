@@ -7,6 +7,7 @@
 #include "imgui_windows/imgui_window_main_menu_bar.hpp"
 #include "imgui_windows/imgui_window_hierarchy.hpp"
 #include "imgui_windows/imgui_window_inspector.hpp"
+#include "imgui_windows/imgui_window_terminal.hpp"
 
 std::shared_ptr<AppView> get_app_view_project() {
     auto project_view = std::make_shared<AppView>();
@@ -23,6 +24,9 @@ std::shared_ptr<AppView> get_app_view_project() {
 
     auto inspector_window = std::make_shared<ImguiWindowInspector>();
     project_view->add_window("inspector", inspector_window);
+
+    auto terminal_window = std::make_shared<ImguiWindowTerminal>();
+    project_view->add_window("terminal", terminal_window);
 
     return project_view;
 }

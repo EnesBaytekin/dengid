@@ -1,5 +1,5 @@
-#ifndef IMGUI_VIEW_PROJECT_HPP
-#define IMGUI_VIEW_PROJECT_HPP
+#ifndef IMGUI_WINDOW_SETTINGS_HPP
+#define IMGUI_WINDOW_SETTINGS_HPP
 
 #include "imgui_windows/imgui_window.hpp"
 
