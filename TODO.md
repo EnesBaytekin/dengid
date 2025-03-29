@@ -49,5 +49,5 @@
 
 - [x] editore terminal windowu ekle
 - [x] terminal windowuna yazdırmaya yarayan print fonksiyonu ekle
-- [ ] build edilen game çalışırken print edilen şeyler normal terminale (stdout) yazdırılıyor. game, engine içinde çalıştırıldığında buraya yazılan şeyleri engine terminalinde yazdır
-- [ ] debug mesajlarını falan bu windowa ekle
+- [x] build edilen game çalışırken print edilen şeyler normal terminale (stdout) yazdırılıyor. game, engine içinde çalıştırıldığında buraya yazılan şeyleri engine terminalinde yazdır
+- [x] debug mesajlarını falan bu windowa ekle

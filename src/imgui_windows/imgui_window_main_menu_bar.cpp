@@ -18,6 +18,10 @@ void build_game() {
         return;
     }
 
+    AppMain& app = AppMain::get_instance();
+    
+    app.print("Building game...\n");
+
     ProjectManager& project_manager = ProjectManager::get_instance();
     project_manager.save_project();
     std::filesystem::path project_path = project_manager.get_project_path();
@@ -31,7 +35,7 @@ void build_game() {
 
     std::system("rm ./game_build/scripts/*.cpp");
     std::system("mkdir -p ./game_build/scripts");
-    AppMain& app = AppMain::get_instance();
+
     auto scene = app.get_main_scene();
     for (auto& object : scene->get_objects()) {
         for (auto& component : object->get_components()) {
@@ -43,6 +47,8 @@ void build_game() {
     }
 
     std::system(("make all && mv ./game_build/game \""+(project_path/project_name).string()+"\"").c_str());
+
+    app.print("Game has built successfully.\n");
 }
 
 void run_game() {
@@ -50,7 +56,32 @@ void run_game() {
     std::filesystem::path project_path = project_manager.get_project_path();
     std::string project_name = project_path.filename().string();
 
-    std::system((project_path/project_name).string().c_str());
+    std::string command = project_path/project_name;
+
+    AppMain& app = AppMain::get_instance();
+    
+    app.print("Running game...\n");
+
+    FILE* pipe = popen(command.c_str(), "r");
+    if (!pipe) {
+        return;
+    }
+
+    std::string line = "";
+    char buffer[256];
+    while (!feof(pipe)) {
+        if (fgets(buffer, 256, pipe) != NULL) {
+            line += buffer;
+            if (line.back() == '\n') {
+                app.print(line);
+                line = "";
+            }
+        }
+    }
+
+    pclose(pipe);
+
+    app.print("Game has stopped.\n");
 }
 
 void build_and_run_game() {

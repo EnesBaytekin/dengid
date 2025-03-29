@@ -9,11 +9,13 @@
 #include "app/initialize_imgui_style.hpp"
 #include "imgui_windows/imgui_window_terminal.hpp"
 #include "app_views/app_view.hpp"
+#include <mutex>
 
 class Scene;
 
 class AppMain: public IAppAbstraction {
 private:
+    std::mutex print_mutex;
     EnumAppViewType current_view_type;
     std::map<EnumAppViewType, std::shared_ptr<AppView>> views;
     std::shared_ptr<Scene> main_scene;
@@ -46,6 +48,7 @@ public:
 
     void print(std::string message) {
         if (get_current_view_type() == EnumAppViewType::PROJECT_VIEW) {
+            std::lock_guard<std::mutex> guard(print_mutex);
             ((ImguiWindowTerminal*)(get_view()->get_window("terminal").get()))->print(message);
         }
     };
