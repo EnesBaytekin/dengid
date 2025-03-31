@@ -52,5 +52,5 @@
 - [x] build edilen game çalışırken print edilen şeyler normal terminale (stdout) yazdırılıyor. game, engine içinde çalıştırıldığında buraya yazılan şeyleri engine terminalinde yazdır
 - [x] debug mesajlarını falan bu windowa ekle
 - [x] birden fazla oyun aynı anda çalıştırılamasın engine içinde. run fonksiyonu çalışınca baksın zaten çalışıyor mu diye, çalışmıyorsa çalıştırsın. çalışırken build de edilemesin
-- [ ] build edilmemişken çalıştırmaya çalışılırsa hata vermesin uyarı yazsın
+- [x] build edilmemişken çalıştırmaya çalışılırsa hata vermesin uyarı yazsın
 - [x] engine içinden oyunu durdurabileceğimiz bir stop seçeneği ekle

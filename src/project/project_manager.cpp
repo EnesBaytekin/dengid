@@ -55,17 +55,24 @@ void ProjectManager::save_project() {
 }
 
 void ProjectManager::build_game() {
-    std::ofstream file("./include/project_path_macro.hpp");
-    if (!file.is_open()) {
-        std::cerr << "Failed to create project path macro file." << std::endl;
+    AppMain& app = AppMain::get_instance();
+
+    if (game_is_running) {
+        app.print("Could not build game.\n");
         return;
     }
 
-    AppMain& app = AppMain::get_instance();
-    
     app.print("Building game...\n");
 
     save_project();
+
+    std::ofstream file("./include/project_path_macro.hpp");
+    if (!file.is_open()) {
+        std::cerr << "Failed to create project path macro file." << std::endl;
+        app.print("Failed to build game.\n");
+        return;
+    }
+
     std::filesystem::path project_path = get_project_path();
     std::string project_name = project_path.filename().string();
 
@@ -94,11 +101,12 @@ void ProjectManager::build_game() {
 }
 
 void ProjectManager::run_game() {
+    AppMain& app = AppMain::get_instance();
+
     if (game_is_running) {
+        app.print("Game is already running.\n");
         return;
     }
-
-    AppMain& app = AppMain::get_instance();
     
     game_is_running = true;
     app.print("Running game...\n");
@@ -128,6 +136,9 @@ void ProjectManager::run_game() {
         std::string project_name = project_path.filename();
         std::string command = project_path/project_name;
         execl(command.c_str(), command.c_str(), NULL);
+
+        app.print("Failed to start game. Try to build it first.\n");
+        game_is_running = false;
         exit(1);
     }
 
