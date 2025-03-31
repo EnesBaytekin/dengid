@@ -8,6 +8,7 @@ class ProjectManager {
 private:
     ProjectSettings project_settings;
     std::filesystem::path project_path;
+    bool game_is_running = false;
 
     ProjectManager() = default;
     ~ProjectManager() = default;
@@ -26,6 +27,8 @@ public:
 
     void load_project();
     void save_project();
+    void build_game();
+    void run_game();
 };
 
 #endif
