@@ -9,6 +9,7 @@ private:
     ProjectSettings project_settings;
     std::filesystem::path project_path;
     bool game_is_running = false;
+    pid_t game_pid = -1;
 
     ProjectManager() = default;
     ~ProjectManager() = default;
@@ -29,6 +30,7 @@ public:
     void save_project();
     void build_game();
     void run_game();
+    void stop_game();
 };
 
 #endif

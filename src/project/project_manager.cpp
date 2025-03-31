@@ -7,6 +7,10 @@
 #include "engine/components/component_save_visitor.hpp"
 #include "engine/object_loader.hpp"
 #include "engine/components/script_component.hpp"
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <csignal>
 
 void ProjectManager::load_project() {
     auto main_scene = std::make_shared<Scene>();
@@ -93,36 +97,70 @@ void ProjectManager::run_game() {
     if (game_is_running) {
         return;
     }
-    std::filesystem::path project_path = get_project_path();
-    std::string project_name = project_path.filename().string();
-
-    std::string command = project_path/project_name;
 
     AppMain& app = AppMain::get_instance();
     
     game_is_running = true;
     app.print("Running game...\n");
 
-    FILE* pipe = popen(command.c_str(), "r");
-    if (!pipe) {
+    int pipe_fd[2];
+    if (pipe(pipe_fd) == -1) {
+        app.print("Failed to start game.\n");
+        game_is_running = false;
         return;
     }
 
+    pid_t pid = fork();
+    if (pid == -1) {
+        app.print("Failed to start game.\n");
+        game_is_running = false;
+        return;
+    }
+
+    // child
+    if (pid == 0) {
+        close(pipe_fd[0]);
+        dup2(pipe_fd[1], STDOUT_FILENO);
+        dup2(pipe_fd[1], STDERR_FILENO);
+        close(pipe_fd[1]);
+
+        std::filesystem::path project_path = get_project_path();
+        std::string project_name = project_path.filename();
+        std::string command = project_path/project_name;
+        execl(command.c_str(), command.c_str(), NULL);
+        exit(1);
+    }
+
+    // parent
+    close(pipe_fd[1]);
+
+    game_pid = pid;
+
     std::string line = "";
     char buffer[256];
-    while (!feof(pipe)) {
-        if (fgets(buffer, 256, pipe) != NULL) {
-            line += buffer;
-            if (line.back() == '\n') {
-                app.print(line);
-                line = "";
-            }
+    while (game_is_running) {
+        ssize_t length = read(pipe_fd[0], buffer, sizeof(buffer)-1);
+        if (length <= 0) {
+            break;
+        }
+        buffer[length] = '\0';
+        line += buffer;
+        if (line.back() == '\n') {
+            app.print(line);
+            line = "";
         }
     }
 
-    pclose(pipe);
+    close(pipe_fd[0]);
 
     app.print("Game has stopped.\n");
     game_is_running = false;
 }
 
+void ProjectManager::stop_game() {
+    if (game_is_running && game_pid > 0) {
+        kill(game_pid, SIGTERM);
+        game_pid = -1;
+        game_is_running = false;
+    }
+}

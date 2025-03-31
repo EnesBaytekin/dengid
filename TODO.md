@@ -53,4 +53,4 @@
 - [x] debug mesajlarını falan bu windowa ekle
 - [x] birden fazla oyun aynı anda çalıştırılamasın engine içinde. run fonksiyonu çalışınca baksın zaten çalışıyor mu diye, çalışmıyorsa çalıştırsın. çalışırken build de edilemesin
 - [ ] build edilmemişken çalıştırmaya çalışılırsa hata vermesin uyarı yazsın
-- [ ] engine içinden oyunu durdurabileceğimiz bir stop seçeneği ekle
+- [x] engine içinden oyunu durdurabileceğimiz bir stop seçeneği ekle

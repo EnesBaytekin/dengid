@@ -16,14 +16,17 @@ void ImguiWindowMainMenuBar::update() {
 
     auto view_type = app.get_current_view_type();
     if (view_type == EnumAppViewType::PROJECT_VIEW) {
+        if (app.is_key_just_pressed(SDL_SCANCODE_F6)) {
+            std::thread build_thread([&project_manager]() {
+                project_manager.build_game();
+                project_manager.run_game();
+            });
+            build_thread.detach();
+        }
         if (app.is_key_just_pressed(SDL_SCANCODE_F5)) {
-            if (app.is_key_pressed(SDL_SCANCODE_LCTRL)) {
-                std::thread build_thread([&project_manager]() {
-                    project_manager.build_game();
-                    project_manager.run_game();
-                });
-                build_thread.detach();
-            } else {
+            if (app.is_key_pressed(SDL_SCANCODE_LSHIFT)) { // Shift+F5
+                project_manager.stop_game();
+            } else { // F5
                 std::thread run_thread([&project_manager]() {
                     project_manager.run_game();
                 });
@@ -78,7 +81,7 @@ void ImguiWindowMainMenuBar::show() {
             }
 
             if (ImGui::BeginMenu("Build")) {
-                if (ImGui::MenuItem("Build Game", "Ctrl+F5")) {
+                if (ImGui::MenuItem("Build Game", "F6")) {
                     std::thread build_thread([&project_manager]() {
                         project_manager.build_game();
                         project_manager.run_game();
@@ -90,6 +93,9 @@ void ImguiWindowMainMenuBar::show() {
                         project_manager.run_game();
                     });
                     run_thread.detach();
+                }
+                if (ImGui::MenuItem("Stop Game", "Shift+F5")) {
+                    project_manager.stop_game();
                 }
                 ImGui::EndMenu();
             }
