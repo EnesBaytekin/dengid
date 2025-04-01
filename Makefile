@@ -59,7 +59,7 @@ $(COMPILED_LIB_DIR)/libdengid.a: $(CPP_OBJS) $(IMGUI_OBJS)
 	mkdir -p $(COMPILED_LIB_DIR)
 	ar rcs $(COMPILED_LIB_DIR)/libdengid.a $(CPP_OBJS)
 	ar rcs $(COMPILED_LIB_DIR)/libimgui.a $(IMGUI_OBJS)
-	rm -rf $(OBJ_DIR)
+	# rm -rf $(OBJ_DIR)
 
 clean:
 	rm -f $(TARGET)

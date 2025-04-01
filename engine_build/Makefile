@@ -2,12 +2,14 @@ BUILD_DIR = game_build
 TARGET = $(BUILD_DIR)/game
 SRC_DIR = src
 LIB_DIR = lib
+OBJ_DIR = $(BUILD_DIR)/obj
+SCRIPT_DIR = $(BUILD_DIR)/scripts
 IMGUI_DIR = ../imgui
 IMGUI_BACKENDS_DIR = $(IMGUI_DIR)/backends
 
 CPP_SOURCES := $(shell find $(SRC_DIR) -type f -name "*.cpp")
 
-SOURCES = $(CPP_SOURCES) ./game_build/scripts/*.cpp
+SCRIPT_SOURCES := $(shell find $(SCRIPT_DIR) -type f -name "*.cpp")
 
 CXX = g++
 CXXFLAGS = -std=c++17 \
@@ -27,11 +29,21 @@ LDFLAGS = -L/usr/local/lib \
 		  -ldengid \
 		  -limgui
 
+CPP_OBJS = $(CPP_SOURCES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+SCRIPT_OBJS = $(SCRIPT_SOURCES:$(SCRIPT_DIR)/%.cpp=$(BUILD_DIR)/obj/%.o)
+
 all: $(TARGET)
 
-$(TARGET): $(SOURCES)
-	mkdir -p $(BUILD_DIR)
-	$(CXX) $(SOURCES) -o $(TARGET) $(CXXFLAGS) $(LDFLAGS)
+$(TARGET): $(CPP_OBJS) $(SCRIPT_OBJS)
+	$(CXX) $(CPP_OBJS) $(SCRIPT_OBJS) -o $(TARGET) $(LDFLAGS)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/obj/%.o: $(SCRIPT_DIR)/%.cpp
+	mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
 	rm -rf $(BUILD_DIR)

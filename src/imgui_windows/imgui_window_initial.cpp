@@ -34,6 +34,8 @@ void load_project(const std::filesystem::path& project_path) {
     project_manager.set_project_path(project_path);
     
     project_manager.load_project();
+
+    std::system("make clean");
 }
 
 void create_project(const std::filesystem::path& project_path) {

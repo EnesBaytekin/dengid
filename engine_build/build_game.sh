@@ -5,7 +5,7 @@ BUILDER=DENGID-GAME-BUILDER
 RETURNCODE=0
 
 echo -e "\e[32m${BUILDER}: Building the project...\e[0m"
-make clean all
+make all
 if [ $? -eq 0 ]; then
     echo -e "\e[32m${BUILDER}: The project has been built successfully.\e[0m"
 else

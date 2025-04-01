@@ -25,7 +25,7 @@ if [ ! -d "./engine_build" ]; then
 fi
 # Create and delete a container to build the project
 echo -e "\e[32m${BUILDER}: Building the project in a container...\e[0m"
-docker run --rm -v .:/app dengid-builder:v0.2 make clean all && cp -r icon.png engine_build/
+docker run --rm -v .:/app dengid-builder:v0.2 make all && cp -r icon.png engine_build/
 if [ $? -eq 0 ]; then
     echo -e "\e[32m${BUILDER}: The project has been built successfully.\e[0m"
 else

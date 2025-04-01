@@ -12,7 +12,9 @@
 
 - [x] projeyi build etmeden önce otomatik kaydetsin
 - [ ] build sürecini engine içinde ui da göster
-- [ ] build sürecinde custom scriptleri .o olarak kaydet ve sadece değişen dosyalar compile edilsin
+- [x] build sürecinde custom scriptleri .o olarak kaydet ve sadece değişen dosyalar compile edilsin
+- [x] yeni proje açıldığında engine_build dizinindeki makefile ile clean çalıştırsın ki oyuna özgü obj dosyaları falan temizlensin
+
 - [X] engine içinde projeyi çalıştırma seçeneği ekle
 - [x] custom scriptleri çalıştırmayı ekle
 - [x] input handling mekanizmasını kur
