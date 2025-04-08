@@ -1,3 +1,5 @@
+# TODO
+
 - [x] libdengid.a şeklinde her şeyi değil de sadece oyunu compile etmek için gerekli olan dosyaları lib olarak kaydet.
 - [x] oyun için spesifik olan kodları (app_main.cpp falan gibi) engine_build dizininin içinde ki src ve include içinde tanımla
 - [x] engine_build içinde oyunu build edecek bir Makefile oluştur.
@@ -56,3 +58,5 @@
 - [x] birden fazla oyun aynı anda çalıştırılamasın engine içinde. run fonksiyonu çalışınca baksın zaten çalışıyor mu diye, çalışmıyorsa çalıştırsın. çalışırken build de edilemesin
 - [x] build edilmemişken çalıştırmaya çalışılırsa hata vermesin uyarı yazsın
 - [x] engine içinden oyunu durdurabileceğimiz bir stop seçeneği ekle
+
+- [ ] scriptteki macroları düzenle. app global olsun. print olmasın
