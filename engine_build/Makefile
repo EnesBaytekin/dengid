@@ -19,7 +19,8 @@ CXXFLAGS = -std=c++17 \
 		   -I../include \
 		   -D_REENTRANT \
 		   -I$(IMGUI_DIR) \
-		   -I$(IMGUI_BACKENDS_DIR)
+		   -I$(IMGUI_BACKENDS_DIR) \
+		   -MMD -MF $(OBJ_DIR)/$(@F:.o=.d)
 LDFLAGS = -L/usr/local/lib \
 		  -Wl,-rpath,/usr/local/lib \
 		  -Wl,--enable-new-dtags \
@@ -47,5 +48,7 @@ $(BUILD_DIR)/obj/%.o: $(SCRIPT_DIR)/%.cpp
 
 clean:
 	rm -rf $(BUILD_DIR)
+
+-include $(shell find $(OBJ_DIR) -type f -name "*.d")
 
 .PHONY: all clean

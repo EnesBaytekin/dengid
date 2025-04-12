@@ -25,7 +25,8 @@ CXXFLAGS = -std=c++17 \
 		   -D_REENTRANT \
 		   -I$(IMGUI_DIR) \
 		   -I$(IMGUI_BACKENDS_DIR) \
-		   -pthread
+		   -pthread \
+		   -MMD -MF $(OBJ_DIR)/$(@F:.o=.d)
 LDFLAGS = -L/usr/local/lib \
 		  -Wl,-rpath,/usr/local/lib \
 		  -Wl,--enable-new-dtags \
@@ -66,5 +67,7 @@ clean:
 	rm -rf $(OBJ_DIR)
 	rm -f $(COMPILED_LIB_DIR)/libdengid.a
 	rm -f $(COMPILED_LIB_DIR)/libimgui.a
+
+-include $(shell find $(OBJ_DIR) -type f -name "*.d")
 
 .PHONY: all clean
