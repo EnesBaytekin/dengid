@@ -59,4 +59,5 @@
 - [x] build edilmemişken çalıştırmaya çalışılırsa hata vermesin uyarı yazsın
 - [x] engine içinden oyunu durdurabileceğimiz bir stop seçeneği ekle
 
-- [ ] scriptteki macroları düzenle. app global olsun. print olmasın
+- [x] scriptteki macroları düzenle. app global olsun. print olmasın
+- [ ] scriptteki get component macrolarını düzenle

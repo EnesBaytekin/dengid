@@ -46,8 +46,8 @@ public:
 #define GET_SCRIPT_COMPONENT(obj)               dynamic_cast<ScriptComponent*>(obj.get_component(ComponentType::SCRIPT_COMPONENT).get())
 #define GET_IMAGE_COMPONENT(obj)                dynamic_cast<ImageComponent*>(obj.get_component(ComponentType::IMAGE_COMPONENT).get())
 
-#define APP             AppMain::get_instance()
-#define DELTA_TIME      APP.get_delta_time()
-#define NOW             APP.get_now()
-#define SCENE           APP.get_main_scene()
-#define PRINT(msg)      APP.print(msg)
+inline AppMain& app = AppMain::get_instance();
+
+#define DELTA_TIME      app.get_delta_time()
+#define NOW             app.get_now()
+#define SCENE           app.get_main_scene()
