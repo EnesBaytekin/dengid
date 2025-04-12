@@ -13,6 +13,7 @@ obj/imgui_windows/imgui_window_inspector.o: \
  include/project/project_manager.hpp imgui/imgui.h imgui/imconfig.h \
  include/engine/components/image_component.hpp \
  include/engine/components/i_component_visitor.hpp \
+ include/image/image_resource.hpp \
  include/engine/components/script_component.hpp \
  include/engine/components/script.hpp \
  include/engine/components/component_draw_inspector_visitor.hpp

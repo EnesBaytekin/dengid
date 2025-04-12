@@ -11,5 +11,6 @@ obj/engine/object_loader.o: src/engine/object_loader.cpp \
  include/engine/components/component_type.hpp \
  include/engine/components/image_component.hpp \
  include/engine/components/i_component_visitor.hpp \
+ include/image/image_resource.hpp include/project/project_manager.hpp \
  include/engine/components/script_component.hpp \
  include/engine/components/script.hpp

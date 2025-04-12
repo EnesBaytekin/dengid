@@ -7,6 +7,7 @@
 #include <string>
 #include "math/vector2.hpp"
 #include "app/app_main.hpp"
+#include "image/image_resource.hpp"
 
 class ImageComponent: public IComponent {
 private:
@@ -34,6 +35,7 @@ public:
     void update(Object& object) override;
     void        set_image_id(std::string id) { image_id = id; }
     std::string get_image_id() { return image_id; }
+    Vector2     get_size() { auto image = ImageResource::get_instance().get_image(image_id); return {(float)image->get_width()*scale.x/frame_count, (float)image->get_height()*scale.y}; }
     void        set_scale(Vector2 _scale) { scale = _scale; }
     Vector2     get_scale() { return scale; }
     void        set_flip_x(bool _flip_x) { flip_x = _flip_x; }

@@ -12,6 +12,7 @@ obj/engine/components/component_save_visitor.o: \
  include/app/initialize_imgui_style.hpp \
  include/imgui_windows/imgui_window_terminal.hpp \
  include/imgui_windows/imgui_window.hpp include/app_views/app_view.hpp \
+ include/image/image_resource.hpp include/project/project_manager.hpp \
  include/engine/components/script_component.hpp \
  include/engine/components/script.hpp include/engine/object.hpp \
  imgui/imgui.h imgui/imconfig.h
