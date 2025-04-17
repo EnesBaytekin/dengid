@@ -35,7 +35,7 @@ void load_project(const std::filesystem::path& project_path) {
     
     project_manager.load_project();
 
-    std::system("make clean");
+    std::system("make clean > /dev/null 2>&1");
 }
 
 void create_project(const std::filesystem::path& project_path) {
