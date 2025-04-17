@@ -22,3 +22,7 @@ void ComponentSaveVisitor::visit_script_component(ScriptComponent& component) {
     components_data += "script,";
     components_data += component.get_script_file_name()+",";
 }
+
+void ComponentSaveVisitor::visit_hitbox_component(HitboxComponent& component) {
+    components_data += "hitbox,";
+}

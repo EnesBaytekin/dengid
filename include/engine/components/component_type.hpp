@@ -4,7 +4,8 @@
 enum class ComponentType {
     NONE,
     IMAGE_COMPONENT,
-    SCRIPT_COMPONENT
+    SCRIPT_COMPONENT,
+    HITBOX_COMPONENT
 };
 
 #endif

@@ -6,6 +6,7 @@
 #include "app_views/app_view.hpp"
 #include "engine/components/image_component.hpp"
 #include "engine/components/script_component.hpp"
+#include "engine/components/hitbox_component.hpp"
 #include "engine/components/component_draw_inspector_visitor.hpp"
 
 void ImguiWindowInspector::show() {
@@ -83,6 +84,7 @@ void ImguiWindowInspector::show() {
         std::map<ComponentType, std::string> component_list;
         component_list[ComponentType::IMAGE_COMPONENT] = "Image Component";
         component_list[ComponentType::SCRIPT_COMPONENT] = "Script Component";
+        component_list[ComponentType::HITBOX_COMPONENT] = "Hitbox Component";
 
         static ComponentType selected_component_type;
         static bool component_selection_popup_is_open = false;
@@ -99,6 +101,9 @@ void ImguiWindowInspector::show() {
             ImGui::Separator();
 
             for (auto [type, name] : component_list) {
+                if (selected_object->has_component(type)) {
+                    continue;
+                }
                 if (ImGui::Selectable(name.c_str(), selected_component_type == type)) {
                     selected_component_type = type;
                     ImGui::CloseCurrentPopup();
@@ -117,6 +122,10 @@ void ImguiWindowInspector::show() {
                 }
                 case ComponentType::SCRIPT_COMPONENT: {
                     selected_object->add_component(std::make_unique<ScriptComponent>(""));
+                    break;
+                }
+                case ComponentType::HITBOX_COMPONENT: {
+                    selected_object->add_component(std::make_unique<HitboxComponent>());
                     break;
                 }
             }

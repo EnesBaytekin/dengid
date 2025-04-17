@@ -145,3 +145,9 @@ void ComponentDrawInspectorVisitor::visit_script_component(ScriptComponent& comp
         ImGui::Text("Script: %s", component.get_script_file_name().c_str());
     }
 }
+
+void ComponentDrawInspectorVisitor::visit_hitbox_component(HitboxComponent& component) {
+    if (ImGui::CollapsingHeader("Hitbox Component", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::Text("...");
+    }
+}
