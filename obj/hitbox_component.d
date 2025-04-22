@@ -13,4 +13,7 @@ obj/engine/components/hitbox_component.o: \
  include/imgui_windows/imgui_window_terminal.hpp \
  include/imgui_windows/imgui_window.hpp include/app_views/app_view.hpp \
  include/image/image_resource.hpp include/project/project_manager.hpp \
- include/math/rect.hpp include/engine/object.hpp
+ include/math/rect.hpp include/engine/object.hpp imgui/imgui.h \
+ imgui/imconfig.h include/imgui_windows/imgui_window_inspector.hpp \
+ include/engine/editor_utility.hpp include/engine/object.hpp \
+ include/engine/components/image_component.hpp

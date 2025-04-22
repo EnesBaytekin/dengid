@@ -82,7 +82,7 @@ public:
     double get_now() { return now; }
     double get_delta_time() { return delta_time; }
 
-    void draw_rect(int x, int y, int width, int height)     { implementation->draw_rect(x, y, width, height); }
+    void draw_rect(int x, int y, int width, int height, int r, int g, int b, int a)     { implementation->draw_rect(x, y, width, height, r, g, b, a); }
     std::shared_ptr<Image> load_image(const std::string& file_path)         { return implementation->load_image(file_path); }
     void draw_image(const std::string& image_id , int x, int y,
                     float scale_x=1, float scale_y=1, bool flip_x=false, bool flip_y=false,

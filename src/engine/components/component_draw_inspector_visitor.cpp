@@ -1,6 +1,7 @@
 #include "engine/components/component_draw_inspector_visitor.hpp"
 #include "engine/components/image_component.hpp"
 #include "engine/components/script_component.hpp"
+#include "engine/components/hitbox_component.hpp"
 #include "app/app_main.hpp"
 #include "imgui.h"
 #include "imfilebrowser.hpp"
@@ -148,6 +149,13 @@ void ComponentDrawInspectorVisitor::visit_script_component(ScriptComponent& comp
 
 void ComponentDrawInspectorVisitor::visit_hitbox_component(HitboxComponent& component) {
     if (ImGui::CollapsingHeader("Hitbox Component", ImGuiTreeNodeFlags_DefaultOpen)) {
-        ImGui::Text("...");
+        Vector2 offset = component.get_offset(); 
+        Vector2 size = component.get_size();
+        if (ImGui::DragFloat2("Offset##hitbox", offset)) {
+            component.set_offset(offset);
+        }
+        if (ImGui::DragFloat2("Size##hitbox", size)) {
+            component.set_size(size);
+        }
     }
 }

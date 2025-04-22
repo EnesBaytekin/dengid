@@ -117,9 +117,10 @@ void AppImplementationSDLRenderer::render() {
     SDL_RenderPresent(renderer);
 }
 
-void AppImplementationSDLRenderer::draw_rect(int x, int y, int width, int height) {
+void AppImplementationSDLRenderer::draw_rect(int x, int y, int width, int height, int r, int g, int b, int a) {
     SDL_Rect rect = { x, y, width, height };
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(renderer, r, g, b, a);
     SDL_RenderFillRect(renderer, &rect);
 }
 

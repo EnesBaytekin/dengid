@@ -17,4 +17,5 @@ obj/imgui_windows/imgui_window_inspector.o: \
  include/engine/components/script_component.hpp \
  include/engine/components/script.hpp \
  include/engine/components/hitbox_component.hpp include/math/rect.hpp \
- include/engine/components/component_draw_inspector_visitor.hpp
+ include/engine/components/component_draw_inspector_visitor.hpp \
+ include/engine/editor_utility.hpp include/engine/object.hpp

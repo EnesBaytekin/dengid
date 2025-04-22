@@ -1,13 +1,20 @@
 #include "engine/components/hitbox_component.hpp"
 #include "engine/components/i_component_visitor.hpp"
 #include "engine/object.hpp"
+#include "imgui.h"
+#include "imgui_windows/imgui_window_inspector.hpp"
+#include "engine/editor_utility.hpp"
 
 void HitboxComponent::init(Object& object) {
 
 }
 
 void HitboxComponent::draw(Object& object) {
-
+    AppMain& app = AppMain::get_instance();
+    auto selected_object = dynamic_cast<ImguiWindowInspector*>(app.get_view()->get_window("inspector").get())->selected_object;
+    if (selected_object.get() == &object) {
+        app.draw_rect(object.position.x+offset.x, object.position.y+offset.y, size.x, size.y, 255, 255, 255, 64);
+    }    
 }
 
 void HitboxComponent::update(Object& object) {

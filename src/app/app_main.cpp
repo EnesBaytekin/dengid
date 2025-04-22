@@ -6,19 +6,11 @@
 #include "engine/scene.hpp"
 #include "math/rect.hpp"
 #include "engine/components/image_component.hpp"
+#include "engine/editor_utility.hpp"
 
 void AppMain::setup() {
     this->add_view(EnumAppViewType::INITIAL_VIEW, get_app_view_initial());
     this->add_view(EnumAppViewType::PROJECT_VIEW, get_app_view_project());
-}
-
-std::unique_ptr<Rect> get_ui_rect(Object* object) {
-    if (object->has_component(ComponentType::IMAGE_COMPONENT)) {
-        auto& image_component = *dynamic_cast<ImageComponent*>(object->get_component(ComponentType::IMAGE_COMPONENT).get());
-        return std::make_unique<Rect>(object->position, image_component.get_size());
-    } else {
-        return std::make_unique<Rect>(object->position, 32, 32);
-    }
 }
 
 void update_object_selections() {
@@ -26,7 +18,7 @@ void update_object_selections() {
     if (app.is_mouse_button_just_pressed(SDL_BUTTON_LEFT)) {
         Vector2 mouse_position = app.get_mouse_position();
         for (auto& object : app.get_main_scene()->get_objects()) {
-            auto rect = get_ui_rect(object.get());
+            auto rect = EditorUtility::get_object_rect(object);
             if (rect->is_colliding(mouse_position)) {
                 ImguiWindowInspector* inspector = dynamic_cast<ImguiWindowInspector*>(app.get_view()->get_window("inspector").get());
                 if (inspector) {

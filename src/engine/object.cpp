@@ -3,7 +3,7 @@
 void Object::draw() {
     if (!has_component(ComponentType::IMAGE_COMPONENT)) {
         AppMain& app = AppMain::get_instance();
-        app.draw_rect(position.x, position.y, 32, 32);
+        app.draw_rect(position.x, position.y, 32, 32, 0, 0, 0, 255);
     }
     for (auto& component : components) {
         component->draw(*this);

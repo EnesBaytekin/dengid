@@ -18,4 +18,6 @@ obj/app/app_main.o: src/app/app_main.cpp include/app/app_main.hpp \
  include/engine/components/component_type.hpp include/engine/scene.hpp \
  include/math/rect.hpp include/engine/components/image_component.hpp \
  include/engine/components/i_component_visitor.hpp \
- include/image/image_resource.hpp include/project/project_manager.hpp
+ include/image/image_resource.hpp include/project/project_manager.hpp \
+ include/engine/editor_utility.hpp include/engine/object.hpp \
+ include/engine/components/hitbox_component.hpp

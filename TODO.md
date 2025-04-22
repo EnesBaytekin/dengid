@@ -27,8 +27,8 @@
 - [ ] bir script içinden başka componentlerin içeriklerine kolayca erişilebilsin
 - [x] engine içinde kısayol tuşlarını ekle
 
-- [ ] objelere hitbox componenti ekle
-- [ ] objeler için EditorUtility diye bir class oluştur
+- [x] objelere hitbox componenti ekle
+- [x] objeler için EditorUtility diye bir class oluştur
 - [ ] objelerin editördeki seçimlerini falan yönetebilmemiz için EditorUtility'ye size'larını alabilecek fonksiyon tanımla
 
 - [ ] collision detection için bir yapı ayarla, script içinden diğer objelere nasıl erişecek

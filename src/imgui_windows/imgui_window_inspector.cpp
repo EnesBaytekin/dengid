@@ -8,6 +8,7 @@
 #include "engine/components/script_component.hpp"
 #include "engine/components/hitbox_component.hpp"
 #include "engine/components/component_draw_inspector_visitor.hpp"
+#include "engine/editor_utility.hpp"
 
 void ImguiWindowInspector::show() {
     if (!is_visible()) return;
@@ -125,7 +126,8 @@ void ImguiWindowInspector::show() {
                     break;
                 }
                 case ComponentType::HITBOX_COMPONENT: {
-                    selected_object->add_component(std::make_unique<HitboxComponent>());
+                    auto rect = EditorUtility::get_object_rect(selected_object);
+                    selected_object->add_component(std::make_unique<HitboxComponent>(0, 0, rect->w, rect->h));
                     break;
                 }
             }

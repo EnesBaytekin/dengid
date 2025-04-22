@@ -15,5 +15,6 @@ obj/engine/components/component_draw_inspector_visitor.o: \
  include/image/image_resource.hpp include/project/project_manager.hpp \
  include/engine/components/script_component.hpp \
  include/engine/components/script.hpp include/engine/object.hpp \
+ include/engine/components/hitbox_component.hpp include/math/rect.hpp \
  imgui/imgui.h imgui/imconfig.h include/imfilebrowser.hpp \
  include/globals.hpp
