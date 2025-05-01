@@ -1,7 +1,7 @@
 obj/engine/components/component_save_visitor.o: \
  src/engine/components/component_save_visitor.cpp \
  include/engine/components/component_save_visitor.hpp \
- include/engine/components/i_component_visitor.hpp \
+ include/engine/components/i_component_visitor.hpp include/json.hpp \
  include/engine/components/image_component.hpp \
  include/engine/components/i_component.hpp \
  include/engine/components/component_type.hpp include/image/image.hpp \
@@ -15,4 +15,5 @@ obj/engine/components/component_save_visitor.o: \
  include/image/image_resource.hpp include/project/project_manager.hpp \
  include/engine/components/script_component.hpp \
  include/engine/components/script.hpp include/engine/object.hpp \
+ include/engine/components/hitbox_component.hpp include/math/rect.hpp \
  imgui/imgui.h imgui/imconfig.h

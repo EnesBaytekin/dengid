@@ -12,4 +12,5 @@ obj/imgui_windows/imgui_window_initial.o: \
  include/imfilebrowser.hpp include/globals.hpp include/engine/scene.hpp \
  include/engine/object.hpp include/engine/components/i_component.hpp \
  include/engine/components/component_type.hpp \
- include/project/project_manager.hpp include/image/image_resource.hpp
+ include/project/project_manager.hpp include/image/image_resource.hpp \
+ include/json.hpp

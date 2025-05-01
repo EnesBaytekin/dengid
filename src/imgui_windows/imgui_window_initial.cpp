@@ -9,6 +9,9 @@
 #include <fstream>
 #include "project/project_manager.hpp"
 #include "image/image_resource.hpp"
+#include "json.hpp"
+
+using json = nlohmann::ordered_json;
 
 void create_projects_folder_if_not_exist() {
     if (!std::filesystem::exists(PROJECTS_DIRECTORY)) {
@@ -42,7 +45,10 @@ void create_project(const std::filesystem::path& project_path) {
     std::filesystem::create_directory(project_path);
     std::filesystem::copy_file(EXECUTABLE_DIRECTORY/"icon.png", project_path/"icon.png");
 
+    json project_json = R"({"objects":[]})"_json;
+
     std::ofstream scene_file(project_path/"main_scene.data");
+    scene_file << project_json.dump(4);
     scene_file.close();
 
     load_project(project_path);

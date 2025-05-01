@@ -1,86 +1,63 @@
 #include "engine/object_loader.hpp"
 #include "engine/components/image_component.hpp"
 #include "engine/components/script_component.hpp"
-#include <sstream>
+#include "engine/components/hitbox_component.hpp"
 
-ObjectLoader::ObjectLoader(const std::string& raw_data) {
-    std::stringstream ss(raw_data);
-    std::string token;
-
-    while (std::getline(ss, token, ',')) {
-        object_data.push_back(token);
-    }
-}
-
-std::shared_ptr<Object> ObjectLoader::load_object() {
-    std::string name = object_data.front();
-    object_data.pop_front();
-
-    int x = std::stoi(object_data.front());
-    object_data.pop_front();
-
-    int y = std::stoi(object_data.front());
-    object_data.pop_front();
-
-    auto object = std::make_shared<Object>(x, y);
-    object->name = name;
+std::shared_ptr<Object> ObjectLoader::load_object(const json& object_json) {
+    std::shared_ptr<Object> object = std::make_shared<Object>(
+        object_json["x"].get<float>(),
+        object_json["y"].get<float>()
+    );
+    object->name = object_json["name"].get<std::string>();
     
-    while (!object_data.empty()) {
-        std::string& data = object_data.front();
-        object_data.pop_front();
-
-        if      (data == "image")   { object->add_component(load_image_component()); }
-        else if (data == "script")  { object->add_component(load_script_component()); }
+    if (object_json.contains("components")) {
+        for (auto& component_json : object_json["components"]) {
+            std::unique_ptr<IComponent> component = ObjectLoader::load_component(component_json);
+            object->add_component(std::move(component));
+        }
     }
 
     return object;
 }
 
-std::unique_ptr<ImageComponent> ObjectLoader::load_image_component() {
-    std::string image_id = object_data.front();
-    object_data.pop_front();
+std::unique_ptr<IComponent> ObjectLoader::load_component(const json& component_json) {
+    std::string type = component_json["type"].get<std::string>();
+    if (type == "image") {
+        return load_image_component(component_json);
+    } else if (type == "script") {
+        return load_script_component(component_json);
+    } else if (type == "hitbox") {
+        return load_hitbox_component(component_json);
+    }
+    return nullptr;
+}
 
-    Vector2 scale;
-    scale.x = std::stof(object_data.front());
-    object_data.pop_front();
-
-    scale.y = std::stof(object_data.front());
-    object_data.pop_front();
-
-    bool flip_x = object_data.front() == "1";
-    object_data.pop_front();
-
-    bool flip_y = object_data.front() == "1";
-    object_data.pop_front();
-
-    bool is_animated = object_data.front() == "1";
-    object_data.pop_front();
-
-    int frame_count = std::stoi(object_data.front());
-    object_data.pop_front();
-
-    int frame = std::stoi(object_data.front());
-    object_data.pop_front();
-
-    float animation_speed = std::stof(object_data.front());
-    object_data.pop_front();
-
-    auto image_component = std::make_unique<ImageComponent>(image_id);
-    image_component->set_scale(scale);
-    image_component->set_flip_x(flip_x);
-    image_component->set_flip_y(flip_y);
-    image_component->set_is_animated(is_animated);
-    image_component->set_frame_count(frame_count);
-    image_component->set_frame(frame);
-    image_component->set_animation_speed(animation_speed);
+std::unique_ptr<ImageComponent> ObjectLoader::load_image_component(const json& component_json) {
+    auto image_component = std::make_unique<ImageComponent>(component_json["image"].get<std::string>());
+    image_component->set_scale({
+        component_json["scale_x"].get<float>(),
+        component_json["scale_y"].get<float>()
+    });
+    image_component->set_flip_x(component_json["flip_x"].get<bool>());
+    image_component->set_flip_y(component_json["flip_y"].get<bool>());
+    image_component->set_is_animated(component_json["is_animated"].get<bool>());
+    image_component->set_frame_count(component_json["frame_count"].get<int>());
+    image_component->set_frame(component_json["frame"].get<int>());
+    image_component->set_animation_speed(component_json["animation_speed"].get<float>());
     return std::move(image_component);
 }
 
-std::unique_ptr<ScriptComponent> ObjectLoader::load_script_component() {
-    std::string script_file_name = object_data.front();
-    object_data.pop_front();
-
-    auto script_component = std::make_unique<ScriptComponent>(script_file_name);
-
+std::unique_ptr<ScriptComponent> ObjectLoader::load_script_component(const json& component_json) {
+    auto script_component = std::make_unique<ScriptComponent>(component_json["script"].get<std::string>());
     return std::move(script_component);
+}
+
+std::unique_ptr<HitboxComponent> ObjectLoader::load_hitbox_component(const json& component_json) {
+    auto hitbox_component = std::make_unique<HitboxComponent>(
+        component_json["offset_x"].get<float>(),
+        component_json["offset_y"].get<float>(),
+        component_json["width"].get<float>(),
+        component_json["height"].get<float>()
+    );
+    return std::move(hitbox_component);
 }

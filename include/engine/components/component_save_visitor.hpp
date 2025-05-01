@@ -3,12 +3,15 @@
 
 #include "engine/components/i_component_visitor.hpp"
 #include <string>
+#include "json.hpp"
+
+using json = nlohmann::ordered_json;
 
 class ImageComponent;
 
 class ComponentSaveVisitor: public IComponentVisitor {
 private:
-    std::string components_data;
+    json components_data;
 public:
     ComponentSaveVisitor() = default;
     ~ComponentSaveVisitor() = default;
@@ -17,7 +20,7 @@ public:
     void visit_script_component(ScriptComponent& component) override;
     void visit_hitbox_component(HitboxComponent& component) override;
 
-    std::string get_components_data() { return components_data; }
+    json get_components_data() { return components_data; }
 };
 
 #endif

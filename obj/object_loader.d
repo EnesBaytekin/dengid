@@ -8,9 +8,10 @@ obj/engine/object_loader.o: src/engine/object_loader.cpp \
  include/imgui_windows/imgui_window_terminal.hpp \
  include/imgui_windows/imgui_window.hpp include/app_views/app_view.hpp \
  include/engine/components/i_component.hpp \
- include/engine/components/component_type.hpp \
+ include/engine/components/component_type.hpp include/json.hpp \
  include/engine/components/image_component.hpp \
  include/engine/components/i_component_visitor.hpp \
  include/image/image_resource.hpp include/project/project_manager.hpp \
  include/engine/components/script_component.hpp \
- include/engine/components/script.hpp
+ include/engine/components/script.hpp \
+ include/engine/components/hitbox_component.hpp include/math/rect.hpp

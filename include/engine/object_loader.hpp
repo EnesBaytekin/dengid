@@ -5,21 +5,22 @@
 #include <string>
 #include <memory>
 #include <deque>
+#include "json.hpp"
+
+using json = nlohmann::ordered_json;
 
 class ImageComponent;
 class ScriptComponent;
+class HitboxComponent;
 
 class ObjectLoader {
 private:
-    std::deque<std::string> object_data;
-
-    std::unique_ptr<ImageComponent> load_image_component();
-    std::unique_ptr<ScriptComponent> load_script_component();
+    static std::unique_ptr<IComponent> load_component(const json& component_json);
+    static std::unique_ptr<ImageComponent> load_image_component(const json& component_json);
+    static std::unique_ptr<ScriptComponent> load_script_component(const json& component_json);
+    static std::unique_ptr<HitboxComponent> load_hitbox_component(const json& component_json);
 public:
-    ObjectLoader(const std::string& raw_data);
-    ~ObjectLoader() = default;
-
-    std::shared_ptr<Object> load_object();
+    static std::shared_ptr<Object> load_object(const json& json_data);
 };
 
 

@@ -10,7 +10,7 @@ obj/project/project_manager.o: src/project/project_manager.cpp \
  include/engine/components/i_component.hpp \
  include/engine/components/component_type.hpp \
  include/engine/components/component_save_visitor.hpp \
- include/engine/components/i_component_visitor.hpp \
+ include/engine/components/i_component_visitor.hpp include/json.hpp \
  include/engine/object_loader.hpp \
  include/engine/components/script_component.hpp \
  include/engine/components/script.hpp

@@ -11,6 +11,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <csignal>
+#include "json.hpp"
+
+using json = nlohmann::ordered_json;
 
 void ProjectManager::load_project() {
     auto main_scene = std::make_shared<Scene>();
@@ -21,36 +24,44 @@ void ProjectManager::load_project() {
         exit(1);
     }
 
-    AppMain& app = AppMain::get_instance();
-    
-    std::string object_raw_data;
-    while (std::getline(scene_file, object_raw_data)) {
-        ObjectLoader object_loader(object_raw_data);
-        std::shared_ptr<Object> object = object_loader.load_object();
+    json json_data;
+    scene_file >> json_data;
+    scene_file.close();
+
+    for (auto& object_json : json_data["objects"]) {
+        auto object = ObjectLoader::load_object(object_json);
         main_scene->spawn_object(object);
     }
 
-    scene_file.close();
-
+    AppMain& app = AppMain::get_instance();
     app.set_main_scene(main_scene);
 }
 
 void ProjectManager::save_project() {
     AppMain& app = AppMain::get_instance();
     auto main_scene = app.get_main_scene();
+
+    json project_data;
+    project_data["objects"] = json::array();
     
-    std::ofstream scene_file(project_path/"main_scene.data");
     for (auto object : main_scene->get_objects()) {
-        scene_file << object->name << ",";
-        scene_file << object->position.x << ",";
-        scene_file << object->position.y << ",";
+        json object_data;
+        object_data["name"] = object->name;
+        object_data["x"] = object->position.x;
+        object_data["y"] = object->position.y;
+        
         ComponentSaveVisitor visitor;
         for (auto& component : object->get_components()) {
             component->accept_visitor(visitor);
         }
-        std::string component_data = visitor.get_components_data();
-        scene_file << component_data << "\n";
+        json component_data = visitor.get_components_data();
+
+        object_data["components"] = component_data;
+        project_data["objects"].push_back(object_data);
     }
+
+    std::ofstream scene_file(project_path/"main_scene.data");
+    scene_file << project_data.dump(4);
     scene_file.close();
 }
 
