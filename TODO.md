@@ -29,7 +29,7 @@
 
 - [x] objelere hitbox componenti ekle
 - [x] objeler için EditorUtility diye bir class oluştur
-- [ ] objelerin editördeki seçimlerini falan yönetebilmemiz için EditorUtility'ye size'larını alabilecek fonksiyon tanımla
+- [x] objelerin editördeki seçimlerini falan yönetebilmemiz için EditorUtility'ye size'larını alabilecek fonksiyon tanımla
 
 - [ ] collision detection için bir yapı ayarla, script içinden diğer objelere nasıl erişecek
 - [ ] objelere tag ekleyebileceğimiz bir yapı ayarla
@@ -40,7 +40,7 @@
 - [ ] camera ekle
 - [ ] engine içinde objeleri mouse ile seçip düzenleyebilmeyi ekle
 - [ ] objelerin sırasını değiştirebilmeyi ekle
-- [ ] objeleri silebilmeyi ekle
+- [x] objeleri silebilmeyi ekle
 - [ ] objeleri kopyalamayı ekle
 - [ ] componentleri silebilmeyi ekle
 - [ ] obje şablonu oluşturmayı ekle

@@ -70,6 +70,20 @@ void show_hierarchy_window() {
         project_manager.save_project();
     }
 
+    auto inspector = std::dynamic_pointer_cast<ImguiWindowInspector>(app.get_view()->get_window("inspector"));
+
+    bool is_object_selected = inspector->selected_object != nullptr;
+    if (!is_object_selected) {
+        ImGui::BeginDisabled();
+    }
+    if (ImGui::Button("Delete Object")) {
+        scene->delete_object(inspector->selected_object);
+        inspector->selected_object = nullptr;
+    }
+    if (!is_object_selected) {
+        ImGui::EndDisabled();
+    }
+
     ImGui::Separator();
     ImGui::Dummy(ImVec2(0, 8));
 
@@ -80,7 +94,6 @@ void show_hierarchy_window() {
             std::snprintf(buffer, sizeof(buffer), "%p", obj_address);
             std::string obj_id(buffer);
             
-            auto inspector = std::dynamic_pointer_cast<ImguiWindowInspector>(app.get_view()->get_window("inspector"));
             std::shared_ptr<Object> selected_object = inspector->selected_object;
             bool selected = object == selected_object;
             ImGui::Selectable((object->name+"##"+obj_id).c_str(), &selected);
@@ -98,5 +111,17 @@ void ImguiWindowHierarchy::show() {
     auto window = app.get_view()->get_window("hierarchy");
     if (window->is_visible()) {
         show_hierarchy_window();
+    }
+}
+
+void ImguiWindowHierarchy::update() {
+    AppMain& app = AppMain::get_instance();
+    if (app.is_key_just_pressed(SDL_SCANCODE_DELETE)) {
+        auto inspector = std::dynamic_pointer_cast<ImguiWindowInspector>(app.get_view()->get_window("inspector"));
+        if (inspector->selected_object != nullptr) {
+            auto scene = app.get_main_scene();
+            scene->delete_object(inspector->selected_object);
+            inspector->selected_object = nullptr;
+        }
     }
 }

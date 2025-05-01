@@ -11,6 +11,7 @@ public:
     ~ImguiWindowHierarchy() override = default;
 
     void show() override;
+    void update() override;
 };
 
 #endif
