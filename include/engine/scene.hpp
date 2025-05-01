@@ -24,7 +24,7 @@ public:
             objects.erase(it, objects.end());
         }
     }
-    std::vector<std::shared_ptr<Object>> get_objects() { return objects; }
+    std::vector<std::shared_ptr<Object>>& get_objects() { return objects; }
 };
 
 #endif

@@ -88,18 +88,49 @@ void show_hierarchy_window() {
     ImGui::Dummy(ImVec2(0, 8));
 
     if (ImGui::CollapsingHeader("Objects##collapsing_header", ImGuiTreeNodeFlags_DefaultOpen)) {
-        for (auto& object : scene->get_objects()) {
+        auto& objects = scene->get_objects();
+        int index_to_move = -1;
+        int index_target = -1;
+
+        for (int i = 0; i < objects.size(); ++i) {
+            auto& object = objects[i];
             const void* obj_address = object.get();
             char buffer[20];
             std::snprintf(buffer, sizeof(buffer), "%p", obj_address);
             std::string obj_id(buffer);
-            
-            std::shared_ptr<Object> selected_object = inspector->selected_object;
-            bool selected = object == selected_object;
-            ImGui::Selectable((object->name+"##"+obj_id).c_str(), &selected);
+
+            bool selected = object == inspector->selected_object;
+            std::string label = object->name + "##" + obj_id;
+
+            ImGui::Selectable(label.c_str(), &selected);
             if (selected) {
                 inspector->selected_object = object;
             }
+
+            // DRAG SOURCE
+            if (ImGui::BeginDragDropSource()) {
+                ImGui::SetDragDropPayload("OBJECT_INDEX", &i, sizeof(int));
+                ImGui::Text("Move %s", object->name.c_str());
+                ImGui::EndDragDropSource();
+            }
+
+            // DROP TARGET
+            if (ImGui::BeginDragDropTarget()) {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("OBJECT_INDEX")) {
+                    int src_index = *(const int*)payload->Data;
+                    if (src_index != i) {
+                        index_to_move = src_index;
+                        index_target = i;
+                    }
+                }
+                ImGui::EndDragDropTarget();
+            }
+        }
+
+        if (index_to_move >= 0 && index_target >= 0) {
+            auto obj = objects[index_to_move];
+            objects.erase(objects.begin() + index_to_move);
+            objects.insert(objects.begin() + index_target, obj);
         }
     }
 

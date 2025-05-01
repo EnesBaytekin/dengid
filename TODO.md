@@ -39,7 +39,7 @@
 
 - [ ] camera ekle
 - [ ] engine içinde objeleri mouse ile seçip düzenleyebilmeyi ekle
-- [ ] objelerin sırasını değiştirebilmeyi ekle
+- [x] objelerin sırasını değiştirebilmeyi ekle
 - [x] objeleri silebilmeyi ekle
 - [ ] objeleri kopyalamayı ekle
 - [ ] componentleri silebilmeyi ekle
