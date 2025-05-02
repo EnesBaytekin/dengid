@@ -50,6 +50,7 @@ void AppMain::draw() {
     this->get_view()->show();
     if (main_scene) {
         main_scene->draw();
+        EditorUtility::debug_draw_scene(*main_scene);
     }
 }
 

@@ -63,6 +63,7 @@ void ProjectManager::save_project() {
     std::ofstream scene_file(project_path/"main_scene.data");
     scene_file << project_data.dump(4);
     scene_file.close();
+    app.print("Scene has saved");
 }
 
 void ProjectManager::build_game() {

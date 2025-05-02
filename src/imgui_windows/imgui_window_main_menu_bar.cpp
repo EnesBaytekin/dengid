@@ -35,9 +35,7 @@ void ImguiWindowMainMenuBar::update() {
         }
         if (app.is_key_just_pressed(SDL_SCANCODE_S)) {
             if (app.is_key_pressed(SDL_SCANCODE_LCTRL)) {
-                std::cout << "Scene is saving..." << std::endl;
                 project_manager.save_project();
-                std::cout << "Scene has saved" << std::endl;
             }
         }
     }
@@ -50,9 +48,7 @@ void ImguiWindowMainMenuBar::show() {
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Save", "Ctrl+S")) {
-                std::cout << "Scene is saving..." << std::endl;
                 project_manager.save_project();
-                std::cout << "Scene has saved" << std::endl;
             }
             ImGui::Separator();
             if (ImGui::MenuItem("Exit", "Alt+F4")) {

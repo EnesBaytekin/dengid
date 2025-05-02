@@ -1,13 +1,45 @@
 #pragma once
 
 #include "math/rect.hpp"
-#include "object.hpp"
+#include "engine/object.hpp"
+#include "engine/scene.hpp"
 #include "engine/components/image_component.hpp"
+#include "engine/components/script_component.hpp"
 #include "engine/components/hitbox_component.hpp"
 #include "engine/components/component_type.hpp"
 
 class EditorUtility {
+private:
+    static void debug_draw_hitbox_component(HitboxComponent& hitbox_component, Object& object) {
+        AppMain& app = AppMain::get_instance();
+        auto selected_object = dynamic_cast<ImguiWindowInspector*>(app.get_view()->get_window("inspector").get())->selected_object;
+        if (selected_object.get() == &object) {
+            auto offset = hitbox_component.get_offset();
+            auto size = hitbox_component.get_size();
+            app.draw_rect(object.position.x+offset.x, object.position.y+offset.y, size.x, size.y, 255, 255, 255, 64);
+        }
+    }
+    static void debug_draw_component(IComponent& component, Object& object) {
+        if (component.get_type() == ComponentType::HITBOX_COMPONENT) {
+            auto& hitbox_component = *dynamic_cast<HitboxComponent*>(&component);
+            debug_draw_hitbox_component(hitbox_component, object);
+        } else if (component.get_type() == ComponentType::SCRIPT_COMPONENT) {
+            auto& script_component = *dynamic_cast<ScriptComponent*>(&component);
+        } else if (component.get_type() == ComponentType::IMAGE_COMPONENT) {
+            auto& image_component = *dynamic_cast<ImageComponent*>(&component);
+        }
+    }
+    static void debug_draw_object(Object& object) {
+        for (auto& component : object.get_components()) {
+            debug_draw_component(*component, object);
+        }
+    }
 public:
+    static void debug_draw_scene(Scene& scene) {
+        for (auto& object : scene.get_objects()) {
+            debug_draw_object(*object);
+        }
+    }
     static std::unique_ptr<Rect> get_object_rect(std::shared_ptr<Object>& object) {
         if (!object) {
             return std::make_unique<Rect>(0, 0, 0, 0);
