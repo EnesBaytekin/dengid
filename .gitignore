@@ -4,4 +4,8 @@ imgui.ini
 /engine_build/dengid
 /engine_build/include/project_path_macro.hpp
 /engine_build/lib/*
+/engine_build/obj/*
+/obj/*
 .vscode
+*.d
+*.o
