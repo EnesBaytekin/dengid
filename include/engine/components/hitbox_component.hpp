@@ -12,6 +12,7 @@
 
 class HitboxComponent: public IComponent {
 private:
+    Vector2 position;
     Vector2 offset;
     Vector2 size;
 public:
@@ -27,12 +28,16 @@ public:
     void draw(Object& object) override;
     void update(Object& object) override;
     
+    void    set_position(Vector2 new_position) { position = new_position; }
+    Vector2 get_position() { return position; }
     void    set_offset(Vector2 new_offset) { offset = new_offset; }
     Vector2 get_offset() { return offset; }
     void    set_size(Vector2 new_size) { size = new_size; }
     Vector2 get_size() { return size; }
-    Rect    get_rect() { return Rect(offset, size); }
+    Rect    get_dynamic_rect() { return Rect(position+offset, size); }
+    Rect    get_static_rect() { return Rect(offset, size); }
     Rect    get_rect_at(Vector2 position) { return Rect(position+offset, size); }
+    bool    is_colliding(HitboxComponent& other) { return get_dynamic_rect().is_colliding(other.get_dynamic_rect()); }
 };
 
 #endif

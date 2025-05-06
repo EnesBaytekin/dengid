@@ -14,7 +14,7 @@ void HitboxComponent::draw(Object& object) {
 }
 
 void HitboxComponent::update(Object& object) {
-
+    position = object.position;
 }
 
 void HitboxComponent::accept_visitor(IComponentVisitor& visitor) {
