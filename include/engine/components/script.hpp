@@ -45,6 +45,7 @@ public:
 #define GET_COMPONENT(obj, Component, TYPE)     dynamic_cast<Component*>(obj.get_component(TYPE).get());
 #define GET_SCRIPT_COMPONENT(obj)               dynamic_cast<ScriptComponent*>(obj.get_component(ComponentType::SCRIPT_COMPONENT).get())
 #define GET_IMAGE_COMPONENT(obj)                dynamic_cast<ImageComponent*>(obj.get_component(ComponentType::IMAGE_COMPONENT).get())
+#define GET_HITBOX_COMPONENT(obj)               dynamic_cast<HitboxComponent*>(obj.get_component(ComponentType::HITBOX_COMPONENT).get())
 
 inline AppMain& app = AppMain::get_instance();
 

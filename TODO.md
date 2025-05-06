@@ -66,3 +66,5 @@
 
 - [x] scriptteki macroları düzenle. app global olsun. print olmasın
 - [ ] scriptteki get component macrolarını düzenle
+
+- [ ] custom scriptlerin sonuna register_script otomatik eklensin
