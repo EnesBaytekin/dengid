@@ -68,3 +68,5 @@
 - [ ] scriptteki get component macrolarını düzenle
 
 - [ ] custom scriptlerin sonuna register_script otomatik eklensin
+- [ ] create new script seçeneği ekle
+- [ ] scriptler proje rootunda olmadığı sürece çalışmıyor, onu düzelt
