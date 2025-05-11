@@ -43,7 +43,7 @@
 - [x] objeleri silebilmeyi ekle
 - [ ] objeleri kopyalamayı ekle
 - [ ] componentleri silebilmeyi ekle
-- [ ] obje şablonu oluşturmayı ekle
+- [x] obje şablonu oluşturmayı ekle
 - [ ] şablon objeleri ekleyebilmeyi ekle
 
 - [ ] son açılan proje en üste olacak şekilde sırala
@@ -70,3 +70,5 @@
 - [ ] custom scriptlerin sonuna register_script otomatik eklensin
 - [ ] create new script seçeneği ekle
 - [ ] scriptler proje rootunda olmadığı sürece çalışmıyor, onu düzelt
+
+- [ ] ui'daki bir şeylere tıklayınca arkadaki sahneye de tıklanmış oluyor ve başka objeler falan seçiliyor. tıklama ui'da ise sahneye etki etmesin

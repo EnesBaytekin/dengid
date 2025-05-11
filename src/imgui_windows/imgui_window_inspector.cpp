@@ -9,6 +9,8 @@
 #include "engine/components/hitbox_component.hpp"
 #include "engine/components/component_draw_inspector_visitor.hpp"
 #include "engine/editor_utility.hpp"
+#include "engine/object_loader.hpp"
+#include "imfilebrowser.hpp"
 
 void ImguiWindowInspector::show() {
     if (!is_visible()) return;
@@ -59,6 +61,36 @@ void ImguiWindowInspector::show() {
         ImGui::SameLine();
         if (ImGui::InputText("##object_name", name, IM_ARRAYSIZE(name))) {
             selected_object->name = name;
+        }
+
+        ImGui::Dummy(ImVec2(0, 8));
+        ImGui::Separator();
+        ImGui::Dummy(ImVec2(0, 8));
+
+
+        static ImGui::FileBrowser file_dialog(
+            ImGuiFileBrowserFlags_EnterNewFilename |
+            ImGuiFileBrowserFlags_CreateNewDir |
+            ImGuiFileBrowserFlags_CloseOnEsc |
+            ImGuiFileBrowserFlags_ConfirmOnEnter |
+            ImGuiFileBrowserFlags_SkipItemsCausingError,
+            project_manager.get_project_path()
+        );
+
+        static auto object_to_save = selected_object;
+        
+        if (ImGui::Button("Save as Template")) {
+            std::cout << "project path: " << project_manager.get_project_path() << std::endl;
+            object_to_save = selected_object;
+            file_dialog.SetInputName(selected_object->name+".obte");
+            file_dialog.Open();
+        }
+        file_dialog.Display();
+        if (file_dialog.HasSelected()) {
+            std::string template_name = file_dialog.GetSelected();
+            std::cout << "Saving object to template: " << template_name << std::endl;
+            ObjectLoader::save_object_to_template(object_to_save, template_name);
+            file_dialog.ClearSelected();
         }
 
         ImGui::Dummy(ImVec2(0, 8));

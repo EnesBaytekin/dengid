@@ -45,18 +45,7 @@ void ProjectManager::save_project() {
     project_data["objects"] = json::array();
     
     for (auto object : main_scene->get_objects()) {
-        json object_data;
-        object_data["name"] = object->name;
-        object_data["x"] = object->position.x;
-        object_data["y"] = object->position.y;
-        
-        ComponentSaveVisitor visitor;
-        for (auto& component : object->get_components()) {
-            component->accept_visitor(visitor);
-        }
-        json component_data = visitor.get_components_data();
-
-        object_data["components"] = component_data;
+        json object_data = ObjectLoader::save_object(object);
         project_data["objects"].push_back(object_data);
     }
 

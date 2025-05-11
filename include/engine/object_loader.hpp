@@ -21,6 +21,9 @@ private:
     static std::unique_ptr<HitboxComponent> load_hitbox_component(const json& component_json);
 public:
     static std::shared_ptr<Object> load_object(const json& json_data);
+    static std::shared_ptr<Object> load_object_from_template(const std::string& template_name, Vector2 position=Vector2::ZERO);
+    static json save_object(const std::shared_ptr<Object>& object);
+    static void save_object_to_template(const std::shared_ptr<Object>& object, const std::string& template_name);
 };
 
 

@@ -2,6 +2,8 @@
 #include "engine/components/image_component.hpp"
 #include "engine/components/script_component.hpp"
 #include "engine/components/hitbox_component.hpp"
+#include <fstream>
+#include "engine/components/component_save_visitor.hpp"
 
 std::shared_ptr<Object> ObjectLoader::load_object(const json& object_json) {
     std::shared_ptr<Object> object = std::make_shared<Object>(
@@ -18,6 +20,55 @@ std::shared_ptr<Object> ObjectLoader::load_object(const json& object_json) {
     }
 
     return object;
+}
+
+std::shared_ptr<Object> ObjectLoader::load_object_from_template(const std::string& template_name, Vector2 position) {
+    std::ifstream file(template_name);
+    if (!file.is_open()) {
+        std::cerr << "Error: Could not open file " << template_name << std::endl;
+        return nullptr;
+    }
+    
+    json object_json;
+    file >> object_json;
+    file.close();
+
+    object_json["x"] = position.x;
+    object_json["y"] = position.y;
+
+    return load_object(object_json);
+}
+
+json ObjectLoader::save_object(const std::shared_ptr<Object>& object) {
+    json object_data;
+    object_data["name"] = object->name;
+    object_data["x"] = object->position.x;
+    object_data["y"] = object->position.y;
+    
+    ComponentSaveVisitor visitor;
+    for (auto& component : object->get_components()) {
+        component->accept_visitor(visitor);
+    }
+    json component_data = visitor.get_components_data();
+
+    object_data["components"] = component_data;
+
+    return object_data;
+}
+
+void ObjectLoader::save_object_to_template(const std::shared_ptr<Object>& object, const std::string& template_name) {
+    json object_data = save_object(object);
+    object_data.erase("x");
+    object_data.erase("y");
+    
+    std::ofstream file(template_name);
+    if (!file.is_open()) {
+        std::cerr << "Error: Could not open file " << template_name << std::endl;
+        return;
+    }
+    
+    file << object_data.dump(4);
+    file.close();
 }
 
 std::unique_ptr<IComponent> ObjectLoader::load_component(const json& component_json) {
