@@ -12,6 +12,7 @@ private:
     bool dead = false;
 public:
     Vector2 position;
+    int depth = 0;
     std::string name = "New Object";
 
     Object(Vector2 _position): position(_position) {};

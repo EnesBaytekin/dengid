@@ -101,6 +101,10 @@ void ImguiWindowInspector::show() {
         ImGui::SameLine();
         ImGui::DragFloat2(("##obj_inputs"+obj_id).c_str(), selected_object->position);
 
+        ImGui::Text("%s", "depth: ");
+        ImGui::SameLine();
+        ImGui::DragInt("##obj_depth", &selected_object->depth, 0.1f, -65536, 65535);
+
         ComponentDrawInspectorVisitor visitor;
         for (auto& component : selected_object->get_components()) {
             ImGui::Dummy(ImVec2(0, 8));

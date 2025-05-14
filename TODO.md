@@ -53,7 +53,7 @@
 - [ ] projeyi kapatıp tekrar initial view'e dönmeyi ekle
 - [ ] proje ayarlarını game exe sine yansıt. pencere boyutları gibi
 
-- [ ] objelere depth ekle
+- [x] objelere depth ekle
 - [ ] ysort componenti ekle
 
 - [x] editore terminal windowu ekle

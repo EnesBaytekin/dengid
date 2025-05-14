@@ -13,7 +13,11 @@ void Scene::update() {
 }
 
 void Scene::draw() {
-    for (auto& object : objects) {
+    std::vector<std::shared_ptr<Object>> sorted_objects = objects;
+    std::sort(sorted_objects.begin(), sorted_objects.end(), [](const std::shared_ptr<Object>& a, const std::shared_ptr<Object>& b) {
+        return a->depth < b->depth;
+    });
+    for (auto& object : sorted_objects) {
         object->draw();
     }
 }
