@@ -9,7 +9,9 @@
 #include <fstream>
 #include <project/project_manager.hpp>
 #include <engine/components/image_component.hpp>
+#include <engine/object_loader.hpp>
 #include <image/image_resource.hpp>
+#include "imfilebrowser.hpp"
 
 #include <cstdlib>
 #include <ctime>
@@ -56,6 +58,26 @@ void show_hierarchy_window() {
     ImGui::Dummy(ImVec2(0, 20));
 
     auto scene = app.get_main_scene();
+
+    static ImGui::FileBrowser file_dialog(
+        ImGuiFileBrowserFlags_EnterNewFilename |
+        ImGuiFileBrowserFlags_CreateNewDir |
+        ImGuiFileBrowserFlags_CloseOnEsc |
+        ImGuiFileBrowserFlags_ConfirmOnEnter |
+        ImGuiFileBrowserFlags_SkipItemsCausingError,
+        project_manager.get_project_path()
+    );
+
+    if (ImGui::Button("Create Object from Template")) {
+        file_dialog.Open();
+    }
+    file_dialog.Display();
+    if (file_dialog.HasSelected()) {
+        std::string template_name = file_dialog.GetSelected();
+        auto new_object = ObjectLoader::load_object_from_template(template_name, Vector2(256, 256));
+        scene->spawn_object(new_object);
+        file_dialog.ClearSelected();
+    }
 
     if (ImGui::Button("Create Object")) {
         int x = randrange(0, 1024);

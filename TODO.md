@@ -44,7 +44,8 @@
 - [ ] objeleri kopyalamayı ekle
 - [ ] componentleri silebilmeyi ekle
 - [x] obje şablonu oluşturmayı ekle
-- [ ] şablon objeleri ekleyebilmeyi ekle
+- [x] şablon objeleri ekleyebilmeyi ekle
+- [ ] projedeki templateler bir pencerede listelensin. kolayca seçip eklenebilsin
 
 - [ ] son açılan proje en üste olacak şekilde sırala
 - [ ] proje açarken belirli dizindeki projeler seçilebilsin
