@@ -36,3 +36,9 @@ void ComponentSaveVisitor::visit_hitbox_component(HitboxComponent& component) {
     component_data["height"] = component.get_size().y;
     components_data += component_data;
 }
+
+void ComponentSaveVisitor::visit_ysort_component(YSortComponent& component) {
+    json component_data;
+    component_data["type"] = "ysort";
+    components_data += component_data;
+}

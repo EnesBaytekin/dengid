@@ -19,6 +19,7 @@ public:
     void visit_image_component(ImageComponent& component) override;
     void visit_script_component(ScriptComponent& component) override;
     void visit_hitbox_component(HitboxComponent& component) override;
+    void visit_ysort_component(YSortComponent& component) override;
 
     json get_components_data() { return components_data; }
 };

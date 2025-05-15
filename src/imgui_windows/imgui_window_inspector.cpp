@@ -7,6 +7,7 @@
 #include "engine/components/image_component.hpp"
 #include "engine/components/script_component.hpp"
 #include "engine/components/hitbox_component.hpp"
+#include "engine/components/ysort_component.hpp"
 #include "engine/components/component_draw_inspector_visitor.hpp"
 #include "engine/editor_utility.hpp"
 #include "engine/object_loader.hpp"
@@ -122,6 +123,7 @@ void ImguiWindowInspector::show() {
         component_list[ComponentType::IMAGE_COMPONENT] = "Image Component";
         component_list[ComponentType::SCRIPT_COMPONENT] = "Script Component";
         component_list[ComponentType::HITBOX_COMPONENT] = "Hitbox Component";
+        component_list[ComponentType::YSORT_COMPONENT] = "Y-Sort Component";
 
         static ComponentType selected_component_type;
         static bool component_selection_popup_is_open = false;
@@ -164,6 +166,11 @@ void ImguiWindowInspector::show() {
                 case ComponentType::HITBOX_COMPONENT: {
                     auto rect = EditorUtility::get_object_rect(selected_object);
                     selected_object->add_component(std::make_unique<HitboxComponent>(0, 0, rect->w, rect->h));
+                    break;
+                }
+                case ComponentType::YSORT_COMPONENT: {
+                    auto rect = EditorUtility::get_object_rect(selected_object);
+                    selected_object->add_component(std::make_unique<YSortComponent>());
                     break;
                 }
             }

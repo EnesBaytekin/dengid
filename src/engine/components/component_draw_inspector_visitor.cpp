@@ -159,3 +159,8 @@ void ComponentDrawInspectorVisitor::visit_hitbox_component(HitboxComponent& comp
         }
     }
 }
+
+void ComponentDrawInspectorVisitor::visit_ysort_component(YSortComponent& component) {
+    if (ImGui::CollapsingHeader("Y-Sort Component", ImGuiTreeNodeFlags_DefaultOpen)) {
+    }
+}

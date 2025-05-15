@@ -54,7 +54,8 @@
 - [ ] proje ayarlarını game exe sine yansıt. pencere boyutları gibi
 
 - [x] objelere depth ekle
-- [ ] ysort componenti ekle
+- [x] ysort componenti ekle
+- [ ] image componentine offset ekle
 
 - [x] editore terminal windowu ekle
 - [x] terminal windowuna yazdırmaya yarayan print fonksiyonu ekle
