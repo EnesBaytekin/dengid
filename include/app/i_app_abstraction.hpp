@@ -1,6 +1,7 @@
 #ifndef I_APP_ABSTRACTION_HPP
 #define I_APP_ABSTRACTION_HPP
 
+#include <imgui.h>
 #include "app/i_app_implementation.hpp"
 #include "image/image.hpp"
 #include "math/vector2.hpp"
@@ -91,16 +92,39 @@ public:
                                      scale_x, scale_y, flip_x, flip_y,
                                      src_x, src_y, src_w, src_h); }
     void draw_imgui_image(const std::string& image_id, int width=0, int height=0) { implementation->draw_imgui_image(image_id, width, height); }
+    bool is_key_pressed(SDL_Scancode key) { 
+        ImGuiIO& io = ImGui::GetIO();
+        return !io.WantCaptureKeyboard && key_states[key]; 
+    }
+    bool is_key_just_pressed(SDL_Scancode key) { 
+        ImGuiIO& io = ImGui::GetIO();
+        return !io.WantCaptureKeyboard && key_states[key] && !last_key_states[key]; 
+    }
+    bool is_key_just_released(SDL_Scancode key) { 
+        ImGuiIO& io = ImGui::GetIO();
+        return !io.WantCaptureKeyboard && !key_states[key] && last_key_states[key]; 
+    }
 
-    bool is_key_pressed(SDL_Scancode key) { return key_states[key]; }
-    bool is_key_just_pressed(SDL_Scancode key) { return key_states[key] && !last_key_states[key]; }
-    bool is_key_just_released(SDL_Scancode key) { return !key_states[key] && last_key_states[key]; }
-
-    Vector2 get_mouse_position() { return mouse_position; }
-    Vector2 get_mouse_motion() { return mouse_position-last_mouse_position; }
-    bool is_mouse_button_pressed(Uint32 button) { return mouse_buttons & SDL_BUTTON(button); }
-    bool is_mouse_button_just_pressed(Uint32 button) { return (mouse_buttons & SDL_BUTTON(button)) && !(last_mouse_buttons & SDL_BUTTON(button)); }
-    bool is_mouse_button_just_released(Uint32 button) { return !(mouse_buttons & SDL_BUTTON(button)) && (last_mouse_buttons & SDL_BUTTON(button)); }
+    Vector2 get_mouse_position() { 
+        ImGuiIO& io = ImGui::GetIO();
+        return !io.WantCaptureMouse ? mouse_position : Vector2{0, 0}; 
+    }
+    Vector2 get_mouse_motion() { 
+        ImGuiIO& io = ImGui::GetIO();
+        return !io.WantCaptureMouse ? mouse_position - last_mouse_position : Vector2{0, 0}; 
+    }
+    bool is_mouse_button_pressed(Uint32 button) { 
+        ImGuiIO& io = ImGui::GetIO();
+        return !io.WantCaptureMouse && (mouse_buttons & SDL_BUTTON(button)); 
+    }
+    bool is_mouse_button_just_pressed(Uint32 button) { 
+        ImGuiIO& io = ImGui::GetIO();
+        return !io.WantCaptureMouse && (mouse_buttons & SDL_BUTTON(button)) && !(last_mouse_buttons & SDL_BUTTON(button)); 
+    }
+    bool is_mouse_button_just_released(Uint32 button) { 
+        ImGuiIO& io = ImGui::GetIO();
+        return !io.WantCaptureMouse && !(mouse_buttons & SDL_BUTTON(button)) && (last_mouse_buttons & SDL_BUTTON(button)); 
+    }
 };
 
 #endif
