@@ -12,6 +12,7 @@ using json = nlohmann::ordered_json;
 class ImageComponent;
 class ScriptComponent;
 class HitboxComponent;
+class YSortComponent;
 
 class ObjectLoader {
 private:
@@ -19,6 +20,7 @@ private:
     static std::unique_ptr<ImageComponent> load_image_component(const json& component_json);
     static std::unique_ptr<ScriptComponent> load_script_component(const json& component_json);
     static std::unique_ptr<HitboxComponent> load_hitbox_component(const json& component_json);
+    static std::unique_ptr<YSortComponent> load_ysort_component(const json& component_json);
 public:
     static std::shared_ptr<Object> load_object(const json& json_data);
     static std::shared_ptr<Object> load_object_from_template(const std::string& template_name, Vector2 position=Vector2::ZERO);

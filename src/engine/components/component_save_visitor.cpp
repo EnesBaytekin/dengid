@@ -2,6 +2,7 @@
 #include "engine/components/image_component.hpp"
 #include "engine/components/script_component.hpp"
 #include "engine/components/hitbox_component.hpp"
+#include "engine/components/ysort_component.hpp"
 #include "app/app_main.hpp"
 #include "imgui.h"
 
@@ -40,5 +41,6 @@ void ComponentSaveVisitor::visit_hitbox_component(HitboxComponent& component) {
 void ComponentSaveVisitor::visit_ysort_component(YSortComponent& component) {
     json component_data;
     component_data["type"] = "ysort";
+    component_data["offset"] = component.get_offset();
     components_data += component_data;
 }

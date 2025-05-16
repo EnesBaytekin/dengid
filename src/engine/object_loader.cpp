@@ -2,6 +2,7 @@
 #include "engine/components/image_component.hpp"
 #include "engine/components/script_component.hpp"
 #include "engine/components/hitbox_component.hpp"
+#include "engine/components/ysort_component.hpp"
 #include <fstream>
 #include "engine/components/component_save_visitor.hpp"
 
@@ -79,6 +80,8 @@ std::unique_ptr<IComponent> ObjectLoader::load_component(const json& component_j
         return load_script_component(component_json);
     } else if (type == "hitbox") {
         return load_hitbox_component(component_json);
+    } else if (type == "ysort") {
+        return load_ysort_component(component_json);
     }
     return nullptr;
 }
@@ -111,4 +114,10 @@ std::unique_ptr<HitboxComponent> ObjectLoader::load_hitbox_component(const json&
         component_json["height"].get<float>()
     );
     return std::move(hitbox_component);
+}
+
+std::unique_ptr<YSortComponent> ObjectLoader::load_ysort_component(const json& component_json) {
+    auto ysort_component = std::make_unique<YSortComponent>();
+    ysort_component->set_offset(component_json["offset"].get<float>());
+    return std::move(ysort_component);
 }

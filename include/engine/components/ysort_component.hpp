@@ -11,6 +11,8 @@
 #include "math/rect.hpp"
 
 class YSortComponent: public IComponent {
+private:
+    float offset = 0.0f;
 public:
     YSortComponent(): IComponent(ComponentType::YSORT_COMPONENT) {}
     ~YSortComponent() override = default;
@@ -20,6 +22,9 @@ public:
     void init(Object& object) override;
     void draw(Object& object) override;
     void update(Object& object) override;
+
+    void  set_offset(float offset) { this->offset = offset; }
+    float get_offset() const { return offset; }
 };
 
 #endif

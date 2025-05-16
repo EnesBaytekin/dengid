@@ -6,10 +6,19 @@
 #include "engine/components/image_component.hpp"
 #include "engine/components/script_component.hpp"
 #include "engine/components/hitbox_component.hpp"
+#include "engine/components/ysort_component.hpp"
 #include "engine/components/component_type.hpp"
 
 class EditorUtility {
 private:
+    static void debug_draw_ysort_component(YSortComponent& ysort_component, Object& object) {
+        AppMain& app = AppMain::get_instance();
+        auto selected_object = dynamic_cast<ImguiWindowInspector*>(app.get_view()->get_window("inspector").get())->selected_object;
+        if (selected_object.get() == &object) {
+            auto offset = ysort_component.get_offset();
+            app.draw_rect(object.position.x, object.position.y+offset, 32, 1, 255, 255, 255, 192);
+        }
+    }
     static void debug_draw_hitbox_component(HitboxComponent& hitbox_component, Object& object) {
         AppMain& app = AppMain::get_instance();
         auto selected_object = dynamic_cast<ImguiWindowInspector*>(app.get_view()->get_window("inspector").get())->selected_object;
@@ -27,6 +36,9 @@ private:
             auto& script_component = *dynamic_cast<ScriptComponent*>(&component);
         } else if (component.get_type() == ComponentType::IMAGE_COMPONENT) {
             auto& image_component = *dynamic_cast<ImageComponent*>(&component);
+        } else if (component.get_type() == ComponentType::YSORT_COMPONENT) {
+            auto& ysort_component = *dynamic_cast<YSortComponent*>(&component);
+            debug_draw_ysort_component(ysort_component, object);
         }
     }
     static void debug_draw_object(Object& object) {

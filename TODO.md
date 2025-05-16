@@ -45,6 +45,8 @@
 - [ ] componentleri silebilmeyi ekle
 - [x] obje şablonu oluşturmayı ekle
 - [x] şablon objeleri ekleyebilmeyi ekle
+- [ ] şablonlar eklenince doğrudan sahneye kopyalanmasın. şablon olduğu belirtilen bir şey olsun. şablon dosyasını build ederken dinamik çeksin. böylece bir şablon düzenlendiğinde daha önceden o çablon ile oluşturulmuş objede de aynı değişiklik yapılmış olsun.
+- [ ] templateleri unique yapabilmeyi ekle
 - [ ] projedeki templateler bir pencerede listelensin. kolayca seçip eklenebilsin
 
 - [ ] son açılan proje en üste olacak şekilde sırala
@@ -55,6 +57,7 @@
 
 - [x] objelere depth ekle
 - [x] ysort componenti ekle
+- [ ] ysort inspectorde düzgün görünmüyor
 - [ ] image componentine offset ekle
 
 - [x] editore terminal windowu ekle

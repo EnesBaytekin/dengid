@@ -14,9 +14,9 @@ void YSortComponent::draw(Object& object) {
 }
 
 void YSortComponent::update(Object& object) {
-    object.depth = object.position.y;
+    object.depth = object.position.y+offset;
 }
 
 void YSortComponent::accept_visitor(IComponentVisitor& visitor) {
-    
+    visitor.visit_ysort_component(*this);
 }

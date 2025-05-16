@@ -2,6 +2,7 @@
 #include "engine/components/image_component.hpp"
 #include "engine/components/script_component.hpp"
 #include "engine/components/hitbox_component.hpp"
+#include "engine/components/ysort_component.hpp"
 #include "app/app_main.hpp"
 #include "imgui.h"
 #include "imfilebrowser.hpp"
@@ -162,5 +163,11 @@ void ComponentDrawInspectorVisitor::visit_hitbox_component(HitboxComponent& comp
 
 void ComponentDrawInspectorVisitor::visit_ysort_component(YSortComponent& component) {
     if (ImGui::CollapsingHeader("Y-Sort Component", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::Text("%s", "Y-Sort Offset:");
+        ImGui::SameLine();
+        float offset = component.get_offset();
+        if (ImGui::DragFloat("##ysort_offset", &offset, 0.05f)) {
+            component.set_offset(offset);
+        }
     }
 }
