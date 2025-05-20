@@ -22,17 +22,9 @@ docker build -t dengid-builder:v0.2 .
 ./build.sh
 ```
 
-Then, the engine executable will be created inside the `build` directory.
+Then, the engine executable will be created inside the `engine_build` directory.
 
 To run;
 ```sh
-./build/main
-```
-
----
-
-Optionally, you can directly use this command to build and run, and also leave docker running after building;
-
-```sh
-./build.sh -n && ./build/main
+./engine_build/dengid
 ```
