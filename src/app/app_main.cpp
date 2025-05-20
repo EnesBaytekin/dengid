@@ -15,16 +15,28 @@ void AppMain::setup() {
 
 void update_object_selections() {
     AppMain& app = AppMain::get_instance();
+    ImguiWindowInspector* inspector = dynamic_cast<ImguiWindowInspector*>(app.get_view()->get_window("inspector").get());
     if (app.is_mouse_button_just_pressed(SDL_BUTTON_LEFT)) {
         Vector2 mouse_position = app.get_mouse_position();
         for (auto& object : app.get_main_scene()->get_objects()) {
             auto rect = EditorUtility::get_object_rect(object);
             if (rect->is_colliding(mouse_position)) {
-                ImguiWindowInspector* inspector = dynamic_cast<ImguiWindowInspector*>(app.get_view()->get_window("inspector").get());
                 if (inspector) {
                     inspector->selected_object = object;
+                    inspector->is_dragging = true;
                 }
             }
+        }
+    }
+    if (inspector && inspector->is_dragging) {
+        Vector2 mouse_motion = app.get_mouse_motion();
+        if (inspector->selected_object) {
+            inspector->selected_object->position += mouse_motion;
+        }
+    }
+    if (app.is_mouse_button_just_released(SDL_BUTTON_LEFT)) {
+        if (inspector) {
+            inspector->is_dragging = false;
         }
     }
 }

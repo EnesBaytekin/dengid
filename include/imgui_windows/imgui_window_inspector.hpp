@@ -10,7 +10,8 @@ class AppMain;
 class ImguiWindowInspector : public ImguiWindow {
 public:
     std::shared_ptr<Object> selected_object = nullptr;
-
+    bool is_dragging = false;
+    
     ImguiWindowInspector() : ImguiWindow() {};
     ~ImguiWindowInspector() override = default;
 

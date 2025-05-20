@@ -38,7 +38,7 @@
 - [ ] undo redo sistemi kur
 
 - [ ] camera ekle
-- [ ] engine içinde objeleri mouse ile seçip düzenleyebilmeyi ekle
+- [x] engine içinde objeleri mouse ile seçip düzenleyebilmeyi ekle
 - [x] objelerin sırasını değiştirebilmeyi ekle
 - [x] objeleri silebilmeyi ekle
 - [ ] objeleri kopyalamayı ekle
@@ -57,7 +57,7 @@
 
 - [x] objelere depth ekle
 - [x] ysort componenti ekle
-- [ ] ysort inspectorde düzgün görünmüyor
+- [x] ysort inspectorde düzgün görünmüyor
 - [ ] image componentine offset ekle
 
 - [x] editore terminal windowu ekle
