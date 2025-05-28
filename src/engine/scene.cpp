@@ -10,6 +10,8 @@ void Scene::update() {
     objects.erase(std::remove_if(objects.begin(), objects.end(), [](std::shared_ptr<Object> object) {
         return object->is_dead();
     }), objects.end());
+    objects.insert(objects.end(), objects_to_spawn.begin(), objects_to_spawn.end());
+    objects_to_spawn.clear();
 }
 
 void Scene::draw() {
