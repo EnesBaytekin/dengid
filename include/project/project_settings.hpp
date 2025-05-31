@@ -2,8 +2,8 @@
 #define PROJECT_SETTINGS_HPP
 
 struct ProjectSettings {
-    int window_width = 640;
-    int window_height = 360;
+    int window_width = 1920;
+    int window_height = 1080;
 };
 
 #endif

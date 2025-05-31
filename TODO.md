@@ -37,7 +37,8 @@
 
 - [ ] undo redo sistemi kur
 
-- [ ] camera ekle
+- [x] camera ekle
+- [ ] cameraya zoom özelliği ekle
 - [x] engine içinde objeleri mouse ile seçip düzenleyebilmeyi ekle
 - [x] objelerin sırasını değiştirebilmeyi ekle
 - [x] objeleri silebilmeyi ekle
