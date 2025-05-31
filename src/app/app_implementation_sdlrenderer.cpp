@@ -117,11 +117,24 @@ void AppImplementationSDLRenderer::render() {
     SDL_RenderPresent(renderer);
 }
 
-void AppImplementationSDLRenderer::draw_rect(int x, int y, int width, int height, int r, int g, int b, int a) {
-    SDL_Rect rect = { x, y, width, height };
+void AppImplementationSDLRenderer::draw_rect(int x, int y, int width, int height, int r, int g, int b, int a, bool fill) {
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
-    SDL_RenderFillRect(renderer, &rect);
+    SDL_Rect rect;
+    if (fill) {
+        rect = { x, y, width, height };
+        SDL_RenderFillRect(renderer, &rect);
+        return;
+    } else {
+        rect = { x, y+1, 1, height-2 };
+        SDL_RenderDrawRect(renderer, &rect);
+        rect = { x+width, y+1, 1, height-2 };
+        SDL_RenderDrawRect(renderer, &rect);
+        rect = { x, y, width, 1 };
+        SDL_RenderDrawRect(renderer, &rect);
+        rect = { x, y+height, width, 1 };
+        SDL_RenderDrawRect(renderer, &rect);
+    }
 }
 
 std::shared_ptr<Image> AppImplementationSDLRenderer::load_image(const std::string& file_path) {

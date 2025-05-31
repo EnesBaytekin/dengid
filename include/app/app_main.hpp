@@ -50,7 +50,7 @@ public:
     void setup() override;
     void update() override;
     void draw() override;
-    void draw_rect(int x, int y, int width, int height, int r, int g, int b, int a) override {
+    void draw_rect(int x, int y, int width, int height, int r, int g, int b, int a, bool fill=true) override {
         Vector2 draw_position = Vector2(x, y);
         if (camera) {
             draw_position -= camera->get_position();
@@ -61,7 +61,7 @@ public:
             if (width < 1) width = 1;
             if (height < 1) height = 1;
         }
-        implementation->draw_rect(draw_position.x, draw_position.y, width, height, r, g, b, a);
+        implementation->draw_rect(draw_position.x, draw_position.y, width, height, r, g, b, a, fill);
     }
     void draw_image(const std::string& image_id, int x, int y,
                      float scale_x=1, float scale_y=1, bool flip_x=false, bool flip_y=false,
