@@ -81,4 +81,4 @@
 - [x] ui'daki bir şeylere tıklayınca arkadaki sahneye de tıklanmış oluyor ve başka objeler falan seçiliyor. tıklama ui'da ise sahneye etki etmesin
 
 - [x] projeyi kapatınca tekrar proje seçme ekranına dönsün
-- [ ] engine kapandığında o anki çalışmakta olan oyun açık kalıyor
+- [x] engine kapandığında o anki çalışmakta olan oyun açık kalıyor

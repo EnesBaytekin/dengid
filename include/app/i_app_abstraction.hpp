@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cstring>
 #include <vector>
+#include "project/project_manager.hpp"
 
 class IAppAbstraction {
 protected:
@@ -96,6 +97,8 @@ public:
     }
     void quit() {
         running = false;
+        auto& project_manager = ProjectManager::get_instance();
+        project_manager.stop_game();
     }
 
     double get_now() { return now; }
