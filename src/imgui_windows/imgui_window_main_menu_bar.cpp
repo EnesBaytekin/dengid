@@ -38,6 +38,11 @@ void ImguiWindowMainMenuBar::update() {
                 project_manager.save_project();
             }
         }
+        if (app.is_key_just_pressed(SDL_SCANCODE_F4)) {
+            if (app.is_key_pressed(SDL_SCANCODE_LCTRL)) {
+                project_manager.close_project();
+            }
+        }
     }
 }
 
@@ -45,10 +50,16 @@ void ImguiWindowMainMenuBar::show() {
     AppMain& app = AppMain::get_instance();
     ProjectManager& project_manager = ProjectManager::get_instance();
     
+    auto view_type = app.get_current_view_type();
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Save", "Ctrl+S")) {
                 project_manager.save_project();
+            }
+            if (view_type == EnumAppViewType::PROJECT_VIEW) {
+                if (ImGui::MenuItem("Close Project", "Ctrl+F4")) {
+                    project_manager.close_project();
+                }
             }
             ImGui::Separator();
             if (ImGui::MenuItem("Exit", "Alt+F4")) {
@@ -57,7 +68,6 @@ void ImguiWindowMainMenuBar::show() {
             ImGui::EndMenu();
         }
 
-        auto view_type = app.get_current_view_type();
         if (view_type == EnumAppViewType::PROJECT_VIEW) {
             auto view = app.get_view();
             if (ImGui::BeginMenu("View")) {

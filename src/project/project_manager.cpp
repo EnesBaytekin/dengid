@@ -12,8 +12,16 @@
 #include <sys/wait.h>
 #include <csignal>
 #include "json.hpp"
+#include <globals.hpp>
 
 using json = nlohmann::ordered_json;
+
+void ProjectManager::close_project() {
+    std::string command = EXECUTABLE_DIRECTORY/"dengid";
+    execl(command.c_str(), command.c_str(), (char *)NULL);
+
+    app.print("Failed to close the project.\n");
+}
 
 void ProjectManager::load_project() {
     auto main_scene = std::make_shared<Scene>();
@@ -136,7 +144,7 @@ void ProjectManager::run_game() {
         std::filesystem::path project_path = get_project_path();
         std::string project_name = project_path.filename();
         std::string command = project_path/project_name;
-        execl(command.c_str(), command.c_str(), NULL);
+        execl(command.c_str(), command.c_str(), (char *)NULL);
 
         app.print("Failed to start game. Try to build it first.\n");
         game_is_running = false;
