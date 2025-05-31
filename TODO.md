@@ -79,3 +79,5 @@
 - [ ] scriptler proje rootunda olmadığı sürece çalışmıyor, onu düzelt
 
 - [x] ui'daki bir şeylere tıklayınca arkadaki sahneye de tıklanmış oluyor ve başka objeler falan seçiliyor. tıklama ui'da ise sahneye etki etmesin
+
+- [ ] engine kapandığında o anki çalışmakta olan oyun açık kalıyor
