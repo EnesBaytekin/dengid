@@ -33,7 +33,7 @@ void update_object_selections() {
         }
     }
     if (inspector && inspector->is_dragging) {
-        Vector2 mouse_motion = app.get_mouse_motion();
+        Vector2 mouse_motion = app.get_mouse_motion() / app.get_camera()->get_zoom();
         if (inspector->selected_object) {
             inspector->selected_object->position += mouse_motion;
         }
@@ -44,9 +44,9 @@ void update_object_selections() {
         }
     }
 
-    // drag camera
     auto& camera = app.get_camera();
     if (camera) {
+        // drag camera
         static bool is_camera_dragging = false;
         static Vector2 camera_drag_start_position = Vector2::ZERO;
         static Vector2 camera_drag_start_mouse_position = Vector2::ZERO;
@@ -57,19 +57,44 @@ void update_object_selections() {
             camera_drag_start_mouse_position = app.get_mouse_position();
         }
         if (is_camera_dragging) {
-            Vector2 drag_offset = app.get_mouse_position() - camera_drag_start_mouse_position;
+            Vector2 drag_offset = (app.get_mouse_position() - camera_drag_start_mouse_position) / camera->get_zoom();
             Vector2 camera_position = camera_drag_start_position - drag_offset;
             camera->set_position(camera_position);
         }
         if (app.is_mouse_button_just_released(SDL_BUTTON_RIGHT)) {
             is_camera_dragging = false;
         }
+
+        // camera zoom
+        if (app.is_key_pressed(SDL_SCANCODE_LCTRL) || app.is_key_pressed(SDL_SCANCODE_RCTRL)) {
+            int mouse_wheel = app.get_mouse_wheel();
+            if (mouse_wheel != 0) {
+                Vector2 mouse_position_before_zoom = app.get_mouse_position_on_scene();
+                float zoom_factor = camera->get_zoom();
+
+                if (mouse_wheel > 0) {
+                    if (zoom_factor < 10.0f) {
+                        zoom_factor *= 1.1f;
+                    }
+                } else if (mouse_wheel < 0) {
+                    if (zoom_factor > 0.1f) {
+                        zoom_factor /= 1.1f;
+                    }
+                }
+
+                camera->set_zoom(zoom_factor);
+
+                Vector2 mouse_position_after_zoom = app.get_mouse_position_on_scene();
+                Vector2 zoom_offset = mouse_position_before_zoom - mouse_position_after_zoom;
+                Vector2 camera_position = camera->get_position() + zoom_offset;
+                camera->set_position(camera_position);
+            }
+        }
     }
 }
 
 void AppMain::update() {
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
+    for (SDL_Event event : event_list) {
         ImGui_ImplSDL2_ProcessEvent(&event);
         if (event.type == SDL_QUIT) {
             quit();

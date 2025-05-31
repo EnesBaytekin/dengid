@@ -10,8 +10,7 @@ void AppMain::setup() {
 }
 
 void AppMain::update() {
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
+    for (SDL_Event event : event_list) {
         ImGui_ImplSDL2_ProcessEvent(&event);
         if (event.type == SDL_QUIT) {
             quit();

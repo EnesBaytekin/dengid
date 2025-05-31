@@ -7,11 +7,14 @@
 #include "math/vector2.hpp"
 #include <iostream>
 #include <cstring>
+#include <vector>
 
 class IAppAbstraction {
 protected:
     IAppImplementation* implementation;
     bool running;
+
+    std::vector<SDL_Event> event_list;
 
     double now = 0.0;
     double delta_time = 0.0;
@@ -22,6 +25,9 @@ protected:
     Uint32 last_mouse_buttons = 0;
     Vector2 mouse_position = {0, 0};
     Vector2 last_mouse_position = {0, 0};
+
+    int mouse_wheel_y = 0;
+    int last_mouse_wheel_y = 0;
 
     IAppAbstraction(): running(false) {};
 public:
@@ -62,11 +68,23 @@ public:
 
             last_mouse_buttons = mouse_buttons;
             last_mouse_position = mouse_position;
+            last_mouse_wheel_y = mouse_wheel_y;
 
             int mouse_x, mouse_y;
             mouse_buttons = SDL_GetMouseState(&mouse_x, &mouse_y);
             mouse_position.x = mouse_x;
             mouse_position.y = mouse_y;
+
+            mouse_wheel_y = 0;
+
+            event_list.clear();
+            SDL_Event event;
+            while (SDL_PollEvent(&event)) {
+                event_list.push_back(event);
+                if (event.type == SDL_MOUSEWHEEL) {
+                    mouse_wheel_y += event.wheel.y;
+                }
+            }
 
             implementation->update();
             implementation->create_frame();
@@ -124,6 +142,17 @@ public:
     bool is_mouse_button_just_released(Uint32 button) { 
         ImGuiIO& io = ImGui::GetIO();
         return !io.WantCaptureMouse && !(mouse_buttons & SDL_BUTTON(button)) && (last_mouse_buttons & SDL_BUTTON(button)); 
+    }
+
+    int get_mouse_wheel() { 
+        ImGuiIO& io = ImGui::GetIO();
+        return !io.WantCaptureMouse ? mouse_wheel_y : 0; 
+    }
+    bool is_mouse_wheel_scrolled_up() { 
+        return get_mouse_wheel() > 0; 
+    }
+    bool is_mouse_wheel_scrolled_down() { 
+        return get_mouse_wheel() < 0; 
     }
 };
 

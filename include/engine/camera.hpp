@@ -10,6 +10,7 @@ private:
     Vector2 position;
     std::shared_ptr<Object> target;
     float smoothing_factor = 0.1f;
+    float zoom = 1.0f;
 
 public:
     Camera()
@@ -23,6 +24,10 @@ public:
     Vector2                  get_position() { return position; }
     void                     set_target(std::shared_ptr<Object>& new_target) { target = new_target; }
     std::shared_ptr<Object>& get_target() { return target; }
+    void                     set_smoothing_factor(float factor) { smoothing_factor = factor; }
+    float                    get_smoothing_factor() { return smoothing_factor; }
+    void                     set_zoom(float new_zoom) { zoom = new_zoom; }
+    float                    get_zoom() { return zoom; }
 
     void update();
 };

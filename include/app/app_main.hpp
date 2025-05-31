@@ -54,6 +54,12 @@ public:
         Vector2 draw_position = Vector2(x, y);
         if (camera) {
             draw_position -= camera->get_position();
+            float zoom_factor = camera->get_zoom();
+            draw_position *= zoom_factor;
+            width = width*zoom_factor;
+            height = height*zoom_factor;
+            if (width < 1) width = 1;
+            if (height < 1) height = 1;
         }
         implementation->draw_rect(draw_position.x, draw_position.y, width, height, r, g, b, a);
     }
@@ -64,6 +70,10 @@ public:
         Vector2 draw_position = Vector2(x, y);
         if (camera) {
             draw_position -= camera->get_position();
+            float zoom_factor = camera->get_zoom();
+            draw_position *= zoom_factor;
+            scale_x *= zoom_factor;
+            scale_y *= zoom_factor;
         }
         implementation->draw_image(image_id, draw_position.x, draw_position.y, scale_x, scale_y, flip_x, flip_y, src_x, src_y, src_w, src_h);
     }
@@ -71,10 +81,12 @@ public:
     Vector2 get_mouse_position_on_scene() {
         Vector2 mouse_position = get_mouse_position();
         if (camera) {
+            mouse_position /= camera->get_zoom();
             mouse_position += camera->get_position();
         }
         return mouse_position;
     }
+
     void print(std::string message) {
         if (get_current_view_type() == EnumAppViewType::PROJECT_VIEW) {
             ((ImguiWindowTerminal*)(get_view()->get_window("terminal").get()))->print(message);
