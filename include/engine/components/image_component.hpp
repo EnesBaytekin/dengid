@@ -53,6 +53,29 @@ public:
     bool        get_is_animated() { return is_animated; }
 
     void start_animation() { start_at = AppMain::get_instance().get_now(); };
+
+    void start_new_animation(std::string new_image_id, int new_frame_count=-1, float new_animation_speed=-1.0f, int new_flip_x=-1, int new_flip_y=-1, int new_is_animated=-1) {
+        if (image_id != new_image_id) {
+            image_id = new_image_id;
+            frame = 0;
+            if (new_frame_count != -1) {
+                frame_count = new_frame_count;
+            }
+            if (new_animation_speed != -1.0f) {
+                animation_speed = new_animation_speed;
+            }
+            if (new_flip_x != -1) {
+                flip_x = new_flip_x;
+            }
+            if (new_flip_y != -1) {
+                flip_y = new_flip_y;
+            }
+            if (new_is_animated != -1) {
+                is_animated = new_is_animated;
+            }
+            start_animation();
+        }
+    }
 };
 
 #endif

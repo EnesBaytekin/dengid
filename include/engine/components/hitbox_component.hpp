@@ -38,6 +38,7 @@ public:
     Rect    get_static_rect() { return Rect(offset, size); }
     Rect    get_rect_at(Vector2 position) { return Rect(position+offset, size); }
     bool    is_colliding(HitboxComponent& other) { return get_dynamic_rect().is_colliding(other.get_dynamic_rect()); }
+    bool    is_colliding_at(HitboxComponent& other, Vector2 new_position) { return get_rect_at(new_position).is_colliding(other.get_dynamic_rect()); }
 };
 
 #endif
