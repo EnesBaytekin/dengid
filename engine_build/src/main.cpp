@@ -5,7 +5,7 @@
 #include "globals.hpp"
 #include "project/project_manager.hpp"
 #include <iostream>
-#include "project_path_macro.hpp"
+#include "project_settings_macro.hpp"
 
 const std::filesystem::path HOME_DIRECTORY = get_home_directory();
 const std::filesystem::path PROJECTS_DIRECTORY = get_projects_directory();
@@ -15,7 +15,7 @@ int main(int, char**) {
     std::filesystem::path project_path = PROJECT_PATH;
     std::string project_name = project_path.filename().string();
 
-    AppImplementationSDLRenderer app_implementation(project_name, 1920, 1080);
+    AppImplementationSDLRenderer app_implementation(project_name, WINDOW_WIDTH, WINDOW_HEIGHT);
     AppMain& app = AppMain::get_instance();
     app.initialize(&app_implementation);
     

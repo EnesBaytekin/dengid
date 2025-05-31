@@ -54,7 +54,7 @@
 - [ ] son açılan proje en üste olacak şekilde sırala
 - [ ] proje açarken belirli dizindeki projeler seçilebilsin
 - [ ] yeni proje oluştururken klasör oluşacağını belirten bir yazı ekle
-- [ ] projeyi kapatıp tekrar initial view'e dönmeyi ekle
+- [x] projeyi kapatıp tekrar initial view'e dönmeyi ekle
 - [ ] proje ayarlarını game exe sine yansıt. pencere boyutları gibi
 
 - [x] objelere depth ekle
@@ -80,5 +80,4 @@
 
 - [x] ui'daki bir şeylere tıklayınca arkadaki sahneye de tıklanmış oluyor ve başka objeler falan seçiliyor. tıklama ui'da ise sahneye etki etmesin
 
-- [x] projeyi kapatınca tekrar proje seçme ekranına dönsün
 - [x] engine kapandığında o anki çalışmakta olan oyun açık kalıyor

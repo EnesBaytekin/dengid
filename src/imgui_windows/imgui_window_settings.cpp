@@ -37,10 +37,12 @@ void show_settings_window() {
     ImGui::Dummy(ImVec2(0, 20));
 
     ImGui::Text("%s", "Game Window Size:");
+
+    auto& settings = project_manager.get_project_settings();
+    
     static bool size_initialized = false;
     static int game_window_size[2];
     if (!size_initialized) {
-        auto settings = project_manager.get_project_settings();
         game_window_size[0] = settings.window_width;
         game_window_size[1] = settings.window_height;
         size_initialized = true;
@@ -48,7 +50,6 @@ void show_settings_window() {
     ImGui::SameLine();
     ImGui::SetNextItemWidth(100);
     if (ImGui::InputInt2("##game_window_size", game_window_size)) {
-        auto settings = project_manager.get_project_settings();
         settings.window_width = game_window_size[0];
         settings.window_height = game_window_size[1];
     }

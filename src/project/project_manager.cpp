@@ -36,6 +36,11 @@ void ProjectManager::load_project() {
     scene_file >> json_data;
     scene_file.close();
 
+    auto& settings = ProjectManager::get_instance().get_project_settings();
+    
+    settings.window_width = json_data["settings"]["window_width"].get<int>();
+    settings.window_height = json_data["settings"]["window_height"].get<int>();
+
     for (auto& object_json : json_data["objects"]) {
         auto object = ObjectLoader::load_object(object_json);
         main_scene->spawn_object(object);
@@ -49,7 +54,13 @@ void ProjectManager::save_project() {
     AppMain& app = AppMain::get_instance();
     auto main_scene = app.get_main_scene();
 
+    auto& settings = ProjectManager::get_instance().get_project_settings();
+
     json project_data;
+    project_data["settings"] = json::object();
+    project_data["settings"]["window_width"] = settings.window_width;
+    project_data["settings"]["window_height"] = settings.window_height;
+
     project_data["objects"] = json::array();
     
     for (auto object : main_scene->get_objects()) {
@@ -75,7 +86,8 @@ void ProjectManager::build_game() {
 
     save_project();
 
-    std::ofstream file("./include/project_path_macro.hpp");
+    // create project path macro file
+    std::ofstream file("./include/project_settings_macro.hpp");
     if (!file.is_open()) {
         std::cerr << "Failed to create project path macro file." << std::endl;
         app.print("Failed to build game.\n");
@@ -86,11 +98,14 @@ void ProjectManager::build_game() {
     std::string project_name = project_path.filename().string();
 
     file << "#pragma once\n";
-    file << "#define PROJECT_PATH \"";
-    file << project_path.string();
-    file << "\"\n";
+    file << "#define PROJECT_PATH \"" << project_path.string() << "\"\n";
+    file << "\n";
+    file << "#define WINDOW_WIDTH " << project_settings.window_width << "\n";
+    file << "#define WINDOW_HEIGHT " << project_settings.window_height << "\n";
+    file << "\n";
     file.close();
 
+    // copy scripts to game_build/scripts
     std::system("rm ./game_build/scripts/*.cpp");
     std::system("mkdir -p ./game_build/scripts");
 
@@ -104,6 +119,7 @@ void ProjectManager::build_game() {
         }
     }
 
+    // compile and move game binary
     std::system(("make all && mv ./game_build/game \""+(project_path/project_name).string()+"\"").c_str());
 
     app.print("Game has built successfully.\n");
