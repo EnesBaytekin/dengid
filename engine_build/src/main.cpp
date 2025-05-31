@@ -15,7 +15,7 @@ int main(int, char**) {
     std::filesystem::path project_path = PROJECT_PATH;
     std::string project_name = project_path.filename().string();
 
-    AppImplementationSDLRenderer app_implementation(project_name, 640, 360);
+    AppImplementationSDLRenderer app_implementation(project_name, 1920, 1080);
     AppMain& app = AppMain::get_instance();
     app.initialize(&app_implementation);
     
