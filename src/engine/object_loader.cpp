@@ -12,6 +12,7 @@ std::shared_ptr<Object> ObjectLoader::load_object(const json& object_json) {
         object_json["y"].get<float>()
     );
     object->name = object_json["name"].get<std::string>();
+    object->depth = object_json["depth"].get<int>();
     
     if (object_json.contains("components")) {
         for (auto& component_json : object_json["components"]) {
@@ -45,6 +46,7 @@ json ObjectLoader::save_object(const std::shared_ptr<Object>& object) {
     object_data["name"] = object->name;
     object_data["x"] = object->position.x;
     object_data["y"] = object->position.y;
+    object_data["depth"] = object->depth;
     
     ComponentSaveVisitor visitor;
     for (auto& component : object->get_components()) {
