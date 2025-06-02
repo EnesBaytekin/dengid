@@ -23,8 +23,6 @@ int main(int, char**) {
     project_manager.set_project_path(project_path);
     project_manager.load_project();
     
-    app.set_main_scene(app.get_main_scene());
-    
     app.run();
     return 0;
 }

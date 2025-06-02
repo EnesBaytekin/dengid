@@ -23,13 +23,13 @@ void ProjectManager::close_project() {
     app.print("Failed to close the project.\n");
 }
 
-void ProjectManager::load_project() {
+void ProjectManager::load_project(bool is_engine) {
     auto main_scene = std::make_shared<Scene>();
 
     std::ifstream scene_file((project_path/"main_scene.data"));
     if (!scene_file.is_open()) {
         std::cerr << "Scene file 'main_scene.data' could not found in the project folder!" << std::endl;
-        exit(1);
+        return;
     }
 
     json json_data;
@@ -48,6 +48,26 @@ void ProjectManager::load_project() {
 
     AppMain& app = AppMain::get_instance();
     app.set_main_scene(main_scene);
+
+    if (is_engine) {
+        std::ifstream editor_data_file((project_path/"editor.data"));
+        if (editor_data_file.is_open()) {
+            json editor_data;
+            editor_data_file >> editor_data;
+            editor_data_file.close();
+
+            auto& camera = app.get_camera();
+            
+            Vector2 camera_position(
+                editor_data["camera"]["x"].get<float>(),
+                editor_data["camera"]["y"].get<float>()
+            );
+            camera->set_position(camera_position);
+
+            float camera_zoom = editor_data["camera"]["zoom"].get<float>();
+            camera->set_zoom(camera_zoom);
+        }
+    }
 }
 
 void ProjectManager::save_project() {
@@ -71,6 +91,18 @@ void ProjectManager::save_project() {
     std::ofstream scene_file(project_path/"main_scene.data");
     scene_file << project_data.dump(4);
     scene_file.close();
+
+    // save editor data
+    json editor_data;
+    auto& camera = app.get_camera();
+    editor_data["camera"] = json::object();
+    editor_data["camera"]["x"] = camera->get_position().x;
+    editor_data["camera"]["y"] = camera->get_position().y;
+    editor_data["camera"]["zoom"] = camera->get_zoom();
+    std::ofstream editor_data_file(project_path/"editor.data");
+    editor_data_file << editor_data.dump(4);
+    editor_data_file.close();
+    
     app.print("Scene has saved");
 }
 

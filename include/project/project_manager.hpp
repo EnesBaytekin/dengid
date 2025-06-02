@@ -27,7 +27,7 @@ public:
     ProjectSettings&      get_project_settings() { return project_settings; }
 
     void close_project();
-    void load_project();
+    void load_project(bool is_engine=true);
     void save_project();
     void build_game();
     void run_game();

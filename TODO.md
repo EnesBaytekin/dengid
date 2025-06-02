@@ -39,6 +39,7 @@
 
 - [x] camera ekle
 - [x] cameraya zoom özelliği ekle
+- [x] kameranın en son konum ve zoomu da proje dizininde kaydedilsin, projeyi tekrar açınca ordan devam etsin
 - [ ] oyun içinde hareket ettirilebilecek kamera ekle
 - [x] engine içinde objeleri mouse ile seçip düzenleyebilmeyi ekle
 - [x] objelerin sırasını değiştirebilmeyi ekle
