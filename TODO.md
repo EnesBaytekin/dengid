@@ -44,7 +44,7 @@
 - [x] engine içinde objeleri mouse ile seçip düzenleyebilmeyi ekle
 - [x] objelerin sırasını değiştirebilmeyi ekle
 - [x] objeleri silebilmeyi ekle
-- [ ] objeleri kopyalamayı ekle
+- [x] objeleri kopyalamayı ekle
 - [ ] componentleri silebilmeyi ekle
 - [x] obje şablonu oluşturmayı ekle
 - [x] şablon objeleri ekleyebilmeyi ekle

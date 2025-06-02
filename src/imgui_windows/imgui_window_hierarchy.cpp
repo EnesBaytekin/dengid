@@ -106,6 +106,41 @@ void show_hierarchy_window() {
         ImGui::EndDisabled();
     }
 
+    ImGui::SameLine();
+    if (!is_object_selected) {
+        ImGui::BeginDisabled();
+    }
+    if (ImGui::Button("Clone Object")) {
+        json object_data = ObjectLoader::save_object(inspector->selected_object);
+        auto new_object = ObjectLoader::load_object(object_data);
+        std::string base_name = inspector->selected_object->name;
+        size_t copy_pos = base_name.find(" (copy");
+        if (copy_pos != std::string::npos) {
+            base_name = base_name.substr(0, copy_pos);
+        }
+
+        int copy_count = 1;
+        std::string new_name;
+        bool name_exists;
+        do {
+            new_name = base_name + " (copy " + std::to_string(copy_count++) + ")";
+            name_exists = false;
+            for (const auto& obj : scene->get_objects()) {
+                if (obj->name == new_name) {
+                    name_exists = true;
+                    break;
+                }
+            }
+        } while (name_exists);
+
+        new_object->name = new_name;
+        scene->spawn_object(new_object);
+        inspector->selected_object = new_object;
+    }
+    if (!is_object_selected) {
+        ImGui::EndDisabled();
+    }
+
     ImGui::Separator();
     ImGui::Dummy(ImVec2(0, 8));
 
