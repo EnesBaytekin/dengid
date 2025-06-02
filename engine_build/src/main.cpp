@@ -21,7 +21,7 @@ int main(int, char**) {
     
     ProjectManager& project_manager = ProjectManager::get_instance();
     project_manager.set_project_path(project_path);
-    project_manager.load_project();
+    project_manager.load_project(false);
     
     app.run();
     return 0;
