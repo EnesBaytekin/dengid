@@ -73,7 +73,7 @@ void update_object_selections() {
                 float zoom_factor = camera->get_zoom();
 
                 if (mouse_wheel > 0) {
-                    if (zoom_factor < 10.0f) {
+                    if (zoom_factor < 100.0f) {
                         zoom_factor *= 1.1f;
                     }
                 } else if (mouse_wheel < 0) {
