@@ -58,7 +58,7 @@
 - [x] proje açarken belirli dizindeki projeler seçilebilsin
 - [ ] yeni proje oluştururken klasör oluşacağını belirten bir yazı ekle
 - [x] projeyi kapatıp tekrar initial view'e dönmeyi ekle
-- [ ] proje ayarlarını game exe sine yansıt. pencere boyutları gibi
+- [x] proje ayarlarını game exe sine yansıt. pencere boyutları gibi
 
 - [x] objelere depth ekle
 - [x] ysort componenti ekle
