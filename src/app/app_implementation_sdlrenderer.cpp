@@ -162,13 +162,15 @@ void AppImplementationSDLRenderer::draw_image(const std::string& image_id, int x
     }
     auto texture = static_cast<SDL_Texture*>(image->get_native_image());
 
+    if (src_w == 0 || src_h == 0) {
+        int img_w, img_h;
+        SDL_QueryTexture(texture, nullptr, nullptr, &img_w, &img_h);
+
+        if (src_w == 0) { src_w = img_w; }
+        if (src_h == 0) { src_h = img_h; }
+    }
+
     SDL_Rect src_rect = {src_x, src_y, src_w, src_h};
-
-    int img_w, img_h;
-    SDL_QueryTexture(texture, nullptr, nullptr, &img_w, &img_h);
-
-    if (src_w == 0) { src_w = img_w; }
-    if (src_h == 0) { src_h = img_h; }
 
     int dst_w = src_w*scale_x;
     int dst_h = src_h*scale_y;
