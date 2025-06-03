@@ -45,7 +45,15 @@ void create_project(const std::filesystem::path& project_path) {
     std::filesystem::create_directory(project_path);
     std::filesystem::copy_file(EXECUTABLE_DIRECTORY/"icon.png", project_path/"icon.png");
 
-    json project_json = R"({"objects":[]})"_json;
+    json project_json = R"(
+    {
+        "settings": {
+            "window_width": 800,
+            "window_height": 600
+        },
+        "objects": []
+    }
+    )"_json;
 
     std::ofstream scene_file(project_path/"main_scene.data");
     scene_file << project_json.dump(4);
@@ -86,7 +94,8 @@ void show_tab_item_create_project() {
             ImGuiFileBrowserFlags_CreateNewDir |
             ImGuiFileBrowserFlags_HideRegularFiles |
             ImGuiFileBrowserFlags_SkipItemsCausingError,
-            PROJECTS_DIRECTORY);
+            PROJECTS_DIRECTORY
+        );
 
         ImGui::Text("Project Location:");
         ImGui::InputText("##ProjectPath", project_path, IM_ARRAYSIZE(project_path),
@@ -166,6 +175,25 @@ void show_tab_item_load_project() {
             projects = get_projects();
             selection_index = -1;
             refreshed = false;
+        }
+
+        static ImGui::FileBrowser fileDialog(
+            ImGuiFileBrowserFlags_SelectDirectory |
+            ImGuiFileBrowserFlags_CreateNewDir |
+            ImGuiFileBrowserFlags_HideRegularFiles |
+            ImGuiFileBrowserFlags_SkipItemsCausingError,
+            PROJECTS_DIRECTORY
+        );
+        
+        ImGui::SameLine();
+        if (ImGui::Button("Load Another Project")) {
+            fileDialog.Open();
+        }
+        fileDialog.Display();
+        if (fileDialog.HasSelected()) {
+            fileDialog.ClearSelected();
+            std::string project_path = fileDialog.GetSelected().string();
+            load_project(project_path);
         }
 
         if (ImGui::BeginListBox("##ListBox", ImVec2(-1, 300))) {

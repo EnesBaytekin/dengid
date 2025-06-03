@@ -55,7 +55,7 @@
 - [ ] projedeki templateler bir pencerede listelensin. kolayca seçip eklenebilsin
 
 - [ ] son açılan proje en üste olacak şekilde sırala
-- [ ] proje açarken belirli dizindeki projeler seçilebilsin
+- [x] proje açarken belirli dizindeki projeler seçilebilsin
 - [ ] yeni proje oluştururken klasör oluşacağını belirten bir yazı ekle
 - [x] projeyi kapatıp tekrar initial view'e dönmeyi ekle
 - [ ] proje ayarlarını game exe sine yansıt. pencere boyutları gibi
