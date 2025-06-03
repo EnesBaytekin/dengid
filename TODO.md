@@ -56,7 +56,7 @@
 
 - [ ] son açılan proje en üste olacak şekilde sırala
 - [x] proje açarken belirli dizindeki projeler seçilebilsin
-- [ ] yeni proje oluştururken klasör oluşacağını belirten bir yazı ekle
+- [x] yeni proje oluştururken klasör oluşacağını belirten bir yazı ekle
 - [x] projeyi kapatıp tekrar initial view'e dönmeyi ekle
 - [x] proje ayarlarını game exe sine yansıt. pencere boyutları gibi
 

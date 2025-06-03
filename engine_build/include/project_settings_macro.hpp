@@ -1,6 +1,6 @@
 #pragma once
-#define PROJECT_PATH "/home/imns/dengid-projects/daadfdaf"
+#define PROJECT_PATH "/home/imns/Desktop/testere"
 
-#define WINDOW_WIDTH 160
-#define WINDOW_HEIGHT 90
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
 

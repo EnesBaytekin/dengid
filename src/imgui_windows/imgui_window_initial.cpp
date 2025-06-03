@@ -128,6 +128,9 @@ void show_tab_item_create_project() {
         }
 
         ImGui::Dummy(ImVec2(0.0f, 10.0f));
+        ImGui::TextWrapped("Project folder will be created as: %s", full_path.string().c_str());
+
+        ImGui::Dummy(ImVec2(0.0f, 10.0f));
         ImGui::Separator();
         ImGui::Dummy(ImVec2(0.0f, 20.0f));
 
