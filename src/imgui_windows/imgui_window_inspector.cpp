@@ -107,12 +107,41 @@ void ImguiWindowInspector::show() {
         ImGui::DragInt("##obj_depth", &selected_object->depth, 0.1f, -65536, 65535);
 
         ComponentDrawInspectorVisitor visitor;
+        int component_index = 0;
+        IComponent* component_to_delete = nullptr;
         for (auto& component : selected_object->get_components()) {
             ImGui::Dummy(ImVec2(0, 8));
             ImGui::Separator();
             ImGui::Dummy(ImVec2(0, 8));
 
+            std::string popup_name = "Delete Component##"+std::to_string(component_index);
+
+            if (ImGui::Button(("x##delete_component_"+std::to_string(component_index)).c_str())) {
+                ImGui::OpenPopup(popup_name.c_str());
+            }
+            ImGui::SameLine();
+
             component->accept_visitor(visitor);
+
+            ImGui::SetNextWindowSize(ImVec2(200, 0));
+            if (ImGui::BeginPopup(popup_name.c_str())) {
+                ImGui::TextWrapped("Are you sure you want to delete this component?");
+                ImGui::Separator();
+                if (ImGui::Button("Yes", ImVec2(80, 0))) {
+                    component_to_delete = component.get();
+                    ImGui::CloseCurrentPopup();
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("No", ImVec2(80, 0))) {
+                    ImGui::CloseCurrentPopup();
+                }
+                ImGui::EndPopup();
+            }
+
+            ++component_index;
+        }
+        if (component_to_delete) {
+            selected_object->remove_component(component_to_delete->get_type());
         }
 
         ImGui::Dummy(ImVec2(0, 8));

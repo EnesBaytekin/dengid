@@ -47,7 +47,7 @@
 - [x] objelerin sırasını değiştirebilmeyi ekle
 - [x] objeleri silebilmeyi ekle
 - [x] objeleri kopyalamayı ekle
-- [ ] componentleri silebilmeyi ekle
+- [x] componentleri silebilmeyi ekle
 - [x] obje şablonu oluşturmayı ekle
 - [x] şablon objeleri ekleyebilmeyi ekle
 - [ ] şablonlar eklenince doğrudan sahneye kopyalanmasın. şablon olduğu belirtilen bir şey olsun. şablon dosyasını build ederken dinamik çeksin. böylece bir şablon düzenlendiğinde daha önceden o çablon ile oluşturulmuş objede de aynı değişiklik yapılmış olsun.

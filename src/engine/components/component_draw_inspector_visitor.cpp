@@ -9,6 +9,7 @@
 #include "globals.hpp"
 #include "project/project_manager.hpp"
 #include "image/image_resource.hpp"
+#include "imgui_windows/imgui_window_inspector.hpp"
 
 void ComponentDrawInspectorVisitor::visit_image_component(ImageComponent& component) {
     if (ImGui::CollapsingHeader("Image Component", ImGuiTreeNodeFlags_DefaultOpen)) {

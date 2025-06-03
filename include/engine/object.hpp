@@ -5,6 +5,7 @@
 #include "app/app_main.hpp"
 #include "engine/components/i_component.hpp"
 #include <vector>
+#include <algorithm>
 
 class Object {
 private:
@@ -41,6 +42,16 @@ public:
             }
         }
         return false;
+    }
+    void remove_component(ComponentType type) {
+        components.erase(
+            std::remove_if(components.begin(), components.end(),
+                [type](const std::unique_ptr<IComponent>& component) {
+                    return component->get_type() == type;
+                }
+            ),
+            components.end()
+        );
     }
     void draw();
     void update();
