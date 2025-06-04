@@ -54,7 +54,7 @@
 - [ ] templateleri unique yapabilmeyi ekle
 - [ ] projedeki templateler bir pencerede listelensin. kolayca seçip eklenebilsin
 
-- [ ] son açılan proje en üste olacak şekilde sırala
+- [x] son açılan proje en üste olacak şekilde sırala
 - [x] proje açarken belirli dizindeki projeler seçilebilsin
 - [x] yeni proje oluştururken klasör oluşacağını belirten bir yazı ekle
 - [x] projeyi kapatıp tekrar initial view'e dönmeyi ekle
@@ -82,5 +82,5 @@
 - [ ] scriptler proje rootunda olmadığı sürece çalışmıyor, onu düzelt
 
 - [x] ui'daki bir şeylere tıklayınca arkadaki sahneye de tıklanmış oluyor ve başka objeler falan seçiliyor. tıklama ui'da ise sahneye etki etmesin
-
+- [ ] editorde bir window seçiliyken projeyi kapatmak, build etmek falan gibi işlemlerin kısayollarına basıldığında seçili window bu inputları handle ediyor
 - [x] engine kapandığında o anki çalışmakta olan oyun açık kalıyor

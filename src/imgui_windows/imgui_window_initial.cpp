@@ -20,11 +20,28 @@ void create_projects_folder_if_not_exist() {
 }
 
 std::vector<std::filesystem::path> get_projects() {
-    std::vector<std::filesystem::path> projects;
+    std::vector<std::pair<std::filesystem::path, std::filesystem::file_time_type>> projects_with_times;
+
     for (auto& project : std::filesystem::directory_iterator(PROJECTS_DIRECTORY)) {
         if (std::filesystem::is_directory(project)) {
-            projects.push_back(project);
+            std::filesystem::file_time_type last_write_time = std::filesystem::last_write_time(project);
+            for (auto& file : std::filesystem::recursive_directory_iterator(project)) {
+                if (std::filesystem::last_write_time(file) > last_write_time) {
+                    last_write_time = std::filesystem::last_write_time(file);
+                }
+            }
+            projects_with_times.emplace_back(project, last_write_time);
         }
+    }
+
+    std::sort(projects_with_times.begin(), projects_with_times.end(),
+        [](const auto& a, const auto& b) {
+            return a.second > b.second;
+        });
+
+    std::vector<std::filesystem::path> projects;
+    for (const auto& [path, time] : projects_with_times) {
+        projects.push_back(path);
     }
     return projects;
 }
