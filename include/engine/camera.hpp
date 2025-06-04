@@ -9,6 +9,8 @@ class Camera {
 private:
     Vector2 position;
     std::shared_ptr<Object> target;
+    bool follow_x = true;
+    bool follow_y = true;
     float smoothing_factor = 0.9f;
     float zoom = 1.0f;
 
@@ -28,6 +30,10 @@ public:
     float                    get_smoothing_factor() { return smoothing_factor; }
     void                     set_zoom(float new_zoom) { zoom = new_zoom; }
     float                    get_zoom() { return zoom; }
+    void                     set_follow_x(bool follow) { follow_x = follow; }
+    bool                     is_following_x() { return follow_x; }
+    void                     set_follow_y(bool follow) { follow_y = follow; }
+    bool                     is_following_y() { return follow_y; }
 
     void update();
 };

@@ -10,6 +10,8 @@ void Camera::update() {
             settings.window_height
         );
         Vector2 mid_position = position + (screen_size / 2.0f);
-        position += (target->position - mid_position)*smoothing_factor;
+        Vector2 new_position = position + (target->position - mid_position)*smoothing_factor;
+        if (follow_x) { position.x = new_position.x; }
+        if (follow_y) { position.y = new_position.y; }
     }
 }
