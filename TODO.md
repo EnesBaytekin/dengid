@@ -42,6 +42,7 @@
 - [x] kameranın en son konum ve zoomu da proje dizininde kaydedilsin, projeyi tekrar açınca ordan devam etsin
 - [x] oyun içinde hareket ettirilebilecek kamera ekle
 - [x] oyunu build edince objeler görünmüyor
+- [ ] proje ayarlarına pixel per unit ekle. her şeyi o kadar büyüterek çizdirsin
 
 - [x] engine içinde objeleri mouse ile seçip düzenleyebilmeyi ekle
 - [x] objelerin sırasını değiştirebilmeyi ekle
