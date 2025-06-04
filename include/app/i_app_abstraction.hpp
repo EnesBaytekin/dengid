@@ -9,6 +9,7 @@
 #include <cstring>
 #include <vector>
 #include "project/project_manager.hpp"
+#include "engine/camera.hpp"
 
 class IAppAbstraction {
 protected:
@@ -16,6 +17,8 @@ protected:
     bool running;
 
     std::vector<SDL_Event> event_list;
+
+    std::unique_ptr<Camera> camera;
 
     double now = 0.0;
     double delta_time = 0.0;
@@ -38,6 +41,7 @@ public:
     virtual void initialize(IAppImplementation* _implementation) {
         implementation = _implementation;
         window = implementation->get_window();
+        camera = std::make_unique<Camera>();
     }
 
     virtual void setup() = 0;
@@ -90,6 +94,7 @@ public:
             implementation->update();
             implementation->create_frame();
             update();
+            camera->update();
             implementation->clear_renderer();
             draw();
             implementation->render();
@@ -104,14 +109,39 @@ public:
     double get_now() { return now; }
     double get_delta_time() { return delta_time; }
 
-    virtual void draw_rect(int x, int y, int width, int height, int r, int g, int b, int a, bool fill=true) { implementation->draw_rect(x, y, width, height, r, g, b, a, fill); }
+    void                        set_camera(std::unique_ptr<Camera> cam) { camera = std::move(cam); }
+    std::unique_ptr<Camera>&    get_camera() { return camera; }
+
+    virtual void draw_rect(int x, int y, int width, int height, int r, int g, int b, int a, bool fill=true) {
+        Vector2 draw_position(x, y);
+        if (camera) {
+            draw_position -= camera->get_position();
+            float zoom_factor = camera->get_zoom();
+            draw_position *= zoom_factor;
+            width *= zoom_factor;
+            height *= zoom_factor;
+            if (width < 1) width = 1;
+            if (height < 1) height = 1;
+        }
+        implementation->draw_rect(draw_position.x, draw_position.y, width, height, r, g, b, a, fill);
+    }
     std::shared_ptr<Image> load_image(const std::string& file_path)         { return implementation->load_image(file_path); }
     virtual void draw_image(const std::string& image_id , int x, int y,
                     float scale_x=1, float scale_y=1, bool flip_x=false, bool flip_y=false,
                     int src_x=0, int src_y=0, int src_w=0, int src_h=0)
-        { implementation->draw_image(image_id, x, y,
-                                     scale_x, scale_y, flip_x, flip_y,
-                                     src_x, src_y, src_w, src_h); }
+    {
+        Vector2 draw_position(x, y);
+        if (camera) {
+            draw_position -= camera->get_position();
+            float zoom_factor = camera->get_zoom();
+            draw_position *= zoom_factor;
+            scale_x *= zoom_factor;
+            scale_y *= zoom_factor;
+        }
+        implementation->draw_image(image_id, draw_position.x, draw_position.y,
+                    scale_x, scale_y, flip_x, flip_y,
+                    src_x, src_y, src_w, src_h);
+    }
     void draw_imgui_image(const std::string& image_id, int width=0, int height=0) { implementation->draw_imgui_image(image_id, width, height); }
     bool is_key_pressed(SDL_Scancode key) { 
         ImGuiIO& io = ImGui::GetIO();
@@ -129,6 +159,14 @@ public:
     Vector2 get_mouse_position() { 
         ImGuiIO& io = ImGui::GetIO();
         return !io.WantCaptureMouse ? mouse_position : Vector2{0, 0}; 
+    }
+    Vector2 get_mouse_position_on_scene() {
+        Vector2 mouse_position = get_mouse_position();
+        if (camera) {
+            mouse_position /= camera->get_zoom();
+            mouse_position += camera->get_position();
+        }
+        return mouse_position;
     }
     Vector2 get_mouse_motion() { 
         ImGuiIO& io = ImGui::GetIO();

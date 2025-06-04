@@ -9,7 +9,7 @@ class Camera {
 private:
     Vector2 position;
     std::shared_ptr<Object> target;
-    float smoothing_factor = 0.1f;
+    float smoothing_factor = 0.9f;
     float zoom = 1.0f;
 
 public:

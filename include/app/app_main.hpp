@@ -9,7 +9,6 @@
 #include "app/initialize_imgui_style.hpp"
 #include "imgui_windows/imgui_window_terminal.hpp"
 #include "app_views/app_view.hpp"
-#include "engine/camera.hpp"
 
 class Scene;
 
@@ -18,8 +17,6 @@ private:
     EnumAppViewType current_view_type;
     std::map<EnumAppViewType, std::shared_ptr<AppView>> views;
     std::shared_ptr<Scene> main_scene;
-    
-    std::unique_ptr<Camera> camera;
 
     AppMain(): current_view_type(EnumAppViewType::INITIAL_VIEW) {}
     ~AppMain() = default;
@@ -33,8 +30,6 @@ public:
     }
     void initialize(IAppImplementation* _implementation) {
         IAppAbstraction::initialize(_implementation);
-        Vector2 camera_position = Vector2(-320, -20);
-        camera = std::make_unique<Camera>(camera_position);
         initialize_imgui_style();
     }
 
@@ -44,49 +39,11 @@ public:
     EnumAppViewType             get_current_view_type() { return current_view_type; }
     void                        set_main_scene(std::shared_ptr<Scene> scene) { main_scene = scene; }
     std::shared_ptr<Scene>      get_main_scene() { return main_scene; }
-    void                        set_camera(std::unique_ptr<Camera> cam) { camera = std::move(cam); }
-    std::unique_ptr<Camera>&    get_camera() { return camera; }
 
     void setup() override;
     void update() override;
     void draw() override;
-    void draw_rect(int x, int y, int width, int height, int r, int g, int b, int a, bool fill=true) override {
-        Vector2 draw_position = Vector2(x, y);
-        if (camera) {
-            draw_position -= camera->get_position();
-            float zoom_factor = camera->get_zoom();
-            draw_position *= zoom_factor;
-            width = width*zoom_factor;
-            height = height*zoom_factor;
-            if (width < 1) width = 1;
-            if (height < 1) height = 1;
-        }
-        implementation->draw_rect(draw_position.x, draw_position.y, width, height, r, g, b, a, fill);
-    }
-    void draw_image(const std::string& image_id, int x, int y,
-                     float scale_x=1, float scale_y=1, bool flip_x=false, bool flip_y=false,
-                     int src_x=0, int src_y=0, int src_w=0, int src_h=0) override
-    {
-        Vector2 draw_position = Vector2(x, y);
-        if (camera) {
-            draw_position -= camera->get_position();
-            float zoom_factor = camera->get_zoom();
-            draw_position *= zoom_factor;
-            scale_x *= zoom_factor;
-            scale_y *= zoom_factor;
-        }
-        implementation->draw_image(image_id, draw_position.x, draw_position.y, scale_x, scale_y, flip_x, flip_y, src_x, src_y, src_w, src_h);
-    }
-
-    Vector2 get_mouse_position_on_scene() {
-        Vector2 mouse_position = get_mouse_position();
-        if (camera) {
-            mouse_position /= camera->get_zoom();
-            mouse_position += camera->get_position();
-        }
-        return mouse_position;
-    }
-
+    
     void print(std::string message) {
         if (get_current_view_type() == EnumAppViewType::PROJECT_VIEW) {
             ((ImguiWindowTerminal*)(get_view()->get_window("terminal").get()))->print(message);
