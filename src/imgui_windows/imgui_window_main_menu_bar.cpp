@@ -49,9 +49,25 @@ void ImguiWindowMainMenuBar::update() {
 void ImguiWindowMainMenuBar::show() {
     AppMain& app = AppMain::get_instance();
     ProjectManager& project_manager = ProjectManager::get_instance();
-    
     auto view_type = app.get_current_view_type();
-    if (ImGui::BeginMainMenuBar()) {
+    
+    ImGui::SetNextWindowPos(ImVec2(0, 0));
+    ImGui::SetNextWindowSize(ImVec2(ImGui::GetIO().DisplaySize.x, 10));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+
+    ImGui::Begin("FakeMainMenuBar", nullptr,
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoScrollbar |
+        ImGuiWindowFlags_NoSavedSettings |
+        ImGuiWindowFlags_MenuBar |
+        ImGuiWindowFlags_NoNavFocus |
+        ImGuiWindowFlags_NoBackground
+    );
+
+    if (ImGui::BeginMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Save", "Ctrl+S")) {
                 project_manager.save_project();
@@ -83,6 +99,10 @@ void ImguiWindowMainMenuBar::show() {
                     auto window = view->get_window("inspector");
                     window->set_visible(!window->is_visible());
                 }
+                if (ImGui::MenuItem("Console Window")) {
+                    auto window = view->get_window("terminal");
+                    window->set_visible(!window->is_visible());
+                }
                 ImGui::EndMenu();
             }
 
@@ -107,6 +127,8 @@ void ImguiWindowMainMenuBar::show() {
             }
         }
 
-        ImGui::EndMainMenuBar();
+        ImGui::EndMenuBar();
     }
+    ImGui::End();
+    ImGui::PopStyleVar(2);
 }

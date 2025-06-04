@@ -18,7 +18,7 @@ void show_terminal_window(ImguiWindowTerminal* window) {
         window->clear();
     }
     bool visible = true;
-    ImGui::Begin("Terminal", &visible,
+    ImGui::Begin("Console", &visible,
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoMove |
         ImGuiWindowFlags_NoResize
@@ -27,21 +27,20 @@ void show_terminal_window(ImguiWindowTerminal* window) {
     if (!visible) {
         window->set_visible(false);
     }
-    
-    if (ImGui::Button(auto_scroll ? "Auto Scroll: ON" : "Auto Scroll: OFF")) {
-        auto_scroll = !auto_scroll;
-    }
 
-    ImGui::SameLine();
     if (ImGui::Button("Clear##terminal")) {
         window->clear();
     }
+    
+    ImGui::SameLine();
+    ImGui::Checkbox("Auto-scroll", &auto_scroll);
 
-    ImGui::BeginChild("ScrollingRegion", ImVec2(0, 0), true, ImGuiWindowFlags_HorizontalScrollbar);
-
-    for (const auto& line : window->get_lines()) {
-        ImGui::Text("%s", line.c_str());
-    }
+    auto& buffer = window->get_buffer();
+    ImGui::InputTextMultiline("##ConsoleText", buffer.data(), buffer.size(),
+                              ImVec2(-FLT_MIN, -FLT_MIN),
+                              ImGuiInputTextFlags_ReadOnly);
+    
+    ImGui::BeginChild("##ConsoleText", ImVec2(0, 0), true, ImGuiWindowFlags_HorizontalScrollbar);
 
     static float current_scroll_y = ImGui::GetScrollMaxY();
     float scroll_max_y = ImGui::GetScrollMaxY();

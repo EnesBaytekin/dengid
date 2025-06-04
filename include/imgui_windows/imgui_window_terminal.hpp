@@ -11,7 +11,7 @@ class AppMain;
 class ImguiWindowTerminal : public ImguiWindow {
 private:
     std::mutex print_mutex;
-    std::vector<std::string> lines;
+    std::vector<char> buffer = {'\0'};
 public:
     ImguiWindowTerminal() : ImguiWindow() {};
     ~ImguiWindowTerminal() override = default;
@@ -19,10 +19,21 @@ public:
     void show() override;
     void update() override;
 
-    void clear()                        { std::lock_guard<std::mutex> guard(print_mutex); lines.clear(); }
-    void print(const std::string& line) { std::lock_guard<std::mutex> guard(print_mutex); lines.push_back(line); }
+    void clear() {
+        std::lock_guard<std::mutex> guard(print_mutex);
+        buffer.clear();
+        buffer.push_back('\0');
+    }
+    void print(const std::string& line) { 
+        if (!buffer.empty() && buffer.back() == '\0') {
+            buffer.pop_back();
+        }
+        std::lock_guard<std::mutex> guard(print_mutex); 
+        buffer.insert(buffer.end(), line.begin(), line.end());
+        buffer.push_back('\0');
+    }
 
-    std::vector<std::string>& get_lines() { return lines; }
+    std::vector<char>& get_buffer() { return buffer; }
 };
 
 #endif
