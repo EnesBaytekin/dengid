@@ -4,8 +4,7 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
-
-class Object;
+#include "engine/object.hpp"
 
 class Scene {
 protected:
@@ -18,7 +17,7 @@ public:
     void draw();
     void update();
 
-    void spawn_object(std::shared_ptr<Object> object) { objects_to_spawn.push_back(object); }
+    void spawn_object(std::shared_ptr<Object> object) { objects_to_spawn.push_back(object); object->init(); }
     void delete_object(std::shared_ptr<Object> object) {
         auto it = std::remove(objects.begin(), objects.end(), object);
         if (it != objects.end()) {
