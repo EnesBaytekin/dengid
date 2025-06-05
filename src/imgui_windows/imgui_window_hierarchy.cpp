@@ -14,18 +14,6 @@
 #include "imfilebrowser.hpp"
 #include <engine/editor_utility.hpp>
 
-#include <cstdlib>
-#include <ctime>
-
-int randrange(int start, int stop) {
-    static bool initialized = false;
-    if (!initialized) {
-        srand(static_cast<unsigned int>(time(0)));
-        initialized = true;
-    }
-    return start+rand()%(stop-start+1);
-}
-
 void show_hierarchy_window() {
     AppMain& app = AppMain::get_instance();
     ProjectManager& project_manager = ProjectManager::get_instance();
@@ -78,15 +66,13 @@ void show_hierarchy_window() {
     file_dialog.Display();
     if (file_dialog.HasSelected()) {
         std::string template_name = file_dialog.GetSelected();
-        auto new_object = ObjectLoader::load_object_from_template(template_name, Vector2(256, 256));
+        auto new_object = ObjectLoader::load_object_from_template(template_name, Vector2(0, 0));
         scene->spawn_object(new_object);
         file_dialog.ClearSelected();
     }
 
     if (ImGui::Button("Create Object")) {
-        int x = randrange(0, 1024);
-        int y = randrange(0, 1024);
-        auto object = std::make_shared<Object>(x, y);
+        auto object = std::make_shared<Object>();
         scene->spawn_object(object);
     }
     
