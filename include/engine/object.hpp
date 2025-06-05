@@ -53,6 +53,7 @@ public:
             components.end()
         );
     }
+    void init();
     void draw();
     void update();
 

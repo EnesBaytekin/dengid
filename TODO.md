@@ -86,5 +86,5 @@
 - [ ] editorde bir window seçiliyken projeyi kapatmak, build etmek falan gibi işlemlerin kısayollarına basıldığında seçili window bu inputları handle ediyor
 - [x] engine kapandığında o anki çalışmakta olan oyun açık kalıyor
 
-- [ ] objelerin init fonksiyonu çalışmıyor
+- [x] objelerin init fonksiyonu çalışmıyor
 - [x] proje dizinini default file explorer'da açan bir buton koy

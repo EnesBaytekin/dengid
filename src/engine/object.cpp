@@ -1,5 +1,11 @@
 #include "engine/object.hpp"
 
+void Object::init() {
+    for (auto& component : components) {
+        component->init(*this);
+    }
+}
+
 void Object::draw() {
     if (!has_component(ComponentType::IMAGE_COMPONENT)) {
         AppMain& app = AppMain::get_instance();
