@@ -25,6 +25,23 @@ public:
         }
     }
     std::vector<std::shared_ptr<Object>>& get_objects() { return objects; }
+    std::vector<std::shared_ptr<Object>> get_objects_with_name(const std::string& name) {
+        std::vector<std::shared_ptr<Object>> filtered_objects;
+        for (const auto& object : objects) {
+            if (object->name == name) {
+                filtered_objects.push_back(object);
+            }
+        }
+        return filtered_objects;
+    }
+    std::shared_ptr<Object> get_object_by_name(const std::string& name) {
+        for (const auto& object : objects) {
+            if (object->name == name) {
+                return object;
+            }
+        }
+        return nullptr;
+    }
 };
 
 #endif
