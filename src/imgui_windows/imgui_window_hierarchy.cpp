@@ -12,6 +12,7 @@
 #include <engine/object_loader.hpp>
 #include <image/image_resource.hpp>
 #include "imfilebrowser.hpp"
+#include <engine/editor_utility.hpp>
 
 #include <cstdlib>
 #include <ctime>
@@ -51,7 +52,10 @@ void show_hierarchy_window() {
     
     ImGui::Dummy(ImVec2(0, 20));
 
-    ImGui::TextWrapped("%s", "Scene and objects are shown here.");
+    if (ImGui::Button("Open Project Folder")) {
+        std::string project_path = project_manager.get_project_path();
+        EditorUtility::open_folder(project_path);
+    }
 
     ImGui::Dummy(ImVec2(0, 20));
     ImGui::Separator();

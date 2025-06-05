@@ -85,3 +85,6 @@
 - [x] ui'daki bir şeylere tıklayınca arkadaki sahneye de tıklanmış oluyor ve başka objeler falan seçiliyor. tıklama ui'da ise sahneye etki etmesin
 - [ ] editorde bir window seçiliyken projeyi kapatmak, build etmek falan gibi işlemlerin kısayollarına basıldığında seçili window bu inputları handle ediyor
 - [x] engine kapandığında o anki çalışmakta olan oyun açık kalıyor
+
+- [ ] objelerin init fonksiyonu çalışmıyor
+- [x] proje dizinini default file explorer'da açan bir buton koy

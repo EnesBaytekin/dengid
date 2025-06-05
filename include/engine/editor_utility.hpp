@@ -8,6 +8,7 @@
 #include "engine/components/hitbox_component.hpp"
 #include "engine/components/ysort_component.hpp"
 #include "engine/components/component_type.hpp"
+#include <cstdlib>
 
 class EditorUtility {
 private:
@@ -65,5 +66,16 @@ public:
         } else {
             return std::make_unique<Rect>(object->position, 32, 32);
         }
+    }
+
+    static void open_folder(const std::string& path) {
+    #if defined(_WIN32)
+        std::string command = "start \"\" \"" + path + "\"";
+    #elif defined(__APPLE__)
+        std::string command = "open \"" + path + "\"";
+    #else // Linux
+        std::string command = "xdg-open \"" + path + "\"";
+    #endif
+        system(command.c_str());
     }
 };
