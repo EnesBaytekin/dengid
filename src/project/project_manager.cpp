@@ -142,11 +142,13 @@ void ProjectManager::build_game() {
     std::system("mkdir -p ./game_build/scripts");
 
     auto scene = app.get_main_scene();
-    for (auto& object : scene->get_objects()) {
-        for (auto& component : object->get_components()) {
-            if (component->get_type() == ComponentType::SCRIPT_COMPONENT) {
-                std::string script_name = (dynamic_cast<ScriptComponent*>(component.get()))->get_script_file_name();
-                std::system(("cp "+(project_path/script_name).string()+" ./game_build/scripts/"+script_name).c_str());
+    // Load all script files from the project directory
+    std::filesystem::path scripts_directory = project_path;
+    if (std::filesystem::exists(scripts_directory) && std::filesystem::is_directory(scripts_directory)) {
+        for (const auto& entry : std::filesystem::directory_iterator(scripts_directory)) {
+            if (entry.is_regular_file() && entry.path().extension() == ".cpp") {
+                std::string script_name = entry.path().filename().string();
+                std::system(("cp " + entry.path().string() + " ./game_build/scripts/" + script_name).c_str());
             }
         }
     }
