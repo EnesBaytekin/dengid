@@ -90,3 +90,5 @@
 - [x] proje dizinini default file explorer'da açan bir buton koy
 
 - [ ] game build başarısız olsa bile başarılı diyor ve daha önceki buildi çalıştırıyor
+
+- [ ] bir resim yüklendikten sonra resmin kaynağı değişirse yeniden import edilmiyor. ya her seferinde dosyanın son değişme tarihine bakıp ona göre yüklesin, ya da resimleri yeniden yükle diye bir seçenek olsun
