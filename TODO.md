@@ -88,3 +88,5 @@
 
 - [x] objelerin init fonksiyonu çalışmıyor
 - [x] proje dizinini default file explorer'da açan bir buton koy
+
+- [ ] game build başarısız olsa bile başarılı diyor ve daha önceki buildi çalıştırıyor
