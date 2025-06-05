@@ -66,28 +66,41 @@ void update_object_selections() {
         }
 
         // camera zoom
-        if (app.is_key_pressed(SDL_SCANCODE_LCTRL) || app.is_key_pressed(SDL_SCANCODE_RCTRL)) {
-            int mouse_wheel = app.get_mouse_wheel();
-            if (mouse_wheel != 0) {
-                Vector2 mouse_position_before_zoom = app.get_mouse_position_on_scene();
-                float zoom_factor = camera->get_zoom();
+        int mouse_wheel = app.get_mouse_wheel();
+        if (mouse_wheel != 0) {
+            Vector2 mouse_position_before_zoom = app.get_mouse_position_on_scene();
+            float zoom_factor = camera->get_zoom();
 
-                if (mouse_wheel > 0) {
-                    if (zoom_factor < 100.0f) {
-                        zoom_factor *= 1.1f;
-                    }
-                } else if (mouse_wheel < 0) {
-                    if (zoom_factor > 0.1f) {
-                        zoom_factor /= 1.1f;
-                    }
+            if (mouse_wheel > 0) {
+                if (zoom_factor < 100.0f) {
+                    zoom_factor *= 1.1f;
                 }
+            } else if (mouse_wheel < 0) {
+                if (zoom_factor > 0.1f) {
+                    zoom_factor /= 1.1f;
+                }
+            }
 
-                camera->set_zoom(zoom_factor);
+            camera->set_zoom(zoom_factor);
 
+            Vector2 mouse_position_after_zoom = app.get_mouse_position_on_scene();
+            Vector2 zoom_offset = mouse_position_before_zoom - mouse_position_after_zoom;
+            Vector2 camera_position = camera->get_position() + zoom_offset;
+            camera->set_position(camera_position);
+        }
+
+        // camera reset
+        if (app.is_key_just_pressed(SDL_SCANCODE_HOME)) {
+            if (app.is_key_pressed(SDL_SCANCODE_LCTRL) || app.is_key_pressed(SDL_SCANCODE_RCTRL)) {
+                Vector2 mouse_position_before_zoom = app.get_mouse_position_on_scene();
+                camera->set_zoom(1.0f);
                 Vector2 mouse_position_after_zoom = app.get_mouse_position_on_scene();
                 Vector2 zoom_offset = mouse_position_before_zoom - mouse_position_after_zoom;
                 Vector2 camera_position = camera->get_position() + zoom_offset;
                 camera->set_position(camera_position);
+            } else {
+                auto position = -app.get_mouse_position_on_scene()+camera->get_position();
+                camera->set_position(position);
             }
         }
     }
