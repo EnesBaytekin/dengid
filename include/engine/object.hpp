@@ -18,7 +18,7 @@ public:
 
     Object(Vector2 _position): position(_position) {};
     Object(float x, float y): position(Vector2(x, y)) {};
-    Object(): position(Vector2::ZERO) {};
+    Object(): position(Vector2(0.0f, 0.0f)) {};
     ~Object() = default;
 
     void add_component(std::unique_ptr<IComponent> component) {
