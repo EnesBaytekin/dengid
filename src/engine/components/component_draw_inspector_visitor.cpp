@@ -166,12 +166,29 @@ void ComponentDrawInspectorVisitor::visit_script_component(ScriptComponent& comp
         if (file_dialog_to_create.HasSelected()) {
             std::string new_script_path = file_dialog_to_create.GetSelected();
             std::string new_script_relative_path = std::filesystem::relative(new_script_path, project_path).string();
+            std::string file_name = file_dialog_to_create.GetSelected().filename().string();
+            if (file_name.rfind(".cpp") != file_name.length() - 4) {
+                file_name += ".cpp";
+                new_script_path += ".cpp";
+                new_script_relative_path += ".cpp";
+            }
+            std::string file_name_without_extension = file_name.substr(0, file_name.find_last_of('.'));
             if (std::filesystem::exists(new_script_path)) {
                 app.print("Error: File already exists at path: " + new_script_relative_path);
             } else {
                 std::filesystem::path existing_script_path = EXECUTABLE_DIRECTORY/"script_template";
                 try {
-                    std::filesystem::copy(existing_script_path, new_script_path, std::filesystem::copy_options::overwrite_existing);
+                    std::ifstream src(existing_script_path);
+                    std::ofstream dst(new_script_path);
+                    std::string line;
+                    while (std::getline(src, line)) {
+                        // Replace specific keywords in the template
+                        size_t pos;
+                        while ((pos = line.find("SampleScript")) != std::string::npos) {
+                            line.replace(pos, std::string("SampleScript").length(), file_name_without_extension);
+                        }
+                        dst << line << '\n';
+                    }
                 } catch (const std::filesystem::filesystem_error& error) {
                     app.print("Failed to copy template script file: " + std::string(error.what()));
                     app.print("Creating empty script file instead.");
