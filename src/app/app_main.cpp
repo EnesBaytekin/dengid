@@ -134,7 +134,7 @@ void AppMain::draw() {
     }
     if (camera && current_view_type == EnumAppViewType::PROJECT_VIEW) {
         auto project_settings = ProjectManager::get_instance().get_project_settings();
-        Vector2 window_size = Vector2(project_settings.window_width, project_settings.window_height);
+        Vector2 window_size = Vector2(project_settings.viewport_width, project_settings.viewport_height);
         draw_rect(0, 0, window_size.x, window_size.y, 255, 255, 255, 128, false);
     }
 }

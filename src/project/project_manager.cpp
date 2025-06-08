@@ -38,6 +38,8 @@ void ProjectManager::load_project(bool is_engine) {
 
     auto& settings = ProjectManager::get_instance().get_project_settings();
     
+    settings.viewport_width = json_data["settings"]["viewport_width"].get<int>();
+    settings.viewport_height = json_data["settings"]["viewport_height"].get<int>();
     settings.window_width = json_data["settings"]["window_width"].get<int>();
     settings.window_height = json_data["settings"]["window_height"].get<int>();
 
@@ -78,6 +80,8 @@ void ProjectManager::save_project() {
 
     json project_data;
     project_data["settings"] = json::object();
+    project_data["settings"]["viewport_width"] = settings.viewport_width;
+    project_data["settings"]["viewport_height"] = settings.viewport_height;
     project_data["settings"]["window_width"] = settings.window_width;
     project_data["settings"]["window_height"] = settings.window_height;
 

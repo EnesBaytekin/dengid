@@ -65,8 +65,10 @@ void create_project(const std::filesystem::path& project_path) {
     json project_json = R"(
     {
         "settings": {
-            "window_width": 800,
-            "window_height": 600
+            "viewport_width": 320,
+            "viewport_height": 180,
+            "window_width": 1920,
+            "window_height": 1080
         },
         "objects": []
     }

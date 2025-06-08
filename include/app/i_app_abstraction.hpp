@@ -128,6 +128,16 @@ public:
             if (width < 1) width = 1;
             if (height < 1) height = 1;
         }
+#ifndef BUILD_MODE__ENGINE
+        ProjectManager& project_manager = ProjectManager::get_instance();
+        ProjectSettings& project_settings = project_manager.get_project_settings();
+        float horizontal_scale = project_settings.window_width / (float)project_settings.viewport_width;
+        float vertical_scale = project_settings.window_height / (float)project_settings.viewport_height;
+        width *= horizontal_scale;
+        height *= vertical_scale;
+        draw_position.x *= horizontal_scale;
+        draw_position.y *= vertical_scale;
+#endif
         implementation->draw_rect(draw_position.x, draw_position.y, width, height, r, g, b, a, fill);
     }
     std::shared_ptr<Image> load_image(const std::string& file_path)         { return implementation->load_image(file_path); }
@@ -143,6 +153,16 @@ public:
             scale_x *= zoom_factor;
             scale_y *= zoom_factor;
         }
+#ifndef BUILD_MODE__ENGINE
+        ProjectManager& project_manager = ProjectManager::get_instance();
+        ProjectSettings& project_settings = project_manager.get_project_settings();
+        float horizontal_scale = project_settings.window_width / (float)project_settings.viewport_width;
+        float vertical_scale = project_settings.window_height / (float)project_settings.viewport_height;
+        scale_x *= horizontal_scale;
+        scale_y *= vertical_scale;
+        draw_position.x *= horizontal_scale;
+        draw_position.y *= vertical_scale;
+#endif
         implementation->draw_image(image_id, draw_position.x, draw_position.y,
                     scale_x, scale_y, flip_x, flip_y,
                     src_x, src_y, src_w, src_h);
