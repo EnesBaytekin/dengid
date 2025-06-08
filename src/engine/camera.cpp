@@ -6,8 +6,8 @@ void Camera::update() {
     if (target) {
         auto& settings = ProjectManager::get_instance().get_project_settings();
         Vector2 screen_size(
-            settings.window_width,
-            settings.window_height
+            settings.viewport_width,
+            settings.viewport_height
         );
         Vector2 mid_position = position + (screen_size / 2.0f);
         Vector2 new_position = position + (target->position - mid_position)*smoothing_factor;
