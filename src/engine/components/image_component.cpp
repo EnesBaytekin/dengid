@@ -24,7 +24,15 @@ void ImageComponent::update(Object& object) {
         AppMain& app = AppMain::get_instance();
         double delta_time = app.get_now()-start_at;
         int delta_frame = animation_speed*delta_time;
-        frame = delta_frame%frame_count;
+        if (loop) {
+            frame = delta_frame % frame_count;
+        } else {
+            if (delta_frame >= frame_count) {
+                frame = frame_count-1;
+            } else {
+                frame = delta_frame;
+            }
+        }
     }
 }
 

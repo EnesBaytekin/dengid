@@ -20,6 +20,7 @@ private:
     int frame = 0;
     float animation_speed = 1.0f;
     bool is_animated = false;
+    bool loop = true;
 
     double start_at = 0.0;
 public:
@@ -54,8 +55,8 @@ public:
 
     void start_animation() { start_at = AppMain::get_instance().get_now(); };
 
-    void start_new_animation(std::string new_image_id, int new_frame_count=-1, float new_animation_speed=-1.0f, int new_flip_x=-1, int new_flip_y=-1, int new_is_animated=-1) {
-        if (image_id != new_image_id) {
+    void start_new_animation(std::string new_image_id, int new_frame_count=-1, float new_animation_speed=-1.0f, int new_flip_x=-1, int new_flip_y=-1, int new_is_animated=-1, int new_loop=-1, bool force_start=false) {
+        if (image_id != new_image_id || force_start) {
             image_id = new_image_id;
             frame = 0;
             if (new_frame_count != -1) {
@@ -72,6 +73,9 @@ public:
             }
             if (new_is_animated != -1) {
                 is_animated = new_is_animated;
+            }
+            if (new_loop != -1) {
+                loop = new_loop;
             }
             start_animation();
         }
