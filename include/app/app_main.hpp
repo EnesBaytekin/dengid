@@ -44,8 +44,11 @@ public:
     void update() override;
     void draw() override;
     
-    void print(std::string message) {
+    void print(std::string message, bool add_new_line=true) override {
         if (get_current_view_type() == EnumAppViewType::PROJECT_VIEW) {
+            if (add_new_line) {
+                message += "\n";
+            }
             ((ImguiWindowTerminal*)(get_view()->get_window("terminal").get()))->print(message);
         }
     }

@@ -48,7 +48,12 @@ public:
     virtual void update() = 0;
     virtual void draw() = 0;
 
-    virtual void print(std::string message) { };
+    virtual void print(std::string message, bool add_new_line=true) {
+        std::cout << message;
+        if (add_new_line) {
+            std::cout << std::endl;
+        }
+    };
 
     void run() {
         running = true;

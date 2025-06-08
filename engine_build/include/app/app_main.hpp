@@ -30,6 +30,4 @@ public:
     void setup() override;
     void update() override;
     void draw() override;
-    
-    void print(std::string message) { std::cout << message << std::endl; };
 };

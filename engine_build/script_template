@@ -1,0 +1,19 @@
+#include "engine/components/script.hpp"
+
+// class name must match the filename (e.g. SampleScript.cpp -> SampleScript)
+class SampleScript : public Script {
+public:
+    void init(Object& object) override {
+        // This function is called at the first frame after the object is spawned
+    }
+
+    void update(Object& object) override {
+        // This function is called every frame
+    }
+
+    void draw(Object& object) override {
+        // This function is called every frame after all objects have been updated
+    }
+};
+
+REGISTER_SCRIPT(SampleScript)

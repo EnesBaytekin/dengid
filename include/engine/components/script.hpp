@@ -4,6 +4,10 @@
 #include <string>
 #include <unordered_map>
 #include "engine/object.hpp"
+#include "engine/scene.hpp"
+#include "engine/components/image_component.hpp"
+#include "engine/components/hitbox_component.hpp"
+#include "engine/components/ysort_component.hpp"
 
 class Script {
 public:
@@ -46,6 +50,7 @@ public:
 #define GET_SCRIPT_COMPONENT(obj)               dynamic_cast<ScriptComponent*>(obj.get_component(ComponentType::SCRIPT_COMPONENT).get())
 #define GET_IMAGE_COMPONENT(obj)                dynamic_cast<ImageComponent*>(obj.get_component(ComponentType::IMAGE_COMPONENT).get())
 #define GET_HITBOX_COMPONENT(obj)               dynamic_cast<HitboxComponent*>(obj.get_component(ComponentType::HITBOX_COMPONENT).get())
+#define GET_YSORT_COMPONENT(obj)                dynamic_cast<YSortComponent*>(obj.get_component(ComponentType::YSORT_COMPONENT).get())
 
 inline AppMain& app = AppMain::get_instance();
 
