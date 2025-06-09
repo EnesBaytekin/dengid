@@ -187,6 +187,14 @@ public:
     }
     Vector2 get_mouse_position_on_scene() {
         Vector2 mouse_position = get_mouse_position();
+#ifndef BUILD_MODE__ENGINE
+        ProjectManager& project_manager = ProjectManager::get_instance();
+        ProjectSettings& project_settings = project_manager.get_project_settings();
+        float horizontal_scale = project_settings.window_width / (float)project_settings.viewport_width;
+        float vertical_scale = project_settings.window_height / (float)project_settings.viewport_height;
+        mouse_position.x /= horizontal_scale;
+        mouse_position.y /= vertical_scale;
+#endif
         if (camera) {
             mouse_position /= camera->get_zoom();
             mouse_position += camera->get_position();
@@ -196,6 +204,21 @@ public:
     Vector2 get_mouse_motion() { 
         ImGuiIO& io = ImGui::GetIO();
         return !io.WantCaptureMouse ? mouse_position - last_mouse_position : Vector2{0, 0}; 
+    }
+    Vector2 get_mouse_motion_on_scene() { 
+        Vector2 mouse_motion = get_mouse_motion();
+#ifndef BUILD_MODE__ENGINE
+        ProjectManager& project_manager = ProjectManager::get_instance();
+        ProjectSettings& project_settings = project_manager.get_project_settings();
+        float horizontal_scale = project_settings.window_width / (float)project_settings.viewport_width;
+        float vertical_scale = project_settings.window_height / (float)project_settings.viewport_height;
+        mouse_motion.x /= horizontal_scale;
+        mouse_motion.y /= vertical_scale;
+#endif
+        if (camera) {
+            mouse_motion /= camera->get_zoom();
+        }
+        return mouse_motion;
     }
     bool is_mouse_button_pressed(Uint32 button) { 
         ImGuiIO& io = ImGui::GetIO();

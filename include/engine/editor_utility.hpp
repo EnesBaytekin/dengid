@@ -64,7 +64,7 @@ public:
             auto& image_component = *dynamic_cast<ImageComponent*>(object->get_component(ComponentType::IMAGE_COMPONENT).get());
             return std::make_unique<Rect>(object->position, image_component.get_size());
         } else {
-            return std::make_unique<Rect>(object->position, 32, 32);
+            return std::make_unique<Rect>(object->position-Vector2(3, 3), 7, 7);
         }
     }
 

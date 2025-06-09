@@ -7,10 +7,13 @@ void Object::init() {
 }
 
 void Object::draw() {
+#ifdef BUILD_MODE__ENGINE
     if (!has_component(ComponentType::IMAGE_COMPONENT)) {
         AppMain& app = AppMain::get_instance();
-        app.draw_rect(position.x, position.y, 32, 32, 0, 0, 0, 255);
+        app.draw_rect((int)position.x-2, (int)position.y, 5, 1, 255, 255, 255, 192);
+        app.draw_rect((int)position.x, (int)position.y-2, 1, 5, 255, 255, 255, 192);
     }
+#endif
     for (auto& component : components) {
         component->draw(*this);
     }
