@@ -126,14 +126,15 @@ public:
         }
         ProjectManager& project_manager = ProjectManager::get_instance();
         ProjectSettings& project_settings = project_manager.get_project_settings();
+        int pixel_per_unit = project_settings.pixel_per_unit;
+#ifndef BUILD_MODE__ENGINE
         float horizontal_scale = project_settings.window_width / (float)project_settings.viewport_width;
         float vertical_scale = project_settings.window_height / (float)project_settings.viewport_height;
-#ifndef BUILD_MODE__ENGINE
         total_scale_factor.x *= horizontal_scale;
         total_scale_factor.y *= vertical_scale;
 #endif
-        x = (int)(x*horizontal_scale)/horizontal_scale;
-        y = (int)(y*vertical_scale)/vertical_scale;
+        x = std::floor(x*pixel_per_unit)/(float)pixel_per_unit;
+        y = std::floor(y*pixel_per_unit)/(float)pixel_per_unit;
         Vector2 draw_position(x, y);
         draw_position += offset;
         draw_position.x *= total_scale_factor.x;
@@ -157,14 +158,15 @@ public:
         }
         ProjectManager& project_manager = ProjectManager::get_instance();
         ProjectSettings& project_settings = project_manager.get_project_settings();
+        int pixel_per_unit = project_settings.pixel_per_unit;
+#ifndef BUILD_MODE__ENGINE
         float horizontal_scale = project_settings.window_width / (float)project_settings.viewport_width;
         float vertical_scale = project_settings.window_height / (float)project_settings.viewport_height;
-#ifndef BUILD_MODE__ENGINE
         total_scale_factor.x *= horizontal_scale;
         total_scale_factor.y *= vertical_scale;
 #endif
-        x = (int)(x*horizontal_scale)/horizontal_scale;
-        y = (int)(y*vertical_scale)/vertical_scale;
+        x = std::floor(x*pixel_per_unit)/(float)pixel_per_unit;
+        y = std::floor(y*pixel_per_unit)/(float)pixel_per_unit;
         Vector2 draw_position(x, y);
         draw_position += offset;
         draw_position.x *= total_scale_factor.x;

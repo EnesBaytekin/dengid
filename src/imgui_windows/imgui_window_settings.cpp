@@ -38,15 +38,18 @@ void show_settings_window() {
 
     auto& settings = project_manager.get_project_settings();
     
-    static bool size_initialized = false;
+    static bool settings_initialized = false;
     static int viewport_size[2];
     static int game_window_size[2];
-    if (!size_initialized) {
+    static int pixel_per_unit;
+    if (!settings_initialized) {
+        settings_initialized = true;
+
         viewport_size[0] = settings.viewport_width;
         viewport_size[1] = settings.viewport_height;
         game_window_size[0] = settings.window_width;
         game_window_size[1] = settings.window_height;
-        size_initialized = true;
+        pixel_per_unit = settings.pixel_per_unit;
     }
 
     ImGui::Text("%s", "Viewport Size:");
@@ -63,6 +66,13 @@ void show_settings_window() {
     if (ImGui::InputInt2("##game_window_size", game_window_size)) {
         settings.window_width = game_window_size[0];
         settings.window_height = game_window_size[1];
+    }
+
+    ImGui::Text("%s", "Pixel Per Unit:");
+    ImGui::SameLine();
+    ImGui::SetNextItemWidth(100);
+    if (ImGui::InputInt("##pixel_per_unit", &pixel_per_unit)) {
+        settings.pixel_per_unit = std::max(0, pixel_per_unit);
     }
 
     ImGui::End();

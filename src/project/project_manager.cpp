@@ -42,6 +42,7 @@ void ProjectManager::load_project(bool is_engine) {
     settings.viewport_height = json_data["settings"]["viewport_height"].get<int>();
     settings.window_width = json_data["settings"]["window_width"].get<int>();
     settings.window_height = json_data["settings"]["window_height"].get<int>();
+    settings.pixel_per_unit = json_data["settings"]["pixel_per_unit"].get<int>();
 
     for (auto& object_json : json_data["objects"]) {
         auto object = ObjectLoader::load_object(object_json);
@@ -84,6 +85,7 @@ void ProjectManager::save_project() {
     project_data["settings"]["viewport_height"] = settings.viewport_height;
     project_data["settings"]["window_width"] = settings.window_width;
     project_data["settings"]["window_height"] = settings.window_height;
+    project_data["settings"]["pixel_per_unit"] = settings.pixel_per_unit;
 
     project_data["objects"] = json::array();
     
