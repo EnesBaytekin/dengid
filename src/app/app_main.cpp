@@ -20,6 +20,7 @@ void update_object_selections() {
     ImguiWindowInspector* inspector = dynamic_cast<ImguiWindowInspector*>(app.get_view()->get_window("inspector").get());
 
     // drag object
+    static Vector2 drag_object_start_mouse_pos;
     if (app.is_mouse_button_just_pressed(SDL_BUTTON_LEFT)) {
         Vector2 mouse_position = app.get_mouse_position_on_scene();
         for (auto& object : app.get_main_scene()->get_objects()) {
@@ -31,11 +32,22 @@ void update_object_selections() {
                 }
             }
         }
+        drag_object_start_mouse_pos = -inspector->selected_object->position + mouse_position;
     }
     if (inspector && inspector->is_dragging) {
-        Vector2 mouse_motion = app.get_mouse_motion() / app.get_camera()->get_zoom();
+        Vector2 mouse_position = app.get_mouse_position_on_scene();
+        Vector2 difference = mouse_position - drag_object_start_mouse_pos;
         if (inspector->selected_object) {
-            inspector->selected_object->position += mouse_motion;
+            ProjectManager& project_manager = ProjectManager::get_instance();
+            ProjectSettings& project_settings = project_manager.get_project_settings();
+            int pixel_per_unit = project_settings.pixel_per_unit;
+
+            Vector2 new_position = difference;
+            
+            new_position.x = std::floor(new_position.x*pixel_per_unit)/(float)pixel_per_unit;
+            new_position.y = std::floor(new_position.y*pixel_per_unit)/(float)pixel_per_unit;
+
+            inspector->selected_object->position = new_position;
         }
     }
     if (app.is_mouse_button_just_released(SDL_BUTTON_LEFT)) {
