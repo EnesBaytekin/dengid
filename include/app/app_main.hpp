@@ -1,7 +1,6 @@
 #ifndef APP_MAIN_HPP
 #define APP_MAIN_HPP
 
-#define BUILD_MODE__ENGINE
 #include "app/i_app_abstraction.hpp"
 #include "app_views/enum_app_view_type.hpp"
 #include <filesystem>
