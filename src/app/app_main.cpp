@@ -32,7 +32,9 @@ void update_object_selections() {
                 }
             }
         }
-        drag_object_start_mouse_pos = -inspector->selected_object->position + mouse_position;
+        if (inspector->selected_object) {
+            drag_object_start_mouse_pos = -inspector->selected_object->position + mouse_position;
+        }
     }
     if (inspector && inspector->is_dragging) {
         Vector2 mouse_position = app.get_mouse_position_on_scene();
