@@ -117,52 +117,60 @@ public:
     void                        set_camera(std::unique_ptr<Camera> cam) { camera = std::move(cam); }
     std::unique_ptr<Camera>&    get_camera() { return camera; }
 
-    virtual void draw_rect(int x, int y, int width, int height, int r, int g, int b, int a, bool fill=true) {
-        Vector2 draw_position(x, y);
+    virtual void draw_rect(float x, float y, float width, float height, int r, int g, int b, int a, bool fill=true) {
+        Vector2 total_scale_factor = {1, 1};
+        Vector2 offset = {0, 0};
         if (camera) {
-            draw_position -= camera->get_position();
-            float zoom_factor = camera->get_zoom();
-            draw_position *= zoom_factor;
-            width *= zoom_factor;
-            height *= zoom_factor;
-            if (width < 1) width = 1;
-            if (height < 1) height = 1;
+            offset -= camera->get_position();
+            total_scale_factor *= camera->get_zoom();
         }
-#ifndef BUILD_MODE__ENGINE
         ProjectManager& project_manager = ProjectManager::get_instance();
         ProjectSettings& project_settings = project_manager.get_project_settings();
         float horizontal_scale = project_settings.window_width / (float)project_settings.viewport_width;
         float vertical_scale = project_settings.window_height / (float)project_settings.viewport_height;
-        width *= horizontal_scale;
-        height *= vertical_scale;
-        draw_position.x *= horizontal_scale;
-        draw_position.y *= vertical_scale;
+#ifndef BUILD_MODE__ENGINE
+        total_scale_factor.x *= horizontal_scale;
+        total_scale_factor.y *= vertical_scale;
 #endif
+        x = (int)(x*horizontal_scale)/horizontal_scale;
+        y = (int)(y*vertical_scale)/vertical_scale;
+        Vector2 draw_position(x, y);
+        draw_position += offset;
+        draw_position.x *= total_scale_factor.x;
+        draw_position.y *= total_scale_factor.y;
+        width *= total_scale_factor.x;
+        height *= total_scale_factor.y;
+        if (width < 1) width = 1;
+        if (height < 1) height = 1;
         implementation->draw_rect(draw_position.x, draw_position.y, width, height, r, g, b, a, fill);
     }
     std::shared_ptr<Image> load_image(const std::string& file_path)         { return implementation->load_image(file_path); }
-    virtual void draw_image(const std::string& image_id , int x, int y,
+    virtual void draw_image(const std::string& image_id , float x, float y,
                     float scale_x=1, float scale_y=1, bool flip_x=false, bool flip_y=false,
                     int src_x=0, int src_y=0, int src_w=0, int src_h=0)
     {
-        Vector2 draw_position(x, y);
+        Vector2 total_scale_factor = {1, 1};
+        Vector2 offset = {0, 0};
         if (camera) {
-            draw_position -= camera->get_position();
-            float zoom_factor = camera->get_zoom();
-            draw_position *= zoom_factor;
-            scale_x *= zoom_factor;
-            scale_y *= zoom_factor;
+            offset -= camera->get_position();
+            total_scale_factor *= camera->get_zoom();
         }
-#ifndef BUILD_MODE__ENGINE
         ProjectManager& project_manager = ProjectManager::get_instance();
         ProjectSettings& project_settings = project_manager.get_project_settings();
         float horizontal_scale = project_settings.window_width / (float)project_settings.viewport_width;
         float vertical_scale = project_settings.window_height / (float)project_settings.viewport_height;
-        scale_x *= horizontal_scale;
-        scale_y *= vertical_scale;
-        draw_position.x *= horizontal_scale;
-        draw_position.y *= vertical_scale;
+#ifndef BUILD_MODE__ENGINE
+        total_scale_factor.x *= horizontal_scale;
+        total_scale_factor.y *= vertical_scale;
 #endif
+        x = (int)(x*horizontal_scale)/horizontal_scale;
+        y = (int)(y*vertical_scale)/vertical_scale;
+        Vector2 draw_position(x, y);
+        draw_position += offset;
+        draw_position.x *= total_scale_factor.x;
+        draw_position.y *= total_scale_factor.y;
+        scale_x *= total_scale_factor.x;
+        scale_y *= total_scale_factor.y;
         implementation->draw_image(image_id, draw_position.x, draw_position.y,
                     scale_x, scale_y, flip_x, flip_y,
                     src_x, src_y, src_w, src_h);
