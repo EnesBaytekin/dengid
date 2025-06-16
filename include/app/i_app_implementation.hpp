@@ -22,7 +22,7 @@ public:
     virtual void setup() = 0;
     virtual void update() = 0;
     virtual void create_frame() = 0;
-    virtual void clear_renderer() = 0;
+    virtual void clear_renderer(int r, int g, int b) = 0;
     virtual void render() = 0;
 
     virtual void draw_rect(int x, int y, int width, int height, int r, int g, int b, int a, bool fill) = 0;

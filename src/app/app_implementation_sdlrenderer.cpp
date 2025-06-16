@@ -103,11 +103,10 @@ void AppImplementationSDLRenderer::create_frame() {
     ImGui::NewFrame();
 }
 
-void AppImplementationSDLRenderer::clear_renderer() {
+void AppImplementationSDLRenderer::clear_renderer(int r, int g, int b) {
     ImGuiIO& io = ImGui::GetIO();
     SDL_RenderSetScale(renderer, io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.y);
-    static ImVec4 clear_color = ImVec4(0.129412f, 0.345098f, 0.345098f, 1.00f);
-    SDL_SetRenderDrawColor(renderer, (Uint8)(clear_color.x * 255), (Uint8)(clear_color.y * 255), (Uint8)(clear_color.z * 255), (Uint8)(clear_color.w * 255));
+    SDL_SetRenderDrawColor(renderer, r, g, b, 255);
     SDL_RenderClear(renderer);
 }
 

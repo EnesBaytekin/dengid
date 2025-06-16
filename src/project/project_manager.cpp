@@ -37,12 +37,32 @@ void ProjectManager::load_project(bool is_engine) {
     scene_file.close();
 
     auto& settings = ProjectManager::get_instance().get_project_settings();
-    
-    settings.viewport_width = json_data["settings"]["viewport_width"].get<int>();
-    settings.viewport_height = json_data["settings"]["viewport_height"].get<int>();
-    settings.window_width = json_data["settings"]["window_width"].get<int>();
-    settings.window_height = json_data["settings"]["window_height"].get<int>();
-    settings.pixel_per_unit = json_data["settings"]["pixel_per_unit"].get<int>();
+
+    if (json_data.contains("settings")) {
+        auto& s = json_data["settings"];
+
+        if (s.contains("viewport_width") && s["viewport_width"].is_number_integer())
+            settings.viewport_width = s["viewport_width"];
+
+        if (s.contains("viewport_height") && s["viewport_height"].is_number_integer())
+            settings.viewport_height = s["viewport_height"];
+
+        if (s.contains("window_width") && s["window_width"].is_number_integer())
+            settings.window_width = s["window_width"];
+
+        if (s.contains("window_height") && s["window_height"].is_number_integer())
+            settings.window_height = s["window_height"];
+
+        if (s.contains("pixel_per_unit") && s["pixel_per_unit"].is_number_integer())
+            settings.pixel_per_unit = s["pixel_per_unit"];
+
+        if (s.contains("bg_color") && s["bg_color"].is_array() && s["bg_color"].size() >= 3) {
+            auto& color = s["bg_color"];
+            if (color[0].is_number_integer() && color[1].is_number_integer() && color[2].is_number_integer())
+                settings.bg_color.set_rgb(color[0], color[1], color[2]);
+        }
+    }
+
 
     for (auto& object_json : json_data["objects"]) {
         auto object = ObjectLoader::load_object(object_json);
@@ -86,6 +106,12 @@ void ProjectManager::save_project() {
     project_data["settings"]["window_width"] = settings.window_width;
     project_data["settings"]["window_height"] = settings.window_height;
     project_data["settings"]["pixel_per_unit"] = settings.pixel_per_unit;
+    project_data["settings"]["bg_color"] = {
+        settings.bg_color.r,
+        settings.bg_color.g,
+        settings.bg_color.b
+    };
+
 
     project_data["objects"] = json::array();
     

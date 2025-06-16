@@ -10,6 +10,7 @@
 #include <vector>
 #include "project/project_manager.hpp"
 #include "engine/camera.hpp"
+#include "image/color.hpp"
 
 class IAppAbstraction {
 protected:
@@ -100,7 +101,10 @@ public:
             implementation->create_frame();
             update();
             camera->update();
-            implementation->clear_renderer();
+
+            auto& settings = ProjectManager::get_instance().get_project_settings();
+            auto [r, g, b] = settings.bg_color.get_rgb();
+            implementation->clear_renderer(r, g, b);
             draw();
             implementation->render();
         }

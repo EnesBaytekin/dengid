@@ -42,6 +42,7 @@ void show_settings_window() {
     static int viewport_size[2];
     static int game_window_size[2];
     static int pixel_per_unit;
+    static float bg_color[3];
     if (!settings_initialized) {
         settings_initialized = true;
 
@@ -50,6 +51,9 @@ void show_settings_window() {
         game_window_size[0] = settings.window_width;
         game_window_size[1] = settings.window_height;
         pixel_per_unit = settings.pixel_per_unit;
+        bg_color[0] = settings.bg_color.r;
+        bg_color[1] = settings.bg_color.g;
+        bg_color[2] = settings.bg_color.b;
     }
 
     ImGui::Text("%s", "Viewport Size:");
@@ -73,6 +77,18 @@ void show_settings_window() {
     ImGui::SetNextItemWidth(100);
     if (ImGui::InputInt("##pixel_per_unit", &pixel_per_unit)) {
         settings.pixel_per_unit = std::max(0, pixel_per_unit);
+    }
+
+    ImGui::Text("%s", "Background Color:");
+    ImGui::SameLine();
+    ImGui::SetNextItemWidth(250);
+    if (ImGui::ColorPicker3("##background_color", bg_color,
+        ImGuiColorEditFlags_Uint8 |
+        ImGuiColorEditFlags_DisplayHex |
+        ImGuiColorEditFlags_DisplayRGB |
+        ImGuiColorEditFlags_DisplayHSV |
+        ImGuiColorEditFlags_PickerHueBar)) {
+        settings.bg_color.set_rgb(bg_color[0]*255, bg_color[1]*255, bg_color[2]*255);
     }
 
     ImGui::End();

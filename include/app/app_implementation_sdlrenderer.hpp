@@ -20,7 +20,7 @@ public:
     void setup() override;
     void update() override;
     void create_frame() override;
-    void clear_renderer() override;
+    void clear_renderer(int r, int g, int b) override;
     void render() override;
     
     void draw_rect(int x, int y, int width, int height, int r, int g, int b, int a, bool fill) override;
