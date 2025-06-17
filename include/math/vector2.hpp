@@ -24,6 +24,11 @@ struct Vector2 {
         return std::sqrt(x*x+y*y);
     }
 
+    Vector2 normalize() {
+        float len = length();
+        return Vector2(x/len, y/len);
+    }
+
     operator float*() { return &x; }
     
     static const Vector2 ZERO;
