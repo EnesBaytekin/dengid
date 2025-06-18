@@ -9,6 +9,7 @@ void ImageComponent::init(Object& object) {
 }
 
 void ImageComponent::draw(Object& object) {
+    if (!visible) { return; } 
     AppMain& app = AppMain::get_instance();
     ImageResource& image_resource = ImageResource::get_instance();
     auto image = image_resource.get_image(image_id);

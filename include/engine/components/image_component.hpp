@@ -22,6 +22,8 @@ private:
     bool is_animated = false;
     bool loop = true;
 
+    bool visible = true;
+
     double start_at = 0.0;
 public:
     ImageComponent(std::string _image_id)
@@ -50,8 +52,10 @@ public:
     int         get_frame() { return frame; }
     void        set_animation_speed(float speed) { animation_speed = speed; }
     float       get_animation_speed() { return animation_speed; }
-    void        set_is_animated(float _is_animated) { is_animated = _is_animated; }
+    void        set_is_animated(bool _is_animated) { is_animated = _is_animated; }
     bool        get_is_animated() { return is_animated; }
+    void        set_visible(bool _visible) { visible = _visible; }
+    bool        get_visible() { return visible; }
 
     void start_animation() { start_at = AppMain::get_instance().get_now(); };
 
