@@ -27,14 +27,6 @@ public:
     std::vector<std::unique_ptr<IComponent>>& get_components() {
         return components;
     }
-    std::unique_ptr<IComponent>& get_component(ComponentType type) {
-        for (auto& component : components) {
-            if (component->get_type() == type) {
-                return component;
-            }
-        }
-        return components[0];
-    }
     bool has_component(ComponentType type) {
         for (auto& component : components) {
             if (component->get_type() == type) {
@@ -53,6 +45,17 @@ public:
             components.end()
         );
     }
+
+    template <typename T>
+    T* get_component_of_type() {
+        for (auto& component : components) {
+            if (dynamic_cast<T*>(component.get())) {
+                return dynamic_cast<T*>(component.get());
+            }
+        }
+        return nullptr;
+    }
+
     void init();
     void draw();
     void update();
